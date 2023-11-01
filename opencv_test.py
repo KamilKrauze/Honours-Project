@@ -12,6 +12,6 @@ src = cv.cvtColor(src, cv.COLOR_RGB2GRAY)
 dst = cv.equalizeHist(src)
 
 cv.imshow('Source Image', src)
-cv.imshow('Source Image', dst)
+cv.imshow('HE Image', dst)
 
 cv.waitKey()
