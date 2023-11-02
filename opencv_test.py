@@ -1,17 +1,13 @@
 from __future__ import print_function
 import cv2 as cv
+import pydicom as dicom
+import numpy
 
-src = cv.imread("./kamil.png")
+ds = dicom.read_file("./P_1_SR3")
 
-if src is None:
-    print('Image could not be opened at:\n./kamil.png')
-    exit(0)
+DIMS = (ds.Rows, ds.Columns)
+SPACING = float(ds.PixelSpacing[0], ds.PixelSpacing[1] , ds.SliceThickness )
 
-src = cv.cvtColor(src, cv.COLOR_RGB2GRAY)
-
-dst = cv.equalizeHist(src)
-
-cv.imshow('Source Image', src)
-cv.imshow('HE Image', dst)
-
-cv.waitKey()
+print (SPACING)
+# cv.imshow("DICOM pixel data", ds.PixelData)
+# cv.imshow('HE Image', dst)
