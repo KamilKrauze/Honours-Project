@@ -3,12 +3,17 @@ import pydicom as dicom
 import cv2 as cv
 import matplotlib.pyplot as plt
 from rich.progress import track as prog_bar
+import os
 
 dicom_filepath:str = "./P_1_SR3"
 
-export_directory:str = './exports/'
+export_directory:str = './exports'
 export_img_name:str = 'frame'
 export_img_type:str = ".png"
+
+# If directory does not exist, create it
+if not os.path.exists(export_directory):
+    os.makedirs(export_directory)
 
 ds = dicom.dcmread(dicom_filepath)
 
@@ -45,7 +50,7 @@ for i in prog_bar( range(0,frame_count.value), description="Exporting frames: " 
         number = str(i)
     
     # Export image without figure elements - https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.imsave.html - 06/11/2023
-    export_path = export_directory + export_img_name + number + export_img_type
+    export_path = export_directory +"/"+ export_img_name + number + export_img_type
     plt.imsave(export_path, ds.pixel_array[i], cmap=plt.cm.gray)
 
 print("Success!")
