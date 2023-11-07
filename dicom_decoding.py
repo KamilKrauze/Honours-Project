@@ -4,7 +4,13 @@ import cv2 as cv
 import matplotlib.pyplot as plt
 from rich.progress import track as prog_bar
 
-ds = dicom.dcmread("./P_1_SR3")
+dicom_filepath:str = "./P_1_SR3"
+
+export_directory:str = './exports/'
+export_img_name:str = 'frame'
+export_img_type:str = ".png"
+
+ds = dicom.dcmread(dicom_filepath)
 
 
 # Type of image
@@ -24,19 +30,23 @@ dimensions = (int(rows.value), int(cols.value))
 # Image pixel spacing
 pixel_spacing = ds[0x0018, 0x1164]
 
-# Turn off axes - https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.axis.html - 05/11/2023
-plt.axis('off')
 
-# Turn off all labels - https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.tick_params.html - 05/11/2023
-plt.tick_params(axis='both', which='both', bottom=False, top=False, labelbottom=False, right=False, left=False, labelleft=False)
-    
 # Progress bar with rich package - https://stackoverflow.com/questions/71923704/new-color-terminal-prograss-bar-in-pip - 05/11/2023
 for i in prog_bar( range(0,frame_count.value), description="Exporting frames: " ):
     
     # Plot frame by frame in grayscale
     plt.imshow(ds.pixel_array[i], cmap=plt.cm.gray)
     
+    number = str()
+    
     if ( i < 10 ):
-        plt.savefig("./exports/frame" + "0" + str(i) +".png")
+        number = ( "0" + str(i) )
     else:
-        plt.savefig("./exports/frame" + str(i) +".png")
+        number = str(i)
+    
+    # Export image without figure elements - https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.imsave.html - 06/11/2023
+    export_path = export_directory + export_img_name + number + export_img_type
+    plt.imsave(export_path, ds.pixel_array[i], cmap=plt.cm.gray)
+
+print("Success!")
+exit(0)
