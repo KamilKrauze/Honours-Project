@@ -18,23 +18,23 @@ try:
     file = open(filepath, "r")    
     for elem in file.readlines():
         file_import_list.append( elem.rstrip('\n') ) # Remove '\n' escape character
-        
+    
+    file.close()    
 except:
     print("File not found...")
     print("Directory or file may not exist")
     
 
+for image in file_import_list:
+    src = cv.imread(import_directory+"/"+image, cv.IMREAD_GRAYSCALE)
 
-src = cv.imread(import_directory+"/"+file_import_list[0], cv.IMREAD_GRAYSCALE)
+    if src is None:
+        print('Image could not be opened at:\n.' + import_directory+"/"+image)
+        exit(0)
+        
 
-if src is None:
-    print('Image could not be opened at:\n.' + import_directory+"/"+file_import_list[0])
-    exit(0)
-    
+    # Histogram equalization
+    dst = cv.equalizeHist(src)
 
-dst = cv.equalizeHist(src)
-
-cv.imshow('Source Image', src)
-cv.imshow('HE Image', dst)
-
-cv.waitKey()
+    export_fp = export_directory +"/"+ image
+    cv.imwrite( export_fp , dst)
