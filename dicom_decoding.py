@@ -24,11 +24,13 @@ dimensions = (int(rows.value), int(cols.value))
 # Image pixel spacing
 pixel_spacing = ds[0x0018, 0x1164]
 
-# Turn off the axes and labels
+# Turn off axes - https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.axis.html - 05/11/2023
 plt.axis('off')
+
+# Turn off all labels - https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.tick_params.html - 05/11/2023
 plt.tick_params(axis='both', which='both', bottom=False, top=False, labelbottom=False, right=False, left=False, labelleft=False)
     
-# Progress bar with rich package - https://stackoverflow.com/questions/71923704/new-color-terminal-prograss-bar-in-pip - 07/11/2023
+# Progress bar with rich package - https://stackoverflow.com/questions/71923704/new-color-terminal-prograss-bar-in-pip - 05/11/2023
 for i in prog_bar( range(0,frame_count.value), description="Exporting frames: " ):
     
     # Plot frame by frame in grayscale
