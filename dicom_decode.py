@@ -54,7 +54,7 @@ for i in prog_bar( range(0,frame_count.value), description="Exporting frames: " 
     export_path = export_directory +"/"+ export_img_name + number + export_img_type
     plt.imsave(export_path, ds.pixel_array[i], cmap=plt.cm.gray)
     
-    export_img_list.append(export_img_name+number) # Add file to list
+    export_img_list.append(export_img_name+number+export_img_type) # Add file to list
 
 
 # Writing the list of images to be read by other programs
