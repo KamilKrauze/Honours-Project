@@ -66,6 +66,8 @@ for j in prog_bar(range(frame_count.value), description=export_img_list_descript
         file.write( export_img_list[j] + "\n" )
     else:
         file.write( export_img_list[j])
-
+        
 print("Success!")
+
+input("Waiting on key...")
 exit(0)
