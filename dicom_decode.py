@@ -1,11 +1,11 @@
+import os
 import numpy as np
 import pydicom as dicom
 import cv2 as cv
 import matplotlib.pyplot as plt
 from rich.progress import track as prog_bar
-import os
 
-dicom_filepath:str = "./P_1_SR3"
+dicom_filepath:str = "./data/P_1_SR3"
 
 export_directory:str = './exports'
 export_img_name:str = 'frame'
@@ -15,6 +15,7 @@ export_img_type:str = ".png"
 if not os.path.exists(export_directory):
     os.makedirs(export_directory)
 
+# Read dicom file
 ds = dicom.dcmread(dicom_filepath)
 
 
@@ -43,7 +44,6 @@ for i in prog_bar( range(0,frame_count.value), description="Exporting frames: " 
     plt.imshow(ds.pixel_array[i], cmap=plt.cm.gray)
     
     number = str()
-    
     if ( i < 10 ):
         number = ( "0" + str(i) )
     else:
