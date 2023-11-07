@@ -2,7 +2,9 @@ import os
 import cv2 as cv
 from rich.progress import track as prog_bar
 
-# IO parameters
+# Application params
+display2user:bool = False
+
 import_directory:str = "./exports/dicom-data"
 import_file:str = "list.txt"
 
@@ -36,6 +38,11 @@ for image in file_import_list:
         # Histogram equalization
         dst = cv.equalizeHist(src)
 
+        if(display2user):
+            cv.imshow("Source Image", src)
+            cv.imshow("HE Image", dst)
+            cv.waitKey()
+        
         # Export file
         export_fp = export_directory +"/"+ image
         cv.imwrite( export_fp , dst)
