@@ -1,6 +1,5 @@
 import os
 import cv2 as cv
-from rich.progress import track as prog_bar
 
 # Application params
 display2user:bool = False
