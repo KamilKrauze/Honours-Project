@@ -23,6 +23,7 @@ dimensions = (int(rows.value), int(cols.value))
 pixel_spacing = ds[0x0018, 0x1164]
 
 for i in range(0,frame_count.value):
-    plt.
+    title = "Slice - " + str(i)
+    plt.title(title)
     plt.imshow(ds.pixel_array[i], cmap=plt.cm.gray)
     plt.show()
