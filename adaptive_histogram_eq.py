@@ -1,5 +1,9 @@
 import os
 import cv2 as cv
+import numpy as np
+from matplotlib import pyplot as plt
+
+# https://docs.opencv.org/4.x/d5/daf/tutorial_py_histogram_equalization.html
 
 # Application params
 display2user:bool = False
@@ -30,4 +34,14 @@ except:
     print("File not found...")
     print("Directory or file may not exist")
     
-    
+src = cv.imread(import_directory+"/"+file_import_list[0], cv.IMREAD_GRAYSCALE)
+
+heq = cv.equalizeHist(src)
+
+clahe = cv.createCLAHE(clipLimit=3.0, tileGridSize=(8,8))
+cl1 = clahe.apply(src)
+
+cv.imshow("Source", src)
+cv.imshow("HE", heq)
+cv.imshow("AHE", cl1)
+cv.waitKey()
