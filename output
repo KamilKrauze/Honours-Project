@@ -1,0 +1,213 @@
+Dataset.file_meta -------------------------------
+(0002, 0000) File Meta Information Group Length  UL: 200
+(0002, 0001) File Meta Information Version       OB: b'\x01\x00'
+(0002, 0002) Media Storage SOP Class UID         UI: X-Ray Angiographic Image Storage
+(0002, 0003) Media Storage SOP Instance UID      UI: 1.3.46.670589.28.961610204535.201901081054109198502211511
+(0002, 0010) Transfer Syntax UID                 UI: Explicit VR Little Endian
+(0002, 0012) Implementation Class UID            UI: 1.3.46.670589.42.1.4.4.5
+(0002, 0013) Implementation Version Name         SH: 'PhilipsISPACS445'
+-------------------------------------------------
+(0008, 0005) Specific Character Set              CS: 'ISO_IR 100'
+(0008, 0008) Image Type                          CS: ['ORIGINAL', 'PRIMARY', 'SINGLE PLANE', 'SINGLE A']
+(0008, 0012) Instance Creation Date              DA: '20190108'
+(0008, 0013) Instance Creation Time              TM: '104522.091'
+(0008, 0016) SOP Class UID                       UI: X-Ray Angiographic Image Storage
+(0008, 0018) SOP Instance UID                    UI: 1.3.46.670589.28.961610204535.201901081054109198502211511
+(0008, 0020) Study Date                          DA: '20190108'
+(0008, 0021) Series Date                         DA: '20190108'
+(0008, 0022) Acquisition Date                    DA: '20190108'
+(0008, 0023) Content Date                        DA: '20190108'
+(0008, 0030) Study Time                          TM: '102430.449'
+(0008, 0031) Series Time                         TM: '104522.091'
+(0008, 0032) Acquisition Time                    TM: '104522.091'
+(0008, 0033) Content Time                        TM: '104522.091'
+(0008, 0050) Accession Number                    SH: 'DE83AFAD'
+(0008, 0060) Modality                            CS: 'XA'
+(0008, 0070) Manufacturer                        LO: 'Philips Medical Systems'
+(0008, 0080) Institution Name                    LO: 'ROYAL VICTORIA HOSPITAL BELFAST'
+(0008, 0090) Referring Physician's Name          PN: ''
+(0008, 1010) Station Name                        SH: 'GB101004-005-012'
+(0008, 1030) Study Description                   LO: 'Cardiac'
+(0008, 103e) Series Description                  LO: 'Coronary 15fps 25%'
+(0008, 1040) Institutional Department Name       LO: 'CATH LAB 1'
+(0008, 1050) Performing Physician's Name         PN: 'AMCN'
+(0008, 1080) Admitting Diagnoses Description     LO: ''
+(0008, 1090) Manufacturer's Model Name           LO: 'AlluraXper'
+(0008, 2144) Recommended Display Frame Rate      IS: '15'
+(0010, 0010) Patient's Name                      PN: 'Armold^Lauren^D^^'
+(0010, 0020) Patient ID                          LO: 'BB85225F'
+(0010, 0021) Issuer of Patient ID                LO: 'HcN'
+(0010, 0030) Patient's Birth Date                DA: '19430524'
+(0010, 0040) Patient's Sex                       CS: 'M'
+(0010, 1000) Other Patient IDs                   LO: ''
+(0018, 0010) Contrast/Bolus Agent                LO: ''
+(0018, 0040) Cine Rate                           IS: '15'
+(0018, 0060) KVP                                 DS: '74.36'
+(0018, 1000) Device Serial Number                LO: '722010-1056'
+(0018, 1020) Software Versions                   LO: 'Allura Xper, 8.1.17.2'
+(0018, 1030) Protocol Name                       LO: 'Cardiac'
+(0018, 1063) Frame Time                          DS: '66.667'
+(0018, 1066) Frame Delay                         DS: '0.0'
+(0018, 1110) Distance Source to Detector         DS: '1038.0'
+(0018, 1111) Distance Source to Patient          DS: '765.0'
+(0018, 1134) Table Motion                        CS: 'STATIC'
+(0018, 1150) Exposure Time                       IS: '6'
+(0018, 1151) X-Ray Tube Current                  IS: '799'
+(0018, 1155) Radiation Setting                   CS: 'GR'
+(0018, 1164) Imager Pixel Spacing                DS: [0.258390625, 0.258390625]
+(0018, 1500) Positioner Motion                   CS: 'STATIC'
+(0018, 1510) Positioner Primary Angle            DS: '0.3'
+(0018, 1511) Positioner Secondary Angle          DS: '-19.4'
+(0018, 1600) Shutter Shape                       CS: 'RECTANGULAR'
+(0018, 1602) Shutter Left Vertical Edge          IS: '1'
+(0018, 1604) Shutter Right Vertical Edge         IS: '512'
+(0018, 1606) Shutter Upper Horizontal Edge       IS: '1'
+(0018, 1608) Shutter Lower Horizontal Edge       IS: '512'
+(0020, 000d) Study Instance UID                  UI: 1.3.46.670589.28.96161020453520190108102430043820
+(0020, 000e) Series Instance UID                 UI: 1.3.46.670589.28.961610204535.20190108104522060236.2.2
+(0020, 0010) Study ID                            SH: '917797'
+(0020, 0011) Series Number                       IS: '4'
+(0020, 0013) Instance Number                     IS: '4'
+(0020, 0020) Patient Orientation                 CS: ''
+(0020, 0060) Laterality                          CS: ''
+(0028, 0002) Samples per Pixel                   US: 1
+(0028, 0004) Photometric Interpretation          CS: 'MONOCHROME2'
+(0028, 0008) Number of Frames                    IS: '61'
+(0028, 0009) Frame Increment Pointer             AT: (0018, 1063)
+(0028, 0010) Rows                                US: 512
+(0028, 0011) Columns                             US: 512
+(0028, 0100) Bits Allocated                      US: 8
+(0028, 0101) Bits Stored                         US: 8
+(0028, 0102) High Bit                            US: 7
+(0028, 0103) Pixel Representation                US: 0
+(0028, 1040) Pixel Intensity Relationship        CS: 'LIN'
+(0028, 1050) Window Center                       DS: '128.75'
+(0028, 1051) Window Width                        DS: '179.0'
+(0028, 2110) Lossy Image Compression             CS: '00'
+(0040, 0244) Performed Procedure Step Start Date DA: '20190108'
+(0040, 0245) Performed Procedure Step Start Time TM: '102430.449'
+(0040, 0253) Performed Procedure Step ID         SH: 'E201901071330180'
+(0040, 0275)  Request Attributes Sequence  1 item(s) ----
+   (0040, 0007) Scheduled Procedure Step Descriptio LO: ''
+   (0040, 0009) Scheduled Procedure Step ID         SH: '1'
+   (0040, 1001) Requested Procedure ID              SH: '917797'
+   ---------
+(0040, 0306) Distance Source to Entrance         DS: '730.2'
+(0073, 0010) Private Creator                     LO: 'STENTOR'
+(0073, 1001) [Unknown]                           ST: 'unknown'
+(0073, 1002) [Private Creator]                   ST: '10.108.220.5'
+(0073, 1003) [Stentor Remote AETitle Element]    ST: 'STORE_SCU'
+(0073, 1004) [Stentor Local AETitle Element]     ST: 'STENTOR_SCP'
+(0073, 1006) [Stentor Transfer Syntax Value]     LO: '1.2.840.10008.1.2.1'
+(2001, 0010) Private Creator                     LO: 'Philips Imaging DD 001'
+(2001, 0090) Private Creator                     LO: 'Philips Imaging DD 129'
+(2001, 1063) [Examination Source]                CS: 'ELSEWHERE'
+(2001, 10a1) [Is Raw Image]                      CS: 'NO'
+(2001, 9000)  [Unknown]  1 item(s) ----
+   (0008, 0016) SOP Class UID                       UI: 1.3.46.670589.2.2.1.1
+   (0008, 0018) SOP Instance UID                    UI: 1.3.46.670589.28.961610204535.2019010810541324762511511
+   (0008, 1115)  Referenced Series Sequence  1 item(s) ----
+      (0008, 1140)  Referenced Image Sequence  1 item(s) ----
+         (0008, 1150) Referenced SOP Class UID            UI: X-Ray Angiographic Image Storage
+         (0008, 1155) Referenced SOP Instance UID         UI: 1.3.46.670589.28.961610204535.201901081054109198502211511
+         ---------
+      (0020, 000e) Series Instance UID                 UI: 1.3.46.670589.28.961610204535.20190108104522060236.2.2
+      (2001, 0010) Private Creator                     LO: 'Philips Imaging DD 001'
+      (2001, 10c1) [Nested Object Type Name]           LO: 'ImagesPerSeriesReference'
+      ---------
+   (0018, 1622) Shutter Presentation Value          US: 0
+   (0020, 000e) Series Instance UID                 UI: 1.3.46.670589.28.961610204535.20190108104522060236.2.5
+   (0020, 0013) Instance Number                     IS: '1'
+   (0028, 3110)  Softcopy VOI LUT Sequence  1 item(s) ----
+      (0028, 1050) Window Center                       DS: '128.75'
+      (0028, 1051) Window Width                        DS: '179.0'
+      (2001, 0010) Private Creator                     LO: 'Philips Imaging DD 001'
+      (2001, 1074) [Window Center Sub]                 DS: '147.25'
+      (2001, 1075) [Window Width Sub]                  DS: '128.0'
+      (2001, 1077) [GL TrafoType]                      CS: 'LINEARVOI'
+      (2001, 10c1) [Nested Object Type Name]           LO: 'LinearVOIGLTrafo'
+      ---------
+   (0070, 005a)  Displayed Area Selection Sequence  1 item(s) ----
+      (0070, 0052) Displayed Area Top Left Hand Corner SL: [1, 1]
+      (0070, 0053) Displayed Area Bottom Right Hand Co SL: [512, 512]
+      (0070, 0100) Presentation Size Mode              CS: 'SCALE TO FIT'
+      (0070, 0102) Presentation Pixel Aspect Ratio     IS: [1, 1]
+      ---------
+   (0070, 0060)  Graphic Layer Sequence  1 item(s) ----
+      (0070, 0002) Graphic Layer                       CS: '1'
+      (0070, 0062) Graphic Layer Order                 IS: '1'
+      ---------
+   (0070, 0080) Content Label                       CS: 'AS LAST SEEN'
+   (0070, 0081) Content Description                 LO: ''
+   (0070, 0082) Presentation Creation Date          DA: '20190108'
+   (0070, 0083) Presentation Creation Time          TM: '104522.091'
+   (0070, 0084) Content Creator's Name              PN: ''
+   (2001, 0010) Private Creator                     LO: 'Philips Imaging DD 001'
+   (2001, 1069)  [Display Shutter Sequence]  1 item(s) ----
+      (0018, 1600) Shutter Shape                       CS: 'RECTANGULAR'
+      (0018, 1602) Shutter Left Vertical Edge          IS: '1'
+      (0018, 1604) Shutter Right Vertical Edge         IS: '512'
+      (0018, 1606) Shutter Upper Horizontal Edge       IS: '1'
+      (0018, 1608) Shutter Lower Horizontal Edge       IS: '512'
+      ---------
+   (2001, 1076) [Unknown]                           UL: 100
+   (2001, 1077) [GL TrafoType]                      CS: 'L_PRESENTATION'
+   (2001, 1078) Private tag data                    UL: 123
+   (2003, 0010) Private Creator                     LO: 'Philips X-ray Imaging DD 001'
+   (2003, 1006) [Unknown]                           SL: 1
+   (2003, 1025) [Unknown]                           SL: 1
+   (2003, 1031) [Unknown]                           CS: 'STANDARD'
+   (2050, 0020) Presentation LUT Shape              CS: 'IDENTITY'
+   ---------
+(2003, 0010) Private Creator                     LO: 'Philips X-ray Imaging DD 001'
+(2003, 0012) Private Creator                     LO: 'Philips X-ray Imaging DD 003'
+(2003, 1001) [Unknown]                           LO: 'Cardio ClarityIQ'
+(2003, 1002) [Unknown]                           FD: [187.0, 132.0, 132.0]
+(2003, 1003) [Unknown]                           LO: 'FD 20 cm'
+(2003, 1009) [Unknown]                           SL: 2
+(2003, 1010) [Unknown]                           LO: 'FD 20 cm'
+(2003, 1016) [Unknown]                           SL: 1
+(2003, 1017) [Unknown]                           SL: 1
+(2003, 1018) [Unknown]                           SL: 1
+(2003, 1019) [Unknown]                           SL: 0
+(2003, 1022) [Unknown]                           SL: 1
+(2003, 1024) [Unknown]                           FD: [1.0, 1.0, 512.0, 512.0]
+(2003, 1027) [Unknown]                           SH: 'UP'
+(2003, 1028) [Unknown]                           SH: 'DOWN'
+(2003, 1029) [Unknown]                           FD: 90.0
+(2003, 102a) [Unknown]                           LO: 'none'
+(2003, 102b) [Unknown]                           FD: 0.0
+(2003, 102c) [Unknown]                           SH: 'FRONTAL'
+(2003, 102d) [Unknown]                           SL: Array of 61 elements
+(2003, 102e)  [Unknown]  1 item(s) ----
+   (0018, 9469) Table Horizontal Rotation Angle     FL: -0.20000000298023224
+   (0018, 9470) Table Head Tilt Angle               FL: 0.0
+   (0018, 9471) Table Cradle Tilt Angle             FL: 0.0
+   (300a, 0128) Table Top Vertical Position         DS: '905.0'
+   (300a, 0129) Table Top Longitudinal Position     DS: '623.0'
+   (300a, 012a) Table Top Lateral Position          DS: '-69.0'
+   ---------
+(2003, 1030) [Unknown]                           CS: 'YES'
+(2003, 1031) [Unknown]                           CS: 'STANDARD'
+(2003, 1032) [Unknown]                           UI: 1.3.46.670589.28.961610204535.20190108104522060236.2.2
+(2003, 1033) Private tag data                    UL: 23
+(2003, 1201) Private tag data                    IS: None
+(2003, 1202) Private tag data                    DS: '0.3'
+(2003, 1203) Private tag data                    DS: '19.4'
+(2003, 1204) Private tag data                    DS: '0.0'
+(2003, 1205) Private tag data                    DS: '-0.6'
+(2003, 1206) Private tag data                    DS: '0.0'
+(2003, 1207) Private tag data                    DS: '1570.0'
+(2003, 1208) Private tag data                    DS: '1038.0'
+(2003, 1209) Private tag data                    DS: '765.0'
+(2003, 1210) Private tag data                    SH: 'UP'
+(2003, 1211) Private tag data                    SH: 'DOWN'
+(2003, 1212) Private tag data                    DS: '905.0'
+(2003, 1213) Private tag data                    DS: '2017.7'
+(2003, 1214) Private tag data                    DS: '-62.0'
+(2003, 1215) Private tag data                    DS: '0.0'
+(2003, 1216) Private tag data                    DS: '-0.2'
+(2003, 1217) Private tag data                    DS: '0.0'
+(2003, 1218) Private tag data                    DS: '258.390625'
+(2003, 1219) Private tag data                    DS: '2019-01-08 10:24:30'
+(7fe0, 0010) Pixel Data                          OW: Array of 15990784 elements
