@@ -15,7 +15,7 @@ export_img_type:str = ".png"
 if not os.path.exists(export_directory):
     os.makedirs(export_directory)
 
-# Read dicom file
+# Read dicom file - https://pydicom.github.io/pydicom/stable/tutorials/dataset_basics.html - 31/11/2023
 ds = dicom.dcmread(dicom_filepath)
 
 
