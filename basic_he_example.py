@@ -1,3 +1,4 @@
+import os
 import cv2 as cv
 
 src = cv.imread("./kamil.png")
