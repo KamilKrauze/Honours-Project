@@ -2,10 +2,12 @@ import os
 import cv2 as cv
 from rich.progress import track as prog_bar
 
+# IO parameters
 import_directory:str = "./exports/dicom-data"
 import_file:str = "list.txt"
 
 export_directory:str = "./exports/opencv/histogram-eq"
+
 
 # If directory does not exist, create it
 if not os.path.exists(export_directory):
@@ -30,11 +32,10 @@ for image in file_import_list:
 
     if src is None:
         print('Image could not be opened at:\n.' + import_directory+"/"+image)
-        exit(0)
-        
+    else:
+        # Histogram equalization
+        dst = cv.equalizeHist(src)
 
-    # Histogram equalization
-    dst = cv.equalizeHist(src)
-
-    export_fp = export_directory +"/"+ image
-    cv.imwrite( export_fp , dst)
+        # Export file
+        export_fp = export_directory +"/"+ image
+        cv.imwrite( export_fp , dst)
