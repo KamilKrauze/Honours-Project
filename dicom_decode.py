@@ -69,5 +69,4 @@ for j in prog_bar(range(frame_count.value), description=export_img_list_descript
         
 print("Success!")
 
-input("Waiting on key...")
 exit(0)
