@@ -7,15 +7,16 @@ from rich.progress import track as prog_bar
 
 dicom_filepath:str = "./data/P_1_SR3"
 
-export_directory:str = './exports'
+export_directory:str = './exports/dicom-data'
 export_img_name:str = 'frame'
 export_img_type:str = ".png"
+export_img_list = list()
 
 # If directory does not exist, create it
 if not os.path.exists(export_directory):
     os.makedirs(export_directory)
 
-# Read dicom file
+# Read dicom file - https://pydicom.github.io/pydicom/stable/tutorials/dataset_basics.html - 31/11/2023
 ds = dicom.dcmread(dicom_filepath)
 
 
@@ -52,6 +53,21 @@ for i in prog_bar( range(0,frame_count.value), description="Exporting frames: " 
     # Export image without figure elements - https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.imsave.html - 06/11/2023
     export_path = export_directory +"/"+ export_img_name + number + export_img_type
     plt.imsave(export_path, ds.pixel_array[i], cmap=plt.cm.gray)
+    
+    export_img_list.append(export_img_name+number+export_img_type) # Add file to list
 
+
+# Writing the list of images to be read by other programs
+list_dir = export_directory+"/list.txt"
+export_img_list_description:str = "Writing to "+list_dir+": "
+file = open(list_dir, "w")
+for j in prog_bar(range(frame_count.value), description=export_img_list_description ):
+    if (j != 60):
+        file.write( export_img_list[j] + "\n" )
+    else:
+        file.write( export_img_list[j])
+        
 print("Success!")
+
+input("Waiting on key...")
 exit(0)

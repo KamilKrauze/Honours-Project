@@ -1,5 +1,6 @@
 numpy
 pydicom
 opencv-python
+opencv-contrib-python
 matplotlib
 rich
