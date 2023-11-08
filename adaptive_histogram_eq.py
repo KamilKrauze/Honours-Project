@@ -60,3 +60,15 @@ for image in file_import_list:
             cv.imshow("AHE - 3", cl3)
             cv.imshow("AHE - 10", cl10)
             cv.waitKey()
+
+        results = [cl1, cl2, cl3, cl10]
+        
+        export_fp = export_directory +"/"
+        for i in range(0,4):
+            export_fp = export_directory +"/"
+            if i < 3:
+                export_fp += "cl"+str(i+1)+"_" + image
+            else: 
+                export_fp += "cl"+str(10)+"_" + image   
+            
+            cv.imwrite(export_fp, results[i])
