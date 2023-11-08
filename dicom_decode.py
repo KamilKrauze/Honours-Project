@@ -16,7 +16,7 @@ export_img_list = list()
 if not os.path.exists(export_directory):
     os.makedirs(export_directory)
 
-# Read dicom file - https://pydicom.github.io/pydicom/stable/tutorials/dataset_basics.html - 31/11/2023
+# Read dicom file - https://pydicom.github.io/pydicom/stable/tutorials/dataset_basics.html - 3/11/2023
 ds = dicom.dcmread(dicom_filepath)
 
 
@@ -38,7 +38,7 @@ dimensions = (int(rows.value), int(cols.value))
 pixel_spacing = ds[0x0018, 0x1164]
 
 
-# Progress bar with rich package - https://stackoverflow.com/questions/71923704/new-color-terminal-prograss-bar-in-pip - 05/11/2023
+# Progress bar with rich package - https://stackoverflow.com/questions/71923704/new-color-terminal-prograss-bar-in-pip - 07/11/2023
 for i in prog_bar( range(0,frame_count.value), description="Exporting frames: " ):
     
     # Plot frame by frame in grayscale
@@ -50,7 +50,7 @@ for i in prog_bar( range(0,frame_count.value), description="Exporting frames: " 
     else:
         number = str(i)
     
-    # Export image without figure elements - https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.imsave.html - 06/11/2023
+    # Export image without figure elements - https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.imsave.html - 07/11/2023
     export_path = export_directory +"/"+ export_img_name + number + export_img_type
     plt.imsave(export_path, ds.pixel_array[i], cmap=plt.cm.gray)
     
