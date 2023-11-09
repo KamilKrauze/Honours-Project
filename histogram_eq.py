@@ -1,5 +1,6 @@
 import os
 import cv2 as cv
+from rich.progress import track as prog_bar
 
 # Application params
 display2user:bool = False
@@ -28,11 +29,12 @@ except:
     print("Directory or file may not exist")
     
 
-for image in file_import_list:
-    src = cv.imread(import_directory+"/"+image, cv.IMREAD_GRAYSCALE)
+for i in prog_bar( range(len(file_import_list)), description="Processing..." ):
+
+    src = cv.imread(import_directory+"/"+file_import_list[i], cv.IMREAD_GRAYSCALE)
 
     if src is None:
-        print('Image could not be opened at:\n.' + import_directory+"/"+image)
+        print('Image could not be opened at:\n.' + import_directory+"/"+file_import_list[i])
     else:
         # Histogram equalization
         dst = cv.equalizeHist(src)
@@ -43,5 +45,7 @@ for image in file_import_list:
             cv.waitKey()
         
         # Export file
-        export_fp = export_directory +"/"+ image
+        export_fp = export_directory +"/"+ file_import_list[i]
         cv.imwrite( export_fp , dst)
+
+print("Exported to: \n" + export_directory)
