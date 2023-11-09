@@ -1,7 +1,5 @@
 import os
-import numpy as np
 import pydicom as dicom
-import cv2 as cv
 import matplotlib.pyplot as plt
 from rich.progress import track as prog_bar
 
