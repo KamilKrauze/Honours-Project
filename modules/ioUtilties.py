@@ -1,6 +1,29 @@
 from typing import List 
 import os
 
+def readFileToList(fp:str) -> List[str]:
+    """Reads contents from file and appends to list. Also removes "\n" characters if found.
+
+    Args:
+        fp (str): Filepath
+
+    Returns:
+        List[str]: Contents of file as list.
+    """
+    if not checkIfDirectoryExists(fp):
+        return list()
+    
+    
+    io = open(fp, "r")
+    lines = io.readlines()
+    
+    data = list()
+    
+    for line in lines:
+        data.append(line.rstrip('\n'))
+    
+    return data
+
 def writeListToFile(list: List, fp:str):
     """Writes list data to file where each element is on a new line.
 
