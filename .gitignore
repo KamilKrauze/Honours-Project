@@ -398,4 +398,5 @@ FodyWeavers.xsd
 *.sln.iml
 
 # Exports folder
-exports/*
+exports/dicom-data/*
+exports/opencv/*
