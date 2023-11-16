@@ -24,7 +24,7 @@ def PSNR(enhancedImage: cv.Mat, originalImage: cv.Mat)->npy.float64:
     summation_x_y = npy.float64(0)
     for y in range(sizeY):
         for x in range(sizeX):
-            pxl = originalImage[x][y] - enhancedImage[x][y]
+            pxl = originalImage[y][x][0] - enhancedImage[y][x][0]
             pxl = npy.power(abs(pxl), 2)
             summation_x_y += pxl
 
@@ -32,7 +32,7 @@ def PSNR(enhancedImage: cv.Mat, originalImage: cv.Mat)->npy.float64:
     
     psnr = 10 * npy.log10(fraction) 
     
-    return psnr[0]
+    return psnr
 
 # fp_src:str = ".\\exports\\dicom-data\\frame00.png"
 # fp_hst:str = ".\\exports\\opencv\\histogram-eq\\frame00.png"

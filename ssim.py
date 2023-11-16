@@ -1,5 +1,7 @@
 import cv2 as cv
 import numpy as npy
+
+from modules.imgUtilities import ImageProperties as IMG
 import modules.imgUtilities as utils
 
 def imageMean(image: cv.Mat) -> npy.float64:
@@ -24,7 +26,7 @@ def imageMean(image: cv.Mat) -> npy.float64:
     return mean
 
 def imageVariance(image: cv.Mat, mean: npy.float64) -> npy.float64:
-    img = utils.imageDimensions(image)
+    img:IMG = utils.imageDimensions(image)
     
     summation = npy.float64(0)
     for y in range(img.height):
@@ -35,8 +37,8 @@ def imageVariance(image: cv.Mat, mean: npy.float64) -> npy.float64:
     return variance
 
 def imageCovariance(originalImage: cv.Mat, enhancedImage: cv.Mat) -> npy.float64:
-    org_img = utils.imageDimensions(originalImage)
-    enh_img = utils.imageDimensions(enhancedImage)
+    org_img:IMG = utils.imageDimensions(originalImage)
+    enh_img:IMG = utils.imageDimensions(enhancedImage)
     
     org_mean = imageMean(originalImage)
     enh_mean = imageMean(enhancedImage)

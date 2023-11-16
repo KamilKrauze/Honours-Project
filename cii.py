@@ -13,7 +13,7 @@ def entropy(probabilities: List[npy.float64]) -> npy.float64:
     
     return entropy
 
-def coefficientsOfLocation(image):
+def coefficientsOfLocation(image: cv.Mat):
     """ Returns a list of coefficients of 3x3 subregions of the image"""
 
     max_vals = list()
@@ -39,16 +39,16 @@ def coefficientsOfLocation(image):
                 coefficients.append(a)
     return coefficients
 
-def CII(sourceImg, enhancedImg) -> npy.float64:
+def CII(sourceImg: cv.Mat, enhancedImg: cv.Mat) -> npy.float64:
     """Computers the Constrast Improvement Index - Higher the better"""
     
     Cloc_src = coefficientsOfLocation(sourceImg)
-    Cloc_hist = coefficientsOfLocation(enhancedImg)
+    Cloc_enh = coefficientsOfLocation(enhancedImg)
 
     entropy_src = entropy(Cloc_src)
-    entropy_hist = entropy(Cloc_hist)
+    entropy_enh = entropy(Cloc_enh)
 
-    CII = entropy_hist / entropy_src
+    CII = entropy_enh / entropy_src
     return CII
     
 # fp_src:str = ".\\exports\\dicom-data\\frame00.png"
