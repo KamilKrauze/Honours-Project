@@ -14,9 +14,6 @@ export_directory:str = "./exports/opencv/adaptive-histogram-eq"
 if not os.path.exists(export_directory):
     os.makedirs(export_directory)
     
-# If directory does not exist, create it
-if not os.path.exists(export_directory):
-    os.makedirs(export_directory)
 
 # Get all files
 file_import_list = list(str())
