@@ -72,13 +72,13 @@ def SSIM(enhancedImage: cv.Mat , originalImage: cv.Mat) -> npy.float64:
     enhancedVariance = imageVariance(enhancedImage, enhancedMean)
     
     covariance = npy.sqrt( imageCovariance(originalImage, enhancedImage) )
+    
+    L = npy.amax(originalImage)
     k1 = 0.01
-    L1 = npy.amax(originalImage)
-    c1 = npy.power((k1 * L1), 2)
+    c1 = npy.power((k1 * L), 2)
     
     k2 = 0.03
-    L2 = npy.amax(enhancedImage)
-    c2 = npy.power((k2 * L2), 2)
+    c2 = npy.power((k2 * L), 2)
     
     numerator = (2 * originalMean * enhancedMean + c1) * (2 * covariance + c2)
     denominator = (npy.power(originalMean, 2) + npy.power(enhancedMean, 2) + c1) * (npy.power(originalVariance, 2) + npy.power(enhancedVariance, 2) + c2)
