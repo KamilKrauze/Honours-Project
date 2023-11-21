@@ -64,7 +64,9 @@ def getListofImgs(dir: str, suffix: str) -> List[str]:
     Returns:
         List[str]: List of PNG images.
     """      
-    checkIfDirectoryExists(dir)    
+    if (not checkIfDirectoryExists(dir)):
+        raise IOError("ERROR: File not found!")    
+    
     files = os.listdir(dir)
     images = list()
     
