@@ -73,7 +73,7 @@ def SSIM(enhancedImage: cv.Mat , originalImage: cv.Mat) -> npy.float64:
     
     covariance = npy.sqrt( imageCovariance(originalImage, enhancedImage) )
     
-    L = npy.amax(originalImage)
+    L = npy.amax(enhancedImage)
     k1 = 0.01
     c1 = npy.power((k1 * L), 2)
     
