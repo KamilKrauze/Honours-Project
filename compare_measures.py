@@ -4,9 +4,9 @@ import matplotlib.pyplot as plt
 # Custom modules
 from modules import ioUtilties as IO
 
-SELECTION:int = 2
+SELECTION:int = 1
 
-TITLE = ["Contrast Improvement Index", "Peak Signal to Pulse Ratio", "Structural Similarity Index Measure"]
+TITLE = ["Contrast Improvement Index", "Peak Signal to Noise Ratio", "Structural Similarity Index Measure"]
 
 HEQ_SRC = [
     "./exports/contrast-measures/heq/ciis.txt",
