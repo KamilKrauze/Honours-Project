@@ -50,11 +50,13 @@ def CII(sourceImg: cv.Mat, enhancedImg: cv.Mat) -> npy.float64:
 
     CII = entropy_enh / entropy_src
     return CII
-    
-# fp_src:str = ".\\exports\\dicom-data\\frame00.png"
-# fp_hist:str = ".\\exports\\opencv\\histogram-eq\\frame00.png"
-# src = cv.imread(fp_src)
-# hist = cv.imread(fp_hist)
 
-# print(CII(src, hist))
+
+if __name__ == "__main__":
+    fp_src:str = ".\\exports\\dicom-data\\frame00.png"
+    fp_hist:str = ".\\exports\\opencv\\histogram-eq\\frame00.png"
+    src = cv.imread(fp_src)
+    hist = cv.imread(fp_hist)
+
+    print(CII(src, hist))
 

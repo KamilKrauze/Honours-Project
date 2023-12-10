@@ -59,10 +59,10 @@ def computeSSIMs():
         
         ssims.append( ssim.SSIM(enh, src) )
 
-computeCIIs()
-computePSNRs()
+# computeCIIs()
+# computePSNRs()
 computeSSIMs()
   
-IO.writeListToFile(ciis, CIIS_DIR)
-IO.writeListToFile(psnrs, PSNR_DIR)
+# IO.writeListToFile(ciis, CIIS_DIR)
+# IO.writeListToFile(psnrs, PSNR_DIR)
 IO.writeListToFile(ssims, SSIM_DIR)

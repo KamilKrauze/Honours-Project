@@ -14,9 +14,6 @@ export_directory:str = "./exports/opencv/adaptive-histogram-eq"
 if not os.path.exists(export_directory):
     os.makedirs(export_directory)
     
-# If directory does not exist, create it
-if not os.path.exists(export_directory):
-    os.makedirs(export_directory)
 
 # Get all files
 file_import_list = list(str())
@@ -36,38 +33,31 @@ for image in file_import_list:
     if src is None:
         print("File not found at:\n" + import_directory+"/"+image)
     else:
-        heq = cv.equalizeHist(src)
-
         kernel_size = (8,8) # Too large of a kernel and all detail or entire image can be lost. Stay well below 32.
         # Adaptive HE - https://docs.opencv.org/4.x/d5/daf/tutorial_py_histogram_equalization.html - 07/11/2023
-        clahe1 = cv.createCLAHE(clipLimit=1.0, tileGridSize=kernel_size)
-        clahe2 = cv.createCLAHE(clipLimit=2.0, tileGridSize=kernel_size)
-        clahe3 = cv.createCLAHE(clipLimit=3.0, tileGridSize=kernel_size)
-        clahe10 = cv.createCLAHE(clipLimit=10.0, tileGridSize=kernel_size)
 
-        cl1 = clahe1.apply(src)
-        cl2 = clahe2.apply(src)
-        cl3 = clahe3.apply(src)
-        cl10 = clahe10.apply(src)
+        clahe4 = cv.createCLAHE(clipLimit=4, tileGridSize=kernel_size)
+        clahe5 = cv.createCLAHE(clipLimit=5, tileGridSize=kernel_size)
+        clahe7 = cv.createCLAHE(clipLimit=7, tileGridSize=kernel_size)
+        clahe8_5 = cv.createCLAHE(clipLimit=8.5, tileGridSize=kernel_size)
+
+        cl4 = clahe4.apply(src)
+        cl5 = clahe5.apply(src)
+        cl7 = clahe7.apply(src)
+        cl8_5 = clahe8_5.apply(src)
 
         if display2user:
             print(image)
             cv.imshow("Source", src)
-            cv.imshow("HE", heq)
-            cv.imshow("AHE - 1", cl1)
-            cv.imshow("AHE - 2", cl2) # Seems to do better
-            cv.imshow("AHE - 3", cl3)
-            cv.imshow("AHE - 10", cl10)
+            cv.imshow("AHE - 4", cl4)
+            cv.imshow("AHE - 5", cl5) # Seems to do better
+            cv.imshow("AHE - 7", cl7)
+            cv.imshow("AHE - 8.5", cl8_5)
             cv.waitKey()
-
-        # results = [cl1, cl2, cl3, cl10]
         
-        # export_fp = export_directory +"/"
-        # for i in range(0,4):
-        #     export_fp = export_directory +"/"
-        #     if i < 3:
-        #         export_fp += "cl"+str(i+1)+"_" + image
-        #     else: 
-        #         export_fp += "cl"+str(10)+"_" + image   
-            
-        #     cv.imwrite(export_fp, results[i])
+        export_fp = export_directory +"/"
+        
+        cv.imwrite(export_fp + "cl4_" + image, cl4)
+        cv.imwrite(export_fp + "cl5_" + image, cl5)
+        cv.imwrite(export_fp + "cl7_" + image, cl7)
+        cv.imwrite(export_fp + "cl8_5_" + image, cl8_5)

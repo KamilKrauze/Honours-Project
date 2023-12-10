@@ -31,7 +31,7 @@ def imageVariance(image: cv.Mat, mean: npy.float64) -> npy.float64:
     summation = npy.float64(0)
     for y in range(img.height):
         for x in range(img.width):
-            summation += pow( (image[y][x][0] - mean), 2)
+            summation += npy.power(image[y][x][0] - mean,2)
             
     variance = summation / img.total_pixels
     return variance
@@ -81,14 +81,15 @@ def SSIM(enhancedImage: cv.Mat , originalImage: cv.Mat) -> npy.float64:
     c2 = npy.power((k2 * L), 2)
     
     numerator = (2 * originalMean * enhancedMean + c1) * (2 * covariance + c2)
-    denominator = (npy.power(originalMean, 2) + npy.power(enhancedMean, 2) + c1) * (npy.power(originalVariance, 2) + npy.power(enhancedVariance, 2) + c2)
+    denominator = (npy.power(originalMean, 2) + npy.power(enhancedMean, 2) + c1) * (originalVariance + enhancedVariance + c2)
     
     return numerator / denominator
 
-# fp_src:str = ".\\exports\\dicom-data\\frame00.png"
-# fp_hist:str = ".\\exports\\opencv\\adaptive-histogram-eq\\cl3_frame00.png"
-# src = cv.imread(fp_src)
-# hist = cv.imread(fp_hist)
+if __name__ == "__main__":
+    fp_src:str = ".\\exports\\dicom-data\\frame00.png"
+    fp_hist:str = ".\\exports\\opencv\\adaptive-histogram-eq\\cl3_frame00.png"
+    src = cv.imread(fp_src)
+    hist = cv.imread(fp_hist)
 
-# ssim = SSIM(hist, src)
-# print(ssim)
+    ssim = SSIM(hist, src)
+    print(ssim)
