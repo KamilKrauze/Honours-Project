@@ -85,10 +85,11 @@ def SSIM(enhancedImage: cv.Mat , originalImage: cv.Mat) -> npy.float64:
     
     return numerator / denominator
 
-fp_src:str = ".\\exports\\dicom-data\\frame00.png"
-fp_hist:str = ".\\exports\\opencv\\adaptive-histogram-eq\\cl3_frame00.png"
-src = cv.imread(fp_src)
-hist = cv.imread(fp_hist)
+if __name__ == "__main__":
+    fp_src:str = ".\\exports\\dicom-data\\frame00.png"
+    fp_hist:str = ".\\exports\\opencv\\adaptive-histogram-eq\\cl3_frame00.png"
+    src = cv.imread(fp_src)
+    hist = cv.imread(fp_hist)
 
-ssim = SSIM(hist, src)
-print(ssim)
+    ssim = SSIM(hist, src)
+    print(ssim)

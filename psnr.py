@@ -34,13 +34,14 @@ def PSNR(enhancedImage: cv.Mat, originalImage: cv.Mat)->npy.float64:
     
     return psnr
 
-# fp_src:str = ".\\exports\\dicom-data\\frame00.png"
-# fp_hst:str = ".\\exports\\opencv\\histogram-eq\\frame00.png"
+if __name__ == "__main__":
+    fp_src:str = ".\\exports\\dicom-data\\frame00.png"
+    fp_hst:str = ".\\exports\\opencv\\histogram-eq\\frame00.png"
 
-# src = cv.imread(fp_src)
-# hst = cv.imread(fp_hst)
+    src = cv.imread(fp_src)
+    hst = cv.imread(fp_hst)
 
-# print(help(PSNR))
+    print(help(PSNR))
 
-# psnr = PSNR(hst, src)
-# print(psnr)
+    psnr = PSNR(hst, src)
+    print(psnr)
