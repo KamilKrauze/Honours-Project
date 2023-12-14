@@ -1,15 +1,18 @@
-from typing import List
+from typing import List, Tuple
 import cv2 as cv
 import numpy as npy
 
-def SR_method(img1: cv.Mat, img2: cv.Mat, levels:int) -> cv.Mat:
-    # Create image copies and convert to floating point
-    image1 = npy.float64(img1.copy())
-    image2 = npy.float64(img2.copy())
+def SR_method(img1: cv.Mat, img2: cv.Mat, levels:int = 4) -> cv.Mat:
+    # # Create image copies and convert to floating point 64-bit precision
+    # image1 = npy.float64(img1.copy())
+    # image2 = npy.float64(img2.copy())
 
+    image1 = cv.threshold(img1, 127, 127, cv.THRESH_BINARY)[1]
+    image2 = cv.threshold(img2, 127, 127, cv.THRESH_BINARY)[1]
+    
     # Apply Laplacian pyramid decomposition on both images
-    gp1: List[npy.float64] = [image1.copy()]
-    gp2: List[npy.float64] = [image2.copy()]
+    gp1 = [image1.copy()]
+    gp2 = [image2.copy()]
     
     for i in range(levels):
         # Gaussian pyarmid - https://docs.opencv.org/4.x/d4/d1f/tutorial_pyramids.html - 14/12/2023
@@ -50,14 +53,14 @@ def SR_method(img1: cv.Mat, img2: cv.Mat, levels:int) -> cv.Mat:
     for i in range(1, levels):
         fused_image = cv.pyrUp(fused_image)
         fused_image = cv.add(fused_pyramid[i], fused_image)
-        
-    fused_image = npy.uint8(fused_image)
-    return fused_image
+    
+    # Convert to 8-bit integer scale
+    return npy.uint8(fused_image)
 
 if __name__ == "__main__":
-    src = cv.imread("./exports/opencv/adaptive-histogram-eq/cl2_frame25.png")
-    enh = cv.imread("./exports/opencv/adaptive-histogram-eq/cl8_5_frame25.png")
-    fused = SR_method(src, enh, 1)
+    src = cv.imread("./exports/opencv/adaptive-histogram-eq/cl2_frame25.png", cv.IMREAD_GRAYSCALE)
+    enh = cv.imread("./exports/opencv/adaptive-histogram-eq/cl3_frame25.png", cv.IMREAD_GRAYSCALE)
+    fused = SR_method(src, enh, 4)
     
     # Side by side image concatenation - https://www.geeksforgeeks.org/how-to-display-multiple-images-in-one-window-using-opencv-python/ - Date Accessed: 14/12/2023
     cv.imshow("Source Images", npy.concatenate((src,enh), axis=1))
