@@ -13,8 +13,10 @@ def getMaxOfList(values: List[Tuple[npy.float64, npy.float64, npy.float64]]) -> 
     max: Tuple[npy.float64, npy.float64, npy.float64] = values[0]
     maxIndex: int = 0
     
+    print(len(values))
+    
     for i in range(1, len(values)):
-        if values[i][0] > max[0] and values[i][1] > max[1] and values[i][2] > max[2]:
+        if values[i][0] > max[0] and values[i][1] < max[1] and values[i][2] > max[2]:
             max = values[i]
             maxIndex = i
         
@@ -73,6 +75,7 @@ if __name__ == "__main__":
 
     # List of values
     measures = [ (npy.float64(0), npy.float64(0), npy.float64(0)) ]
+    measures.remove( (npy.float64(0), npy.float64(0), npy.float64(0)) )
     
     fig = plt.figure()
     ax=fig.add_subplot(111, projection='3d')
@@ -81,7 +84,7 @@ if __name__ == "__main__":
         x = npy.average( npy.float64(IO.readFileToList(ciis[i])))
         y = npy.average( npy.float64(IO.readFileToList(ssim[i])))
         z = npy.average( npy.float64(IO.readFileToList(psnr[i])))
-
+        
         measures.append((x,y,z))
         
         ax.plot(x, y, z, marker="o", label=NAMES[i])
@@ -92,8 +95,11 @@ if __name__ == "__main__":
     ax.set_zlabel("SSIM")
 
     print("Greatest Value: ")
-    name = NAMES[getMaxOfList(measures)[0]]
-    val = getMaxOfList(measures)[1]
+    
+    max = getMaxOfList(measures)
+    
+    name = NAMES[max[0]]
+    val = max[1]
     print(name)
     print(val)
     
