@@ -1,66 +1,49 @@
-from typing import List, Tuple
 import cv2 as cv
 import numpy as npy
 
-def SR_method(img1: cv.Mat, img2: cv.Mat, levels:int = 4) -> cv.Mat:
-    # # Create image copies and convert to floating point 64-bit precision
-    # image1 = npy.float64(img1.copy())
-    # image2 = npy.float64(img2.copy())
+def select_max(img1: cv.Mat, img2: cv.Mat) -> cv.Mat:
+    """Selects the greater pixel values and assigns that as the pixel to be used in the output image.
 
-    image1 = cv.threshold(img1, 127, 127, cv.THRESH_BINARY)[1]
-    image2 = cv.threshold(img2, 127, 127, cv.THRESH_BINARY)[1]
-    
-    # Apply Laplacian pyramid decomposition on both images
-    gp1 = [image1.copy()]
-    gp2 = [image2.copy()]
-    
-    for i in range(levels):
-        # Gaussian pyarmid - https://docs.opencv.org/4.x/d4/d1f/tutorial_pyramids.html - 14/12/2023
-        image1 = cv.pyrDown(image1)
-        image2 = cv.pyrDown(image2)
-        gp1.append(image1.copy())
-        gp2.append(image2.copy())
+    Args:
+        img1 (cv.Mat): Input image 1
+        img2 (cv.Mat): Input image 2
 
-    # Generate the laplacian pyramid for the images
-    lp1: List[npy.float64] = [gp1[levels - 1]]
-    lp2: List[npy.float64] = [gp2[levels - 1]]
-    
-    for i in range(levels - 1, 0, -1):
-        # Expand the smaller image
-        image1 = cv.pyrUp(gp1[i])
-        image2 = cv.pyrUp(gp2[i])
+    Raises:
+        SystemExit: Crash the program if one or both images are NULL.
+        SystemExit: If either image dimensions are not identical then crash the program.
 
-        # Resize the larger image to match the size of the smaller one
-        temp1 = cv.resize(gp1[i - 1], (image1.shape[1], image1.shape[0]))
-        temp2 = cv.resize(gp2[i - 1], (image2.shape[1], image2.shape[0]))
+    Returns:
+        cv.Mat: The fused output image
+    """
+    
+    if (img1 is None or img2 is None):
+        raise SystemExit("ERROR: One or both images are NULL")
+    
+    if (img1.shape != img2.shape):
+        raise  SystemExit("ERROR: Dimensions aren't the same")
+    
+    output:cv.Mat = npy.zeros((512, 512, 3), npy.uint8)
+    output[:,:,0] = 0xFF # Blue channel
+    output[:,:,1] = 0xFF # Green channel
+    output[:,:,2] = 0xFF # Red channel
+    
+    for row in range(img1.shape[0]):
+        for col in range(img1.shape[1]):
+            
+            # Select maximum pixel intensity
+            if (img1[row][col] >= img2[row][col]):
+                output[row][col] = img1[row][col]
+            else:
+                output[row][col] = img2[row][col]
+    
+    return output
 
-        # Add Laplacian
-        new_image1 = cv.subtract(temp1, image1)
-        new_image2 = cv.subtract(temp2, image2)
 
-        lp1.append(new_image1)
-        lp2.append(new_image2)
-        
-    # Combine the Laplacian pyramid of two images
-    fused_pyramid = []
-    for l1, l2 in zip(lp1, lp2):
-        fused_pyramid.append((l1 + l2) / 2)
-    
-    print(len(fused_pyramid))
-    
-    # Reconstruct the fused image from the fused pyramid
-    fused_image = fused_pyramid[0]
-    for i in range(1, levels):
-        fused_image = cv.pyrUp(fused_image)
-        fused_image = cv.add(fused_pyramid[i], fused_image)
-    
-    # Convert to 8-bit integer scale
-    return npy.uint8(fused_image)
 
 if __name__ == "__main__":
-    src = cv.imread("./exports/opencv/adaptive-histogram-eq/cl2_frame25.png", cv.IMREAD_GRAYSCALE)
-    enh = cv.imread("./exports/opencv/adaptive-histogram-eq/cl3_frame25.png", cv.IMREAD_GRAYSCALE)
-    fused = SR_method(src, enh, 4)
+    src = cv.imread("./exports/opencv/adaptive-histogram-eq/cl3_frame25.png", cv.IMREAD_GRAYSCALE)
+    enh = cv.imread("./exports/opencv/adaptive-histogram-eq/cl85_frame25.png", cv.IMREAD_GRAYSCALE)
+    fused = select_max(src, enh)
     
     # Side by side image concatenation - https://www.geeksforgeeks.org/how-to-display-multiple-images-in-one-window-using-opencv-python/ - Date Accessed: 14/12/2023
     cv.imshow("Source Images", npy.concatenate((src,enh), axis=1))
