@@ -5,6 +5,11 @@
 
 # CPP Project folder
 /OpenCV-CPP/include/
+/OpenCV-CPP/src/*.vcxproj*
+/OpenCV-CPP/src/*.sln*
+/OpenCV-CPP/src/CMakeFiles/
+/OpenCV-CPP/src/CMakeCache.txt
+/OpenCV-CPP/src/*CMake*
 
 # User-specific files
 *.rsuser
