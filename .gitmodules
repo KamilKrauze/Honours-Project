@@ -1,0 +1,9 @@
+[submodule "OpenCV-CPP/thirdparty/opencv"]
+	path = OpenCV-CPP/thirdparty/opencv
+	url = https://github.com/opencv/opencv.git
+[submodule "OpenCV-CPP/thirdparty/glfw"]
+	path = OpenCV-CPP/thirdparty/glfw
+	url = https://github.com/glfw/glfw
+[submodule "OpenCV-CPP/thirdparty/glad"]
+	path = OpenCV-CPP/thirdparty/glad
+	url = https://github.com/Dav1dde/glad.git
