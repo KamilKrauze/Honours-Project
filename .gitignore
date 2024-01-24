@@ -408,3 +408,5 @@ FodyWeavers.xsd
 # Exports folder
 exports/dicom-data/*
 exports/opencv/*
+*.exe
+*.sln
