@@ -8,13 +8,12 @@ class Window
 {
 public:
 	Window() = default;
-	
-	~Window() { delete window; }
+	~Window() = default;
 
-	GLFWwindow* Get() { return window; }
+	GLFWwindow* GetNativeWindow() const { return m_window; }
 
 private:
-	GLFWwindow* window;
+	GLFWwindow* m_window;
 };
 
 #endif

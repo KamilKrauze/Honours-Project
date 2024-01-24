@@ -1,22 +1,30 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
 
-#include "Core/Window.h"
+#include "Window.h"
 
 class Application
 {
 public:
 	Application()
 	{
-		s_app = *this;
+		m_window = new Window();
+		s_app = this;
 	}
 
-private:
-	inline static Window window;
-	static Application s_app;
+	~Application()
+	{
+		delete s_app;
+	}
 
 public:
-	Application& AppWindow() { return s_app; }
+	Window& GetWindow() { return *m_window; }
+	static Application* Get() { return s_app; }
+
+
+private:
+	Window* m_window;
+	static Application* s_app;
 };
 
 #endif // !1

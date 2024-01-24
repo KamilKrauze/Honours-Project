@@ -2,19 +2,21 @@
 
 #include <iostream>
 
-#include "Core/Application.h"
+//#include "Core/Application.h"
+
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
 
 static void error_callback(int error, const char* description)
 {
     fputs(description, stderr);
 }
 
+GLFWwindow* window;
+
 int main() {
 
-    Application app;
-    app.AppWindow().Get();
-
-    Window window;
+    //Application app;
 
     glfwWindowHint(GLFW_SAMPLES, 8);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
@@ -26,15 +28,15 @@ int main() {
     if (!glfwInit())
         exit(EXIT_FAILURE);
 
-    auto win = window.Get();
-    win = glfwCreateWindow(800, 800, "Honours Project", NULL, NULL);
-    if (!win)
+    //auto win = static_cast<GLFWwindow*>(Application::Application().Get().GetWindow().GetNativeWindow());
+    window = glfwCreateWindow(800, 800, "Honours Project", NULL, NULL);
+    if (!window)
     {
         glfwTerminate();
         exit(EXIT_FAILURE);
     }
 
-    glfwMakeContextCurrent(win);
+    glfwMakeContextCurrent(window);
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
@@ -42,15 +44,15 @@ int main() {
         return -1;
     }
 
-    while (!glfwWindowShouldClose(win))
+    while (!glfwWindowShouldClose(window))
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glfwSwapBuffers(win);
+        glfwSwapBuffers(window);
 
         glfwPollEvents();
     }
 
-    glfwDestroyWindow(win);
+    glfwDestroyWindow(window);
     glfwTerminate();
 
     return 0;
