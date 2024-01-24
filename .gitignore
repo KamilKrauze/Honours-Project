@@ -410,3 +410,5 @@ exports/dicom-data/*
 exports/opencv/*
 *.exe
 *.sln
+*.lib
+*.lib
