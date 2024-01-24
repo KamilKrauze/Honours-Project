@@ -60,8 +60,6 @@ int Application::run()
 	glfwDestroyWindow(window);
 	glfwTerminate();
 
-	delete[] window;
-
 	return 0;
 }
 
