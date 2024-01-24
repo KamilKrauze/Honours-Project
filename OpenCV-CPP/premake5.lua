@@ -18,13 +18,10 @@ project "HonsProject-OpenCV-GUI"
 
     includedirs {
         -- Project source code
+        "./src/",
         
         -- Thirdparty
         "./include/"
-    }
-
-    libdirs {
-        "./lib/"
     }
 
 -- Windows system
@@ -32,7 +29,7 @@ project "HonsProject-OpenCV-GUI"
     filter "system:windows"
         system "windows"
         cppdialect "C++17"
-        systemversion "latest"
+        systemversion "latest"    
 
 -- Linux system
     filter "system:linux"
@@ -44,7 +41,11 @@ project "HonsProject-OpenCV-GUI"
     filter "configurations:Debug"
         defines "DEBUG"
         symbols "On"
+        libdirs { "./lib/" }
+        links { "glfw3D.lib", "opengl32.lib" }
 
     filter "configurations:Release"
         defines "NDEBUG"
         optimize "On"
+        libdirs { "./lib/" }
+        links { "glfw3.lib", "opengl32.lib" }

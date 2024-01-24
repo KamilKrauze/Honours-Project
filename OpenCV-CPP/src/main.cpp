@@ -1,59 +1,48 @@
-#pragma comment(lib, "opengl32.lib")
+//#pragma comment(lib, "opengl32.lib")
 
 #include <iostream>
 
-//#include "Core/Application.h"
-
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-
-static void error_callback(int error, const char* description)
-{
-    fputs(description, stderr);
-}
-
-GLFWwindow* window;
+#include "Core/Application.h"
 
 int main() {
+    //glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    //glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
+    //glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    //Application app;
+    //glfwSetErrorCallback(error_callback);
 
-    glfwWindowHint(GLFW_SAMPLES, 8);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    //if (!glfwInit())
+    //    exit(EXIT_FAILURE);
 
-    glfwSetErrorCallback(error_callback);
+    ////auto win = static_cast<GLFWwindow*>(Application::Application().Get().GetWindow().GetNativeWindow());
+    //window = glfwCreateWindow(800, 800, "Honours Project", NULL, NULL);
+    //if (!window)
+    //{
+    //    glfwTerminate();
+    //    exit(EXIT_FAILURE);
+    //}
 
-    if (!glfwInit())
-        exit(EXIT_FAILURE);
+    //glfwMakeContextCurrent(window);
 
-    //auto win = static_cast<GLFWwindow*>(Application::Application().Get().GetWindow().GetNativeWindow());
-    window = glfwCreateWindow(800, 800, "Honours Project", NULL, NULL);
-    if (!window)
-    {
-        glfwTerminate();
-        exit(EXIT_FAILURE);
-    }
+    //if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+    //{
+    //    std::cout << "Failed to initialize GLAD. Exiting." << std::endl;
+    //    return -1;
+    //}
 
-    glfwMakeContextCurrent(window);
+    //while (!glfwWindowShouldClose(window))
+    //{
+    //    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    //    glfwSwapBuffers(window);
 
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-    {
-        std::cout << "Failed to initialize GLAD. Exiting." << std::endl;
-        return -1;
-    }
+    //    glfwPollEvents();
+    //}
 
-    while (!glfwWindowShouldClose(window))
-    {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glfwSwapBuffers(window);
+    //glfwDestroyWindow(window);
+    //glfwTerminate();
 
-        glfwPollEvents();
-    }
+    Application app(800, 800, "Honours Project");
+    return app.run();
 
-    glfwDestroyWindow(window);
-    glfwTerminate();
-
-    return 0;
+    //return 0;
 }
