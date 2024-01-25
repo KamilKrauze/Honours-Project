@@ -4,9 +4,3 @@
 [submodule "OpenCV-CPP/thirdparty/glfw"]
 	path = OpenCV-CPP/thirdparty/glfw
 	url = https://github.com/glfw/glfw
-[submodule "OpenCV-CPP/thirdparty/glad"]
-	path = OpenCV-CPP/thirdparty/glad
-	url = https://github.com/Dav1dde/glad.git
-[submodule "OpenCV-CPP/thirdparty/imgui"]
-	path = OpenCV-CPP/thirdparty/imgui
-	url = https://github.com/ocornut/imgui.git
