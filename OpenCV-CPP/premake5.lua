@@ -7,7 +7,7 @@ project "HonsProject-OpenCV-GUI"
     kind "ConsoleApp"
     language "C++"
     
-    targetdir "bin/%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
+    targetdir "build/%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
     files { 
         "./GUI-Build/**.h",
@@ -56,7 +56,7 @@ project "HonsProject-OpenCV-Console"
     kind "ConsoleApp"
     language "C++"
     
-    targetdir "bin/%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
+    targetdir "build/%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
     files { 
         "./Console-Build/**.h",
@@ -73,28 +73,24 @@ project "HonsProject-OpenCV-Console"
         "./include/"
     }
 
+    libdirs {
+        "./lib/"
+    }
+
 -- Windows system
 
     filter "system:windows"
         system "windows"
         cppdialect "C++17"
-        systemversion "latest"    
-
--- Linux system
-    filter "system:linux"
-        system "linux"
-        cppdialect "gnu++17"
-        links { "m", "X11", "pthread", "Xi", "Xrandr", "dl" }
+        systemversion "latest"
 
 -- Build configurations
     filter "configurations:Debug"
         defines "DEBUG"
         symbols "On"
-        -- libdirs { "./lib/" }
-        -- links { "glfw3D.lib", "opengl32.lib" }
+        links { "opencv_world490d.lib" }
 
     filter "configurations:Release"
         defines "NDEBUG"
         optimize "On"
-        -- libdirs { "./lib/" }
-        -- links { "glfw3.lib", "opengl32.lib" }
+        links { "opencv_world490.lib" }
