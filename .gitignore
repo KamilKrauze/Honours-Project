@@ -4,12 +4,15 @@
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
 # CPP Project folder
+/OpenCV-CPP/bin/
+/OpenCV-CPP/lib/
+/OpenCV-CPP/thirdparty/opencv/
 /OpenCV-CPP/include/
-/OpenCV-CPP/src/*.vcxproj*
-/OpenCV-CPP/src/*.sln*
-/OpenCV-CPP/src/CMakeFiles/
-/OpenCV-CPP/src/CMakeCache.txt
-/OpenCV-CPP/src/*CMake*
+*.vcxproj*
+*.sln*
+*/CMakeFiles/*
+CMakeCache.txt
+*CMake*
 
 # User-specific files
 *.rsuser
