@@ -3,7 +3,7 @@ workspace "Honours Project"
     configurations { "Debug", "Release" }
 
 project "HonsProject-OpenCV-GUI"
-    location "src"
+    location "GUI-Build"
     kind "ConsoleApp"
     language "C++"
     
@@ -52,7 +52,7 @@ project "HonsProject-OpenCV-GUI"
 
 
 project "HonsProject-OpenCV-Console"
-    location "src"
+    location "Console-Build"
     kind "ConsoleApp"
     language "C++"
     
