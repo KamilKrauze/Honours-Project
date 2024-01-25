@@ -1,6 +1,3 @@
-[submodule "OpenCV-CPP/thirdparty/opencv"]
-	path = OpenCV-CPP/thirdparty/opencv
-	url = https://github.com/opencv/opencv.git
 [submodule "OpenCV-CPP/thirdparty/glfw"]
 	path = OpenCV-CPP/thirdparty/glfw
 	url = https://github.com/glfw/glfw
