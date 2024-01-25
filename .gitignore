@@ -414,3 +414,4 @@ exports/opencv/*
 *.lib
 *.vcxproj
 *.filters
+*.zip
