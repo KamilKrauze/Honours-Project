@@ -412,3 +412,5 @@ exports/opencv/*
 *.sln
 *.lib
 *.lib
+*.vcxproj
+*.filters
