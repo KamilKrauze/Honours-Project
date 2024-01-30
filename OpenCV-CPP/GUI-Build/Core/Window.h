@@ -26,7 +26,7 @@ public:
 	~Window() = default;
 
 public:
-	GLFWwindow* get_window_native() { return window; }
+	inline GLFWwindow* get_window_native() { return window; }
 
 	int GetWidth() { return m_spec.width; }
 	int GetHeight() { return m_spec.height; }

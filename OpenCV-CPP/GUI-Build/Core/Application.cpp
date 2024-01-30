@@ -1,9 +1,13 @@
 #include "Core/Application.h"
+#include "Core/GUICore.h"
 
-#include <iostream>
+#include "Basic/BasicGUI.h"
+#include "Basic/key_test.h"
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+
+#include <iostream>
 
 static void error_callback(int error, const char* description);
 
@@ -49,13 +53,48 @@ int Application::run()
 		exit(EXIT_FAILURE);
 	}
 
+	glfwSetKeyCallback(window, key_call);
+
+	// Setup Dear ImGui context
+	SETUP_GUI();
+
+	// Setup Dear ImGui style
+	GUI_DARK();
+
+	// Setup Platform/Renderer backends
+	SETUP_BACKENDS();
+
+
+	int display_w, display_h;
 	while (!glfwWindowShouldClose(window))
 	{
+		glfwGetFramebufferSize(window, &display_w, &display_h);
+		glViewport(0, 0, display_w, display_h);
+		glClearColor(0.0f,0.0f,0.0f,1.f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glfwSwapBuffers(window);
+		
+		key_test();
 
 		glfwPollEvents();
+
+		//key_test();
+
+		// Start the Dear ImGui frame
+		START_GUI_FRAME();
+
+		// Enter GUI code here...
+		BGui::basic_gui();
+
+		// Rendering
+		RENDER_GUI();
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+		UPDATE_AND_RENDER();
+
+		glfwSwapBuffers(window);
 	}
+
+	// Cleanup
+	CLEANUP_GUI();
 
 	glfwDestroyWindow(window);
 	glfwTerminate();

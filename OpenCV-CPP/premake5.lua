@@ -13,7 +13,10 @@ project "HonsProject-OpenCV-GUI"
         "./GUI-Build/**.h",
         "./GUI-Build/**.hpp",
         "./GUI-Build/**.c",
-        "./GUI-Build/**.cpp"
+        "./GUI-Build/**.cpp",
+
+        -- ImGUI CPP files
+        "./include/**.cpp"
     }
 
     includedirs {
@@ -21,7 +24,8 @@ project "HonsProject-OpenCV-GUI"
         "./GUI-Build/",
         
         -- Thirdparty
-        "./include/"
+        "./include/",
+        "./include/imgui/" --ImGUI has to be explicitly done this way
     }
 
 -- Windows system
