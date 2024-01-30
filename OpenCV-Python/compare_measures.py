@@ -4,57 +4,57 @@ import matplotlib.pyplot as plt
 # Custom modules
 from modules import ioUtilties as IO
 
-SELECTION:int = 2
+SELECTION:int = 0
 
 TITLE = ["Contrast Improvement Index", "Peak Signal to Noise Ratio", "Structural Similarity Index Measure"]
 
 HEQ_SRC = [
-    "./exports/contrast-measures/heq/ciis.txt",
-    "./exports/contrast-measures/heq/psnr.txt",
-    "./exports/contrast-measures/heq/ssim.txt"
+    "../exports/contrast-measures/heq/ciis.txt",
+    "../exports/contrast-measures/heq/psnr.txt",
+    "../exports/contrast-measures/heq/ssim.txt"
 ]
 
 ADAP_HEQ_CL2_SRC = [
-    "./exports/contrast-measures/adap-heq/cl2/ciis.txt",
-    "./exports/contrast-measures/adap-heq/cl2/psnr.txt",
-    "./exports/contrast-measures/adap-heq/cl2/ssim.txt"
+    "../exports/contrast-measures/adap-heq/cl2/ciis.txt",
+    "../exports/contrast-measures/adap-heq/cl2/psnr.txt",
+    "../exports/contrast-measures/adap-heq/cl2/ssim.txt"
 ]
 
 ADAP_HEQ_CL3_SRC = [
-    "./exports/contrast-measures/adap-heq/cl3/ciis.txt",
-    "./exports/contrast-measures/adap-heq/cl3/psnr.txt",
-    "./exports/contrast-measures/adap-heq/cl3/ssim.txt"
+    "../exports/contrast-measures/adap-heq/cl3/ciis.txt",
+    "../exports/contrast-measures/adap-heq/cl3/psnr.txt",
+    "../exports/contrast-measures/adap-heq/cl3/ssim.txt"
 ]
 
 
 ADAP_HEQ_CL4_SRC = [
-    "./exports/contrast-measures/adap-heq/cl4/ciis.txt",
-    "./exports/contrast-measures/adap-heq/cl4/psnr.txt",
-    "./exports/contrast-measures/adap-heq/cl4/ssim.txt"
+    "../exports/contrast-measures/adap-heq/cl4/ciis.txt",
+    "../exports/contrast-measures/adap-heq/cl4/psnr.txt",
+    "../exports/contrast-measures/adap-heq/cl4/ssim.txt"
 ]
 
 ADAP_HEQ_CL5_SRC = [
-    "./exports/contrast-measures/adap-heq/cl5/ciis.txt",
-    "./exports/contrast-measures/adap-heq/cl5/psnr.txt",
-    "./exports/contrast-measures/adap-heq/cl5/ssim.txt"
+    "../exports/contrast-measures/adap-heq/cl5/ciis.txt",
+    "../exports/contrast-measures/adap-heq/cl5/psnr.txt",
+    "../exports/contrast-measures/adap-heq/cl5/ssim.txt"
 ]
 
 ADAP_HEQ_CL7_SRC = [
-    "./exports/contrast-measures/adap-heq/cl7/ciis.txt",
-    "./exports/contrast-measures/adap-heq/cl7/psnr.txt",
-    "./exports/contrast-measures/adap-heq/cl7/ssim.txt"
+    "../exports/contrast-measures/adap-heq/cl7/ciis.txt",
+    "../exports/contrast-measures/adap-heq/cl7/psnr.txt",
+    "../exports/contrast-measures/adap-heq/cl7/ssim.txt"
 ]
 
 ADAP_HEQ_CL8_5_SRC = [
-    "./exports/contrast-measures/adap-heq/cl8_5/ciis.txt",
-    "./exports/contrast-measures/adap-heq/cl8_5/psnr.txt",
-    "./exports/contrast-measures/adap-heq/cl8_5/ssim.txt"
+    "../exports/contrast-measures/adap-heq/cl8_5/ciis.txt",
+    "../exports/contrast-measures/adap-heq/cl8_5/psnr.txt",
+    "../exports/contrast-measures/adap-heq/cl8_5/ssim.txt"
 ]
 
 ADAP_HEQ_CL10_SRC = [
-    "./exports/contrast-measures/adap-heq/cl10/ciis.txt",
-    "./exports/contrast-measures/adap-heq/cl10/psnr.txt",
-    "./exports/contrast-measures/adap-heq/cl10/ssim.txt"
+    "../exports/contrast-measures/adap-heq/cl10/ciis.txt",
+    "../exports/contrast-measures/adap-heq/cl10/psnr.txt",
+    "../exports/contrast-measures/adap-heq/cl10/ssim.txt"
 ]
 
 heq = IO.readFileToList( HEQ_SRC[SELECTION] )
