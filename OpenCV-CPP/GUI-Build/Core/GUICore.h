@@ -7,14 +7,9 @@
 #include <imgui_impl_opengl3.h>
 
 
-#define SETUP_GUI() \
+#define SETUP_GUI_CONTEXT() \
 	IMGUI_CHECKVERSION(); \
-	ImGui::CreateContext(); \
-	ImGuiIO& io = ImGui::GetIO(); (void)io; \
-	/* Enable Keyboard Controls */					io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;	\
-	/* Enable Gamepad Controls */					io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;	\
-	/* Enable Docking */							io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;		\
-	/* Enable Multi-Viewport / Platform Windows */	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable
+	ImGui::CreateContext()
 
 #define GUI_DARK() ImGui::StyleColorsDark()
 #define GUI_LIGHT() ImGui::StyleColorsLight()

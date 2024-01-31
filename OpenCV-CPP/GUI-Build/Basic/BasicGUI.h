@@ -2,12 +2,18 @@
 #define BASIC_GUI_H
 
 #include <imgui.h>
+#include <opencv2/highgui.hpp>
+
+#include "Core/CAEHelper.h"
 
 namespace BGui {
 
-    inline void basic_gui() {
+    inline void basic_gui()
+    {
 
-
+        //cv::Mat frame = cv::imread("../../exports/dicom-data/frame00.png");
+        //cv::Mat frame25 = cv::imread("../../exports/dicom-data/frame25.png");
+        //auto frame_id = CAE::Helper::MatToImTextureID(frame25);
 
         static bool opt_fullscreen = true;
         static bool opt_padding = false;
@@ -93,8 +99,8 @@ namespace BGui {
 
         {
             ImGui::Begin("Viewport");
-            //ImTextureID bgImg = ImGui::GetIO().Fonts->AddFontFromFileTTF("./discord_avatar.png", 16.0f)->ContainerAtlas->TexID;
-            //ImGui::GetWindowDrawList()->AddImage(bgImg, ImGui::GetWindowPos(), ImVec2(ImGui::GetWindowPos().x + ImGui::GetWindowSize().x, ImGui::GetWindowPos().y + ImGui::GetWindowSize().y));
+            ImVec2 size = ImGui::GetWindowSize();
+            //CAE::Helper::DrawBackgroundImage(frame_id, size, {512,512});
             ImGui::End();
         }
 

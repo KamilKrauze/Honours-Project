@@ -3,6 +3,8 @@
 
 #include "Core/Window.h"
 
+class MediaManager;
+
 class Application
 {
 
@@ -20,6 +22,8 @@ public:
 
 private:
 	Window* m_window;
+	static MediaManager* s_MediaManager;
+
 	static Application* s_appInstance;
 };
 
