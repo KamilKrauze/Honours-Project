@@ -5,16 +5,12 @@
 #include <opencv2/highgui.hpp>
 
 #include "Core/CAEHelper.h"
+#include "Core/MediaManager.h"
 
 namespace BGui {
 
     inline void basic_gui()
     {
-
-        //cv::Mat frame = cv::imread("../../exports/dicom-data/frame00.png");
-        //cv::Mat frame25 = cv::imread("../../exports/dicom-data/frame25.png");
-        //auto frame_id = CAE::Helper::MatToImTextureID(frame25);
-
         static bool opt_fullscreen = true;
         static bool opt_padding = false;
         static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
@@ -67,6 +63,7 @@ namespace BGui {
 
         if (ImGui::BeginMenuBar())
         {
+
             if (ImGui::BeginMenu("Options"))
             {
                 // Disabling fullscreen would allow the window to be moved to the front of other windows,
@@ -100,13 +97,12 @@ namespace BGui {
         {
             ImGui::Begin("Viewport");
             ImVec2 size = ImGui::GetWindowSize();
-            //CAE::Helper::DrawBackgroundImage(frame_id, size, {512,512});
+            CAE::Helper::DrawBackgroundImage(MediaManager::Get().texture(), size, {512,512});
             ImGui::End();
         }
 
         ImGui::End();
 	}
-
 };
 
 #endif // !BASIC_GUI_H
