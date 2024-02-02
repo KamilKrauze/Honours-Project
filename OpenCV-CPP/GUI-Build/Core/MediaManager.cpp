@@ -1,4 +1,5 @@
 #include "Core/MediaManager.h"
+#include "Core/CAEHelper.h"
 
 #include <iostream>
 
@@ -7,8 +8,16 @@
 
 #include <glad/glad.h>
 
+/* Helper macros */
+
+// Convert GLuint to ImTextureID
+#define GLUINT_TO_IMTEXTUREID(VALUE) ((ImTextureID)(intptr_t)VALUE)
+
+// Reference to instance
 MediaManager* MediaManager::s_Instance = nullptr;
 
+// Converts OpenCV Matrix to ImGUI legible format
+static GLuint MatToImTextureID(cv::Mat& mat);
 
 MediaManager::MediaManager()
 {
@@ -22,6 +31,11 @@ MediaManager::~MediaManager()
 {
 	this->s_Instance = nullptr;
 	selected = NULL;
+}
+
+ImTextureID MediaManager::texture()
+{
+	return GLUINT_TO_IMTEXTUREID(m_textures[0]);
 }
 
 bool MediaManager::load_image(cv::String filepath, const cv::ImreadModes mode)
@@ -50,14 +64,21 @@ bool MediaManager::load_images(StringConstItr start, StringConstItr end, const c
 	return true;
 }
 
-const ImTextureID MatToImTextureID(const cv::Mat& mat) {
-	GLuint textureID;
-	glGenTextures(1, &textureID);
-	glBindTexture(GL_TEXTURE_2D, textureID);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, mat.cols, mat.rows, 0, GL_BGR, GL_UNSIGNED_BYTE, mat.ptr());
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glBindTexture(GL_TEXTURE_2D, 0);
+void MediaManager::attach(const size_t&& selected)
+{
+	this->selected = selected;
+	GLuint texture_id = CAE::Helper::MatToImTextureID(this->m_media[this->selected]);
+	this->m_textures.push_back(texture_id);
 
-	return (ImTextureID)(intptr_t)textureID;
+	return;
+}
+
+void MediaManager::dettach()
+{
+	GLuint& texture_id = m_textures[selected];
+	glBindTexture(GL_TEXTURE_2D, 0); // Unbind
+
+	glDeleteTextures(1, &texture_id); // Delete it from memory.
+	this->selected = 0;
+	return;
 }

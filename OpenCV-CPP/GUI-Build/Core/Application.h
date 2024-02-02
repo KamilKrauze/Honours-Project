@@ -20,6 +20,7 @@ public:
 	Window& GetWindow() { return *m_window; }
 	static Application& Get() { return *s_appInstance; }
 
+
 private:
 	Window* m_window;
 	static MediaManager* s_MediaManager;

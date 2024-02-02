@@ -1,4 +1,5 @@
 #ifndef CAE_HELPER_H
+#define CAE_HELPER_H
 
 #include <string_view>
 
@@ -12,6 +13,9 @@ namespace CAE
 	{		
 		// Draw the image centered to the frame.
 		void DrawBackgroundImage(ImTextureID texture, ImVec2 windowSize, ImVec2 imgSize);
+
+		GLuint MatToImTextureID(cv::Mat& mat);
+
 	};
 
 };
