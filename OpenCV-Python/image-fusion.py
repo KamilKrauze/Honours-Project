@@ -20,7 +20,7 @@ def select_max(img1: cv.Mat, img2: cv.Mat) -> cv.Mat:
         raise SystemExit("ERROR: One or both images are NULL")
     
     if (img1.shape != img2.shape):
-        raise  SystemExit("ERROR: Dimensions aren't the same")
+        raise SystemExit("ERROR: Dimensions aren't the same")
     
     # Create blank white image of the same size as input.
     output:cv.Mat = npy.zeros((img1.shape[0], img1.shape[1], 3), npy.uint8)
@@ -54,14 +54,14 @@ def simple_weighted_avg( img1:cv.Mat, img2:cv.Mat, weight: float):
     return fused_image
 
 if __name__ == "__main__":
-    src = cv.imread("./exports/opencv/adaptive-histogram-eq/cl2_frame25.png", cv.IMREAD_GRAYSCALE)
-    enh = cv.imread("./exports/opencv/adaptive-histogram-eq/cl3_frame25.png", cv.IMREAD_GRAYSCALE)
+    src = cv.imread("../exports/opencv/adaptive-histogram-eq/cl2_frame25.png", cv.IMREAD_GRAYSCALE)
+    enh = cv.imread("../exports/opencv/adaptive-histogram-eq/cl3_frame25.png", cv.IMREAD_GRAYSCALE)
 
     src = cv.GaussianBlur(src, (5,5), .9, None, .9)
     enh = cv.GaussianBlur(enh, (5,5), 0)
     
-    (ret, src) = cv.threshold(src, 90, 255, cv.THRESH_BINARY)
-    (ret, enh) = cv.threshold(enh, 70, 255, cv.THRESH_TOZERO)
+    (ret, src_bin) = cv.threshold(src, 90, 255, cv.THRESH_BINARY)
+    (ret, enh_bin) = cv.threshold(enh, 70, 255, cv.THRESH_TOZERO)
 
     
     # thresh1 = cv.adaptiveThreshold(src, 255, cv.ADAPTIVE_THRESH_GAUSSIAN_C, cv.THRESH_BINARY, 15, 0.05)
@@ -69,12 +69,12 @@ if __name__ == "__main__":
     
     # fused = select_max(thresh1, thresh2)
     
-    fused = simple_weighted_avg(src, enh, 0.5)
+    fused = simple_weighted_avg(src_bin, enh_bin, 0.7)
 
     
     # Side by side image concatenation - https://www.geeksforgeeks.org/how-to-display-multiple-images-in-one-window-using-opencv-python/ - Date Accessed: 14/12/2023
     cv.imshow("Source Images", npy.concatenate((src, enh), axis=1))
-    cv.imshow("Binarized Images", npy.concatenate((src, enh), axis=1))
+    cv.imshow("Binarized Images", npy.concatenate((src_bin, enh_bin), axis=1))
     
     cv.imshow("Fused image", fused)
     
