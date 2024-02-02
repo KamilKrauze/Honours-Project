@@ -46,13 +46,13 @@ project "HonsProject-OpenCV-GUI"
         defines "DEBUG"
         symbols "On"
         libdirs { "./lib/" }
-        links { "glfw3D.lib", "opengl32.lib" }
+        links { "glfw3D.lib", "opengl32.lib", "opencv_world490d.lib" }
 
     filter "configurations:Release"
         defines "NDEBUG"
         optimize "On"
         libdirs { "./lib/" }
-        links { "glfw3.lib", "opengl32.lib" }
+        links { "glfw3.lib", "opengl32.lib", "opencv_world490.lib" }
 
 
 project "HonsProject-OpenCV-Console"
