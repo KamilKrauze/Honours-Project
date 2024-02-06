@@ -6,7 +6,7 @@
 
 int main()
 {
-    cv::Mat img = cv::imread("../../exports/dicom-data/frame00.png", cv::IMREAD_GRAYSCALE);
+    cv::Mat img = cv::imread("../../exports/dicom-data/frame25.png", cv::IMREAD_GRAYSCALE);
     std::cout << img.rows << "\n" << img.cols << "\n";
 
     cv::Mat enh;
