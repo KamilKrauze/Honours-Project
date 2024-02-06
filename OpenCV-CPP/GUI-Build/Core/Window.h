@@ -34,7 +34,7 @@ public:
 
 private:
 	WindowSpecification m_spec;
-	GLFWwindow* window;
+	GLFWwindow* window = nullptr;
 
 };
 

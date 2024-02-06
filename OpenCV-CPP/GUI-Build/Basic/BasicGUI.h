@@ -4,6 +4,8 @@
 #include <imgui.h>
 #include <opencv2/highgui.hpp>
 
+#include <iostream>
+
 #include "Core/CAEHelper.h"
 #include "Core/MediaManager.h"
 
@@ -96,7 +98,6 @@ namespace BGui {
 		{
 			ImGui::Begin("Viewport");
 			ImVec2 size = ImGui::GetWindowSize();
-			//CAE::Helper::DrawBackgroundImage(id, size, { 512,512 });
 			CAE::Helper::DrawBackgroundImage(MediaManager::Get().texture(), size, { 512,512 });
 			ImGui::End();
 		}
