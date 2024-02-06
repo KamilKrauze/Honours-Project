@@ -1,6 +1,8 @@
 #include "CAEHelper.h"
 #include <iostream>
 
+#include <opencv2/opencv.hpp>
+
 namespace CAE::Helper
 {
     void DrawBackgroundImage(ImTextureID texture, ImVec2 windowSize, ImVec2 imgSize)
@@ -26,12 +28,9 @@ namespace CAE::Helper
         ImGui::GetWindowDrawList()->AddImage(texture, imagePos, ImVec2(imagePos.x + targetWidth, imagePos.y + targetHeight));
     }
 
-    GLuint MatToImTextureID(cv::Mat& mat)
+    const ImTextureID MatToImTextureID(const cv::Mat& mat)
     {
-
-        //std::cout << "Empty matrix is: " << mat << std::endl;
-
-        GLuint textureID;
+        GLuint textureID = 0;
         glGenTextures(1, &textureID);
         glBindTexture(GL_TEXTURE_2D, textureID);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, mat.cols, mat.rows, 0, GL_BGR, GL_UNSIGNED_BYTE, mat.ptr());
@@ -39,6 +38,6 @@ namespace CAE::Helper
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         glBindTexture(GL_TEXTURE_2D, 0);
 
-        return textureID;
+        return (ImTextureID)(intptr_t)textureID;
     }
 };

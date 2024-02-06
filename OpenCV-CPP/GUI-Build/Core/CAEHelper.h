@@ -14,7 +14,7 @@ namespace CAE
 		// Draw the image centered to the frame.
 		void DrawBackgroundImage(ImTextureID texture, ImVec2 windowSize, ImVec2 imgSize);
 
-		GLuint MatToImTextureID(cv::Mat& mat);
+		const ImTextureID MatToImTextureID(const cv::Mat& mat);
 
 	};
 
