@@ -52,7 +52,6 @@ bool MediaManager::load_image(cv::String filepath, const cv::ImreadModes mode)
 	return true;
 }
 
-
 bool MediaManager::load_images(StringConstItr start, StringConstItr end)
 {
 	if (start._Ptr == nullptr || end._Ptr == nullptr)
@@ -97,11 +96,12 @@ void MediaManager::dettach()
 	if (m_currently_attached < 0)
 		return;
 
+	auto texture_id = (GLuint)(intptr_t)(this->m_textures[m_currently_attached]);
 	glBindTexture(GL_TEXTURE_2D, 0); // Unbind
 	m_textures[m_currently_attached] = NULL;
 	m_currently_attached = -1;
 
-	//glDeleteTextures(1, &texture_id); // Delete it from memory.
+	glDeleteTextures(1, &texture_id); // Delete it from memory.
 	//m_textures[m_currently_attached] = NULL;
 	return;
 }
@@ -114,10 +114,11 @@ void MediaManager::equalizeHistogram()
 		
 		// Convert to grayscale (assuming the image is in color)
 		if (img.channels() > 1)
-			cv::cvtColor(img, img, cv::COLOR_BGR2GRAY);
+			cv::cvtColor(img, img, cv::COLOR_RGB2GRAY);
 
 		// Equalize histogram
 		cv::equalizeHist(img, img);
+		cv::cvtColor(img, img, cv::COLOR_GRAY2RGB); // Convert colours
 	}
 
 }
