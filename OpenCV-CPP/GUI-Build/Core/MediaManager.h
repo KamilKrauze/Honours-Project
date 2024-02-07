@@ -33,7 +33,7 @@ public:
 	bool load_image(cv::String filepath, const cv::ImreadModes mode);
 
 	// Load many images into buffer
-	bool load_images(StringConstItr start, StringConstItr end, const cv::ImreadModes mode);
+	bool load_images(StringConstItr start, StringConstItr end);
 	
 	// Bind texture to memory.
 	void attach(const size_t&& selected);
@@ -44,7 +44,7 @@ public:
 private:
 	size_t selected = 0; // Controls for which image to load from the container.
 	std::vector<cv::Mat> m_media; // Media container.
-	std::vector<unsigned int> m_textures; // Texture ID's loaded into memory using glBindTexture().
+	std::vector<ImTextureID> m_textures; // Texture ID's loaded into memory using glBindTexture().
 	static MediaManager* s_Instance; // Static reference to self (this).
 };
 

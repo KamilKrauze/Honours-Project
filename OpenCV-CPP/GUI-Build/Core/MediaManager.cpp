@@ -35,7 +35,7 @@ MediaManager::~MediaManager()
 
 ImTextureID MediaManager::texture()
 {
-	return GLUINT_TO_IMTEXTUREID(m_textures[0]);
+	return m_textures[0];
 }
 
 bool MediaManager::load_image(cv::String filepath, const cv::ImreadModes mode)
@@ -50,14 +50,14 @@ bool MediaManager::load_image(cv::String filepath, const cv::ImreadModes mode)
 }
 
 
-bool MediaManager::load_images(StringConstItr start, StringConstItr end, const cv::ImreadModes mode)
+bool MediaManager::load_images(StringConstItr start, StringConstItr end)
 {
 	if (start._Ptr == nullptr || end._Ptr == nullptr)
 		return false;
 
 	for (auto it = start; it != end; it++)
 	{
-		cv::Mat img = cv::imread(*it._Ptr, mode);
+		cv::Mat img = cv::imread(*it._Ptr, cv::IMREAD_ANYCOLOR);
 		m_media.push_back(img);
 	}
 
@@ -67,7 +67,7 @@ bool MediaManager::load_images(StringConstItr start, StringConstItr end, const c
 void MediaManager::attach(const size_t&& selected)
 {
 	this->selected = selected;
-	GLuint texture_id = CAE::Helper::MatToImTextureID(this->m_media[this->selected]);
+	ImTextureID texture_id = CAE::Helper::MatToImTextureID(this->m_media[this->selected]);
 	this->m_textures.push_back(texture_id);
 
 	return;
@@ -75,7 +75,7 @@ void MediaManager::attach(const size_t&& selected)
 
 void MediaManager::dettach()
 {
-	GLuint& texture_id = m_textures[selected];
+	auto texture_id = (GLuint)(intptr_t)m_textures[selected];
 	glBindTexture(GL_TEXTURE_2D, 0); // Unbind
 
 	glDeleteTextures(1, &texture_id); // Delete it from memory.
