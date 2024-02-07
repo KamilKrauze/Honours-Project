@@ -12,8 +12,8 @@ int main()
     cv::Mat enh;
     cv::equalizeHist(img, enh);
 
-    cv::imshow("Source: Frame 0", img);
-    cv::imshow("Enhanced: Frame 0", enh);
+    cv::imshow("Source: Frame 25", img);
+    cv::imshow("Enhanced: Frame 25", enh);
     cv::waitKey(0);
 
     return 0;
