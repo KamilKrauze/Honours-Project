@@ -24,7 +24,7 @@ public:
 	static MediaManager& Get() { return *s_Instance; }
 		
 	// Retrieves media container
-	std::vector<cv::Mat> media() { return m_media; }
+	std::vector<cv::Mat>& media() { return m_media; }
 
 	ImTextureID texture();
 
@@ -36,13 +36,18 @@ public:
 	bool load_images(StringConstItr start, StringConstItr end);
 	
 	// Bind texture to memory.
-	void attach(const size_t&& selected);
+	void attach(const size_t&& index);
 
 	// Unbind texture from memory.
 	void dettach();
 
+public:
+	void equalizeHistogram();
+
 private:
-	size_t selected = 0; // Controls for which image to load from the container.
+	size_t m_selected;
+	long int m_currently_attached;
+
 	std::vector<cv::Mat> m_media; // Media container.
 	std::vector<ImTextureID> m_textures; // Texture ID's loaded into memory using glBindTexture().
 	static MediaManager* s_Instance; // Static reference to self (this).

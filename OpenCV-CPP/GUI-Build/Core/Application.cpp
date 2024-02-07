@@ -17,7 +17,6 @@
 static void error_callback(int error, const char* description);
 
 inline static void init();
-inline void basic_gui();
 
 Application* Application::s_appInstance = nullptr;
 MediaManager* Application::s_MediaManager = nullptr;
@@ -88,11 +87,7 @@ int Application::run()
 
 	glEnable(GL_TEXTURE_2D);
 
-	//std::cout << "Media: \n" << MediaManager().Get().media()[0] << "\n";
 	MediaManager::Get().attach(0);
-
-	//cv::Mat img = cv::imread("../../exports/dicom-data/frame25.png", cv::IMREAD_ANYCOLOR);
-	//const ImTextureID id = CAE::Helper::MatToImTextureID(img);
 
 	int display_w, display_h;
 	while (!glfwWindowShouldClose(window))
@@ -108,13 +103,11 @@ int Application::run()
 		START_GUI_FRAME();
 		{
 			// IMGUI CODE HERE....
-			//ImGui::Begin("Viewport");
-			//ImVec2 size = ImGui::GetWindowSize();
-			//CAE::Helper::DrawBackgroundImage(MediaManager::Get().texture(), size, {512,512});
-			//ImGui::End();
+
 			BGui::basic_gui();
 
 		}
+
 		// Rendering ImGUI frame.
 		RENDER_GUI();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -122,6 +115,8 @@ int Application::run()
 
 		glfwSwapBuffers(window);
 	}
+
+	MediaManager::Get().dettach();
 
 	// Cleanup
 	CLEANUP_GUI();

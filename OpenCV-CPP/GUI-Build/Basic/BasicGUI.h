@@ -4,6 +4,8 @@
 #include <imgui.h>
 #include <opencv2/highgui.hpp>
 
+#include <iostream>
+
 #include "Core/CAEHelper.h"
 #include "Core/MediaManager.h"
 
@@ -87,8 +89,13 @@ namespace BGui {
 
 		{
 			ImGui::Begin("Settings");
-			float value = 0;
-			ImGui::SliderFloat("Value", &value, -100, 100);
+			
+			if (ImGui::Button("Equalize Histogram"))
+			{
+				MediaManager::Get().equalizeHistogram();
+				MediaManager::Get().attach(0);
+			}
+
 			ImGui::End();
 		}
 
@@ -96,7 +103,6 @@ namespace BGui {
 		{
 			ImGui::Begin("Viewport");
 			ImVec2 size = ImGui::GetWindowSize();
-			//CAE::Helper::DrawBackgroundImage(id, size, { 512,512 });
 			CAE::Helper::DrawBackgroundImage(MediaManager::Get().texture(), size, { 512,512 });
 			ImGui::End();
 		}

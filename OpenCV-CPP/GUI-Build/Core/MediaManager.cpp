@@ -2,8 +2,10 @@
 #include "Core/CAEHelper.h"
 
 #include <iostream>
+#include <cassert>
 
 #include <opencv2/core.hpp>
+#include <opencv2/imgproc.hpp>
 #include <opencv2/highgui.hpp>
 
 #include <glad/glad.h>
@@ -16,26 +18,23 @@
 // Reference to instance
 MediaManager* MediaManager::s_Instance = nullptr;
 
-// Converts OpenCV Matrix to ImGUI legible format
-static GLuint MatToImTextureID(cv::Mat& mat);
-
 MediaManager::MediaManager()
 {
 	if (!s_Instance)
 		this->s_Instance = this;
 
-	selected = 0;
+	this->m_selected = 0;
+	this->m_currently_attached = -1;
 }
 
 MediaManager::~MediaManager()
 {
 	this->s_Instance = nullptr;
-	selected = NULL;
 }
 
 ImTextureID MediaManager::texture()
 {
-	return m_textures[0];
+	return m_textures[m_currently_attached];
 }
 
 bool MediaManager::load_image(cv::String filepath, const cv::ImreadModes mode)
@@ -46,9 +45,12 @@ bool MediaManager::load_image(cv::String filepath, const cv::ImreadModes mode)
 
 	this->m_media.push_back(img);
 
+	// Resize texture pool
+	size_t current_size = m_textures.size();
+	m_textures.resize(current_size + 1);
+
 	return true;
 }
-
 
 bool MediaManager::load_images(StringConstItr start, StringConstItr end)
 {
@@ -61,24 +63,62 @@ bool MediaManager::load_images(StringConstItr start, StringConstItr end)
 		m_media.push_back(img);
 	}
 
+	// Resize texture pool
+	size_t size = end - start;
+	size_t current_size = m_textures.size();
+	m_textures.resize(size + current_size);
 	return true;
 }
 
-void MediaManager::attach(const size_t&& selected)
+void MediaManager::attach(const size_t&& index)
 {
-	this->selected = selected;
-	ImTextureID texture_id = CAE::Helper::MatToImTextureID(this->m_media[this->selected]);
-	this->m_textures.push_back(texture_id);
+	if (index > m_textures.size())
+	{
+		assert((index > m_texture.size()) && "Index is too large!");
+		return;
+	}
+
+	if (m_currently_attached >= 0)
+		dettach();
+
+
+	ImTextureID texture_id = CAE::Helper::MatToImTextureID(this->m_media[index]);
+	this->m_textures[index] = texture_id;
+	this->m_selected = index;
+	this->m_currently_attached = index;
+
 
 	return;
 }
 
 void MediaManager::dettach()
 {
-	auto texture_id = (GLuint)(intptr_t)m_textures[selected];
+	if (m_currently_attached < 0)
+		return;
+
+	auto texture_id = (GLuint)(intptr_t)(this->m_textures[m_currently_attached]);
 	glBindTexture(GL_TEXTURE_2D, 0); // Unbind
+	m_textures[m_currently_attached] = NULL;
+	m_currently_attached = -1;
 
 	glDeleteTextures(1, &texture_id); // Delete it from memory.
-	this->selected = 0;
+	//m_textures[m_currently_attached] = NULL;
 	return;
+}
+
+void MediaManager::equalizeHistogram()
+{
+	if (m_currently_attached >= 0)
+	{
+		cv::Mat& img = m_media[m_currently_attached];
+		
+		// Convert to grayscale (assuming the image is in color)
+		if (img.channels() > 1)
+			cv::cvtColor(img, img, cv::COLOR_RGB2GRAY);
+
+		// Equalize histogram
+		cv::equalizeHist(img, img);
+		cv::cvtColor(img, img, cv::COLOR_GRAY2RGB); // Convert colours
+	}
+
 }

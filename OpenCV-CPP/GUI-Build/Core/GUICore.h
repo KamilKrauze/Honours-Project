@@ -40,7 +40,7 @@
 			ImGui::RenderPlatformWindowsDefault(); \
 			glfwMakeContextCurrent(backup_current_context); \
 		}
-#elif __linux_
+#elif __linux__
 	UPDATE_AND_RENDER()
 #endif
 
