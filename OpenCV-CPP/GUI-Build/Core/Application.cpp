@@ -103,13 +103,11 @@ int Application::run()
 		START_GUI_FRAME();
 		{
 			// IMGUI CODE HERE....
-			//ImGui::Begin("Viewport");
-			//ImVec2 size = ImGui::GetWindowSize();
-			//CAE::Helper::DrawBackgroundImage(MediaManager::Get().texture(), size, {512,512});
-			//ImGui::End();
+
 			BGui::basic_gui();
 
 		}
+
 		// Rendering ImGUI frame.
 		RENDER_GUI();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

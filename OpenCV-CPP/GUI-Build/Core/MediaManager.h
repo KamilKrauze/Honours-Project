@@ -24,7 +24,7 @@ public:
 	static MediaManager& Get() { return *s_Instance; }
 		
 	// Retrieves media container
-	std::vector<cv::Mat> media() { return m_media; }
+	std::vector<cv::Mat>& media() { return m_media; }
 
 	ImTextureID texture();
 
@@ -40,6 +40,9 @@ public:
 
 	// Unbind texture from memory.
 	void dettach();
+
+public:
+	void equalizeHistogram();
 
 private:
 	size_t m_selected;

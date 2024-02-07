@@ -7,7 +7,6 @@
 
 #include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>
-#include <opencv2/imgproc.hpp>
 
 int main()
 {
@@ -19,10 +18,6 @@ int main()
     };
 
     MediaManager::Get().load_images(list.begin(), list.end());
-    
-    //cv::Mat img = MediaManager::Get().media()[0];
-    //cv::Mat dest;
-    //cv::equalizeHist(img, dest);
 
     return app.run();
 }

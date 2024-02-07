@@ -5,6 +5,7 @@
 #include <cassert>
 
 #include <opencv2/core.hpp>
+#include <opencv2/imgproc.hpp>
 #include <opencv2/highgui.hpp>
 
 #include <glad/glad.h>
@@ -96,10 +97,27 @@ void MediaManager::dettach()
 	if (m_currently_attached < 0)
 		return;
 
-	auto texture_id = (GLuint)(intptr_t)m_textures[m_currently_attached];
 	glBindTexture(GL_TEXTURE_2D, 0); // Unbind
-
-	glDeleteTextures(1, &texture_id); // Delete it from memory.
 	m_textures[m_currently_attached] = NULL;
+	m_currently_attached = -1;
+
+	//glDeleteTextures(1, &texture_id); // Delete it from memory.
+	//m_textures[m_currently_attached] = NULL;
 	return;
+}
+
+void MediaManager::equalizeHistogram()
+{
+	if (m_currently_attached >= 0)
+	{
+		cv::Mat& img = m_media[m_currently_attached];
+		
+		// Convert to grayscale (assuming the image is in color)
+		if (img.channels() > 1)
+			cv::cvtColor(img, img, cv::COLOR_BGR2GRAY);
+
+		// Equalize histogram
+		cv::equalizeHist(img, img);
+	}
+
 }

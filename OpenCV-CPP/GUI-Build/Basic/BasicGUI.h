@@ -89,8 +89,13 @@ namespace BGui {
 
 		{
 			ImGui::Begin("Settings");
-			float value = 0;
-			ImGui::SliderFloat("Value", &value, -100, 100);
+			
+			if (ImGui::Button("Equalize Histogram"))
+			{
+				MediaManager::Get().equalizeHistogram();
+				MediaManager::Get().attach(0);
+			}
+
 			ImGui::End();
 		}
 
