@@ -67,14 +67,14 @@ double getOrientation(const std::vector<Point>& pts, Mat& img)
 
 int main()
 {
-    Mat src = imread("../../exports/opencv/adaptive-histogram-eq/cl3_frame25.png", cv::IMREAD_GRAYSCALE);
+    Mat src = imread("../../exports/opencv/adaptive-histogram-eq/cl3_frame00.png", cv::IMREAD_GRAYSCALE);
     imshow("Source: Frame 0", src);
     fastNlMeansDenoising(src, src, 9, 3, 9);
-    imshow("Denoisd: Frame 0", src);
-
+    imshow("Denoised: Frame 0", src);
+    
     // Binary image;
     Mat bw;
-    threshold(src, bw, 80, 255, THRESH_BINARY | THRESH_OTSU);
+    threshold(src, bw, 70, 255, THRESH_BINARY | THRESH_OTSU);
     imshow("Binary: Frame 0", bw);
 
     // Find all the contours in the thresholded image
