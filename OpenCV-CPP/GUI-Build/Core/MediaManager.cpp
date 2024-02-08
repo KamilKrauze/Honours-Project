@@ -102,7 +102,6 @@ void MediaManager::dettach()
 	m_currently_attached = -1;
 
 	glDeleteTextures(1, &texture_id); // Delete it from memory.
-	//m_textures[m_currently_attached] = NULL;
 	return;
 }
 
