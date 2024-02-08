@@ -72,7 +72,7 @@ bool MediaManager::load_images(StringConstItr start, StringConstItr end)
 
 void MediaManager::attach(const size_t&& index)
 {
-	if (index > m_textures.size())
+	if (index >= m_textures.size())
 	{
 		assert((index > m_texture.size()) && "Index is too large!");
 		return;
