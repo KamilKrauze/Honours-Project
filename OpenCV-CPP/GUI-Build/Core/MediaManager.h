@@ -1,7 +1,6 @@
 #ifndef MEDIA_MANAGER_H
 #define MEDIA_MANAGER_H
 
-
 #include <vector>
 #include <string_view>
 
@@ -23,10 +22,13 @@ public:
 	// Get media-loader instance
 	static MediaManager& Get() { return *s_Instance; }
 		
-	// Retrieves media container
+	// Retrieves the original media container.
 	std::vector<cv::Mat>& original_media() { return m_media_org; }
+	
+	// Retrieves the enhanced media container.
 	std::vector<cv::Mat>& enhanced_media() { return m_media_enh; }
 
+	// Retrieves the currently attached texture ID.
 	ImTextureID texture();
 
 public:
@@ -46,9 +48,7 @@ public:
 	void equalizeHistogram();
 
 private:
-	size_t m_selected;
-	long int m_currently_attached;
-
+	size_t m_currently_attached; // The index of the currently attached image.
 	std::vector<cv::Mat> m_media_org; // Media container for the imported.
 	std::vector<cv::Mat> m_media_enh; // Media container for the enhanced versions.
 	std::vector<ImTextureID> m_textures; // Texture ID's loaded into memory using glBindTexture().
