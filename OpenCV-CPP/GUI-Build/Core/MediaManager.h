@@ -37,10 +37,10 @@ public:
 	bool load_images(StringConstItr start, StringConstItr end);
 	
 	// Bind texture to memory.
-	void attach(const size_t&& index);
+	void bind(const size_t&& index);
 
 	// Unbind texture from memory.
-	void dettach();
+	void unbind();
 
 public:
 	void equalizeHistogram();

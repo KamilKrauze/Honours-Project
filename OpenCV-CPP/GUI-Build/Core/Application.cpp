@@ -87,7 +87,7 @@ int Application::run()
 
 	glEnable(GL_TEXTURE_2D);
 
-	MediaManager::Get().attach(0);
+	MediaManager::Get().bind(0);
 
 	int display_w, display_h;
 	while (!glfwWindowShouldClose(window))
@@ -116,7 +116,7 @@ int Application::run()
 		glfwSwapBuffers(window);
 	}
 
-	MediaManager::Get().dettach();
+	MediaManager::Get().unbind();
 
 	// Cleanup
 	CLEANUP_GUI();

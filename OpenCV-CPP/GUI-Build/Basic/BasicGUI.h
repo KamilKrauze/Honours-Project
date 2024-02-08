@@ -93,7 +93,7 @@ namespace BGui {
 			if (ImGui::Button("Equalize Histogram"))
 			{
 				MediaManager::Get().equalizeHistogram();
-				MediaManager::Get().attach(0);
+				MediaManager::Get().bind(0);
 			}
 
 			ImGui::End();
