@@ -23,12 +23,18 @@ MediaManager::MediaManager()
 	if (!s_Instance)
 		this->s_Instance = this;
 
-	this->m_selected = 0;
 	this->m_currently_attached = -1;
 }
 
 MediaManager::~MediaManager()
 {
+	this->m_media_org.clear();
+	this->m_media_enh.clear();
+	if (m_currently_attached >= 0)
+		unbind();
+	this->m_textures.clear();
+	this->m_currently_attached = NULL;
+
 	this->s_Instance = nullptr;
 }
 
@@ -96,7 +102,6 @@ void MediaManager::bind(const size_t&& index)
 
 	ImTextureID texture_id = CAE::Helper::MatToImTextureID(this->m_media_org[index]);
 	this->m_textures[index] = texture_id;
-	this->m_selected = index;
 	this->m_currently_attached = index;
 
 	return;
