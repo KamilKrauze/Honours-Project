@@ -43,11 +43,15 @@ bool MediaManager::load_image(cv::String filepath, const cv::ImreadModes mode)
 	if (img.empty())
 		return false;
 
-	this->m_media.push_back(img);
+	this->m_media_org.push_back(img);
 
-	// Resize texture pool
-	size_t current_size = m_textures.size();
-	m_textures.resize(current_size + 1);
+	// Resize enhanced texture pool
+	const size_t enh_texture_pool = m_media_enh.size();
+	m_media_enh.resize(enh_texture_pool + 1);
+
+	// Resize texture ID pool
+	const size_t texture_id_pool = m_textures.size();
+	m_textures.resize(texture_id_pool + 1);
 
 	return true;
 }
@@ -60,17 +64,25 @@ bool MediaManager::load_images(StringConstItr start, StringConstItr end)
 	for (auto it = start; it != end; it++)
 	{
 		cv::Mat img = cv::imread(*it._Ptr, cv::IMREAD_ANYCOLOR);
-		m_media.push_back(img);
+		if (img.empty())
+			return false;
+
+		m_media_org.push_back(img);
 	}
 
-	// Resize texture pool
 	size_t size = end - start;
+
+	// Resize enhanced texture pool
+	const size_t enh_texture_pool = m_media_enh.size();
+	m_media_enh.resize(size + enh_texture_pool);
+
+	// Resize texture ID pool
 	size_t current_size = m_textures.size();
 	m_textures.resize(size + current_size);
 	return true;
 }
 
-void MediaManager::attach(const size_t&& index)
+void MediaManager::bind(const size_t&& index)
 {
 	if (index >= m_textures.size())
 	{
@@ -79,19 +91,18 @@ void MediaManager::attach(const size_t&& index)
 	}
 
 	if (m_currently_attached >= 0)
-		dettach();
+		unbind();
 
 
-	ImTextureID texture_id = CAE::Helper::MatToImTextureID(this->m_media[index]);
+	ImTextureID texture_id = CAE::Helper::MatToImTextureID(this->m_media_org[index]);
 	this->m_textures[index] = texture_id;
 	this->m_selected = index;
 	this->m_currently_attached = index;
 
-
 	return;
 }
 
-void MediaManager::dettach()
+void MediaManager::unbind()
 {
 	if (m_currently_attached < 0)
 		return;
@@ -109,7 +120,7 @@ void MediaManager::equalizeHistogram()
 {
 	if (m_currently_attached >= 0)
 	{
-		cv::Mat& img = m_media[m_currently_attached];
+		cv::Mat& img = m_media_org[m_currently_attached];
 		
 		// Convert to grayscale (assuming the image is in color)
 		if (img.channels() > 1)
