@@ -24,7 +24,8 @@ public:
 	static MediaManager& Get() { return *s_Instance; }
 		
 	// Retrieves media container
-	std::vector<cv::Mat>& media() { return m_media; }
+	std::vector<cv::Mat>& original_media() { return m_media_org; }
+	std::vector<cv::Mat>& enhanced_media() { return m_media_enh; }
 
 	ImTextureID texture();
 
@@ -48,7 +49,8 @@ private:
 	size_t m_selected;
 	long int m_currently_attached;
 
-	std::vector<cv::Mat> m_media; // Media container.
+	std::vector<cv::Mat> m_media_org; // Media container for the imported.
+	std::vector<cv::Mat> m_media_enh; // Media container for the enhanced versions.
 	std::vector<ImTextureID> m_textures; // Texture ID's loaded into memory using glBindTexture().
 	static MediaManager* s_Instance; // Static reference to self (this).
 };
