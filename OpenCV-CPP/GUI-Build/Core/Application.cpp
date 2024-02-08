@@ -38,6 +38,7 @@ Application::Application(int width, int height, std::string title)
 Application::~Application()
 {
 	//delete s_appInstance;
+	s_MediaManager = nullptr;
 	delete s_MediaManager;
 }
 

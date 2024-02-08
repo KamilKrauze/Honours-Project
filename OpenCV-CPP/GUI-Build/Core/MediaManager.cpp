@@ -35,7 +35,7 @@ MediaManager::~MediaManager()
 	this->m_textures.clear();
 	this->m_currently_attached = NULL;
 
-	this->s_Instance = nullptr;
+	//this->s_Instance = nullptr;
 }
 
 ImTextureID MediaManager::texture()
