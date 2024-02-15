@@ -16,26 +16,8 @@ using Contours = std::vector<Points>;
 // Function declarations
 void drawAxis(cv::Mat&, cv::Point, cv::Point, cv::Scalar, const float);
 double getOrientation(cv::Mat& img, const Points& pts, EigenVectors& eigen_vecs, EigenValues& eigen_vals);
+cv::Mat executePCA(cv::Mat src, cv::Mat img_bw, Contours& contours, EigenVectors& eigen_vecs, EigenValues& eigen_vals);
 
-cv::Mat executePCA(cv::Mat src, cv::Mat img_bw, Contours& contours, EigenVectors& eigen_vecs, EigenValues& eigen_vals)
-{
-    using namespace cv;
-
-    findContours(img_bw, contours, RETR_LIST, CHAIN_APPROX_NONE);
-    for (size_t i = 0; i < contours.size(); i++)
-    {
-        // Calculate the area of each contour
-        double area = contourArea(contours[i]);
-        // Ignore contours that are too small or too large
-        if (area < 1e2 || 1e5 < area) continue;
-        // Draw each contour only for visualisation purposes
-        drawContours(src, contours, static_cast<int>(i), Scalar(0, 0, 255), 2);
-        // Find the orientation of each shape
-        getOrientation(src, contours[i], eigen_vecs, eigen_vals);
-    }
-
-    return src;
-}
 
 int main()
 {
@@ -114,4 +96,25 @@ double getOrientation(cv::Mat& img, const Points& pts, EigenVectors& eigen_vecs,
     drawAxis(img, cntr, p2, Scalar(255, 255, 0), 5);
     double angle = atan2(eigen_vecs[0].y, eigen_vecs[0].x); // orientation in radians
     return angle;
+}
+
+// A wrapper function to streamline PCA-based fusion
+cv::Mat executePCA(cv::Mat src, cv::Mat img_bw, Contours& contours, EigenVectors& eigen_vecs, EigenValues& eigen_vals)
+{
+    using namespace cv;
+
+    findContours(img_bw, contours, RETR_LIST, CHAIN_APPROX_NONE);
+    for (size_t i = 0; i < contours.size(); i++)
+    {
+        // Calculate the area of each contour
+        double area = contourArea(contours[i]);
+        // Ignore contours that are too small or too large
+        if (area < 1e2 || 1e5 < area) continue;
+        // Draw each contour only for visualisation purposes
+        drawContours(src, contours, static_cast<int>(i), Scalar(0, 0, 255), 2);
+        // Find the orientation of each shape
+        getOrientation(src, contours[i], eigen_vecs, eigen_vals);
+    }
+
+    return src;
 }
