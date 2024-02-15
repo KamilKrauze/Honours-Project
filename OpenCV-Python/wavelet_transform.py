@@ -6,7 +6,7 @@ from scipy.stats import median_abs_deviation
 # Source - https://medium.com/@koushikc2000/2d-discrete-wavelet-transformation-and-its-applications-in-digital-image-processing-using-matlab-1f5c68672de3 - 15/02/2024
 
 # Import image
-img:cv.Mat = cv.imread("./exports/opencv/adaptive-histogram-eq/cl2_frame25.png", cv.IMREAD_COLOR)
+img:cv.Mat = cv.imread("../exports/opencv/adaptive-histogram-eq/cl2_frame25.png", cv.IMREAD_COLOR)
 img_gray:cv.Mat
 
 # Retrieve approximation and detail coefficients for each channel R, G, B
@@ -25,11 +25,11 @@ xd = npy.stack([xdR, xdG, xdB], axis=-1)
 
 xA = xa / 255.0
 
-# cv.imshow('xA', xA * 0.3)
-# cv.imshow('xh', npy.log10(xh) * 0.3)
-# cv.imshow('xv', npy.log10(xv) * 0.3)
+cv.imshow('xA', xA * 0.3)
+cv.imshow('xh', npy.log10(xh) * 0.3)
+cv.imshow('xv', npy.log10(xv) * 0.3)
 
-# cv.imshow('xd', npy.log10(xd) * 0.3)
+cv.imshow('xd', npy.log10(xd) * 0.3)
 
 # Apply DWT on each of the partial components above
 coeffs_aaR = pywt.dwt2(xa[:,:,0], 'haar')
@@ -46,6 +46,8 @@ xvv = npy.stack([xvvR, xvvG, xvvB], axis=-1)
 xdd = npy.stack([xddR, xddG, xddB], axis=-1)
 
 xAA = xaa / 255.0
+
+print(xAA.shape[0])
 
 cv.imshow("Average Component ",(xAA * 0.3))
 cv.imshow("Horizontal Component", (npy.log10(xhh) * 0.5))
