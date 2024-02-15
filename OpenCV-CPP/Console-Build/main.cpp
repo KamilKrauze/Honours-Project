@@ -6,7 +6,7 @@
 #include <opencv2/imgproc.hpp>
 #include <opencv2/photo.hpp>
 
-// All of the code below is from https://docs.opencv.org/4.x/d1/dee/tutorial_introduction_to_pca.html - 07/02/2024
+// All of the code has been adapated from https://docs.opencv.org/4.x/d1/dee/tutorial_introduction_to_pca.html - 07/02/2024
 
 using EigenVectors = std::vector<cv::Point2d>;
 using EigenValues = std::vector<double>;
