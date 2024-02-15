@@ -25,17 +25,17 @@ int main()
 
     EigenVectors eigen_vecs(2);
     EigenValues eigen_vals(2);
+    Contours contours;
+    Mat src, bw;
 
-    Mat src = imread("../../exports/opencv/adaptive-histogram-eq/cl3_frame25.png", cv::IMREAD_GRAYSCALE);
+    src = imread("../../exports/opencv/adaptive-histogram-eq/cl3_frame25.png", cv::IMREAD_GRAYSCALE);
     imshow("Source: Frame 0", src);
     
-    // Binary image;
-    Mat bw;
+    // Binary image
     threshold(src, bw, 70, 255, THRESH_BINARY | THRESH_OTSU);
     imshow("Binary: Frame 0", bw);
 
     // Find all the contours in the thresholded image
-    Contours contours;
     executePCA(src, bw, contours, eigen_vecs, eigen_vals);
 
     imshow("output", src);
