@@ -153,6 +153,7 @@ cv::Mat fusePCAs(const cv::Mat& src1, const cv::Mat& src2, ImgData& img_data1, I
 
     double weight1 = 0.0f, weight2 = 0.0f;
 
+    // Equation 4.1 - https://tigerprints.clemson.edu/cgi/viewcontent.cgi?article=1615&context=all_dissertations - 16/02/2024s
     for (uint8_t i = 0; i < 2; i++)
     {
         // Get weights
@@ -164,6 +165,7 @@ cv::Mat fusePCAs(const cv::Mat& src1, const cv::Mat& src2, ImgData& img_data1, I
     weight2 /= 2;
 
     // Low pass coefficients
+    // Equation 4.2 - https://tigerprints.clemson.edu/cgi/viewcontent.cgi?article=1615&context=all_dissertations - 16/02/2024
     for (size_t i = 0; i < fused_low.rows; i++)
     {
         for (size_t j = 0; j < fused_low.cols; j++)
@@ -179,6 +181,7 @@ cv::Mat fusePCAs(const cv::Mat& src1, const cv::Mat& src2, ImgData& img_data1, I
     }
 
     // High pass coefficients
+    // Equation 4.3 - https://tigerprints.clemson.edu/cgi/viewcontent.cgi?article=1615&context=all_dissertations - 16/02/2024
     for (size_t i = 0; i < fused_low.rows; i++)
     {
         for (size_t j = 0; j < fused_low.cols; j++)
