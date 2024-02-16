@@ -151,16 +151,14 @@ cv::Mat fusePCAs(const cv::Mat& src1, const cv::Mat& src2, ImgData& img_data1, I
 
     Mat fused = src1.clone(), fused_low = src1.clone(), fused_high = src1.clone();
 
-    double weight1 = 1.0f, weight2 = 1.0f;
+    double weight1 = 0.0f, weight2 = 0.0f;
 
     for (uint8_t i = 0; i < 2; i++)
     {
         // Get weights
-        weight1 *= img_data1.eigen_vectors[i].x / img_data1.eigen_vectors[i].x + img_data1.eigen_vectors[i].y;
-        weight2 *= img_data2.eigen_vectors[i].x / img_data2.eigen_vectors[i].x + img_data2.eigen_vectors[i].y;
+        weight1 += img_data1.eigen_vectors[i].x / img_data1.eigen_vectors[i].x + img_data1.eigen_vectors[i].y;
+        weight2 += img_data2.eigen_vectors[i].x / img_data2.eigen_vectors[i].x + img_data2.eigen_vectors[i].y;
     }
-
-
 
     weight1 /= 2;
     weight2 /= 2;
