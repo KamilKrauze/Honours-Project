@@ -50,10 +50,10 @@ int main()
     imshow("Source 2", src2);
     
     // Binary image
-    threshold(src1, bw1, 95, 255, THRESH_BINARY);
+    threshold(src1, bw1, 95, 255, THRESH_BINARY | THRESH_OTSU);
     imshow("Binary 1", bw1);
 
-    threshold(src2, bw2, 110, 255, THRESH_BINARY);
+    threshold(src2, bw2, 110, 255, THRESH_BINARY | THRESH_OTSU);
     imshow("Binary 2", bw2);
 
     // Find all the contours in the thresholded image
