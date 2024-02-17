@@ -6,7 +6,7 @@
 #include <opencv2/imgproc.hpp>
 #include <opencv2/photo.hpp>
 
-// All of the code has been adapated from https://docs.opencv.org/4.x/d1/dee/tutorial_introduction_to_pca.html - 07/02/2024
+// All of the code has been adapated and modified from https://docs.opencv.org/4.x/d1/dee/tutorial_introduction_to_pca.html - 07/02/2024
 
 using EigenVectors = std::vector<cv::Point2d>;
 using EigenValues = std::vector<double>;
@@ -46,28 +46,27 @@ int main()
     src1 = imread("../../exports/opencv/adaptive-histogram-eq/cl2_frame25.png", cv::IMREAD_GRAYSCALE);
     imshow("Source 1", src1);
 
-    src2 = imread("../../exports/opencv/adaptive-histogram-eq/cl5_frame25.png", cv::IMREAD_GRAYSCALE);
+    src2 = imread("../../exports/opencv/adaptive-histogram-eq/cl10_frame25.png", cv::IMREAD_GRAYSCALE);
     imshow("Source 2", src2);
     
     // Binary image
     threshold(src1, bw1, 95, 255, THRESH_BINARY | THRESH_OTSU);
     imshow("Binary 1", bw1);
 
-    threshold(src2, bw2, 110, 255, THRESH_BINARY | THRESH_OTSU);
+    threshold(src2, bw2, 105, 255, THRESH_BINARY | THRESH_OTSU);
     imshow("Binary 2", bw2);
 
     // Find all the contours in the thresholded image
     auto pca1 = executePCA(src1, bw1, img_data1.contours, img_data1.eigen_vectors, img_data1.eigen_values);
     auto pca2 = executePCA(src2, bw2, img_data2.contours, img_data2.eigen_vectors, img_data2.eigen_values);
 
-    //imshow("Img 1 PCA", pca1);
-    //imshow("Img 2 PCA", pca2);
-
-    Mat fused = fusePCAs(src1, src2, img_data1, img_data2);
+    Mat fused = fusePCAs(src2, src1, img_data2, img_data1);
 
     imshow("Fused Image", fused);
 
     waitKey(0);
+    destroyAllWindows();
+
 
     return 0;
 }
@@ -158,7 +157,7 @@ cv::Mat fusePCAs(const cv::Mat& src1, const cv::Mat& src2, ImgData& img_data1, I
     {
         // Get weights
         weight1 += img_data1.eigen_vectors[i].x / img_data1.eigen_vectors[i].x + img_data1.eigen_vectors[i].y;
-        weight2 += img_data2.eigen_vectors[i].x / img_data2.eigen_vectors[i].x + img_data2.eigen_vectors[i].y;
+        weight2 += img_data2.eigen_vectors[i].y / img_data2.eigen_vectors[i].x + img_data2.eigen_vectors[i].y;
     }
 
     weight1 /= 2;
