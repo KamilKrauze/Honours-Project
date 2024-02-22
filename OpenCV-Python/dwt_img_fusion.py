@@ -14,10 +14,10 @@ def fuse_images(img1:cv.Mat, img2:cv.Mat, wt:str) -> cv.Mat:
     # HL - Vertical coeffs      (high-pass)
     # HH - Diagonal coeffs      (high-pass)
     
-    COEFFS_1 = pywt.dwt2(img1[:,:], wt)
+    COEFFS_1 = pywt.dwt2(img1[:,:], wt) # Image 1 Coefficients
     LL1,(LH1, HL1, HH1) = COEFFS_1
     
-    COEFFS_2 = pywt.dwt2(img2[:,:], wt)
+    COEFFS_2 = pywt.dwt2(img2[:,:], wt) # Image 2 Coefficients
     LL2,(LH2, HL2, HH2) = COEFFS_2
     
     # Create empty coeffs for fusion.
@@ -28,22 +28,20 @@ def fuse_images(img1:cv.Mat, img2:cv.Mat, wt:str) -> cv.Mat:
     
     for i in range(len(LL)):
         for j in range(len(LL)):
-            LL[i,j] = npy.mean([LL1[i,j], LL2[i,j]])
-            LH[i,j] = npy.mean([LH1[i,j], LH2[i,j]])
-            HL[i,j] = npy.mean([HL1[i,j], HL2[i,j]])
-            HH[i,j] = npy.mean([HH1[i,j], HH2[i,j]])
-    
-    
-    
+            LL[i,j] = npy.max([LL1[i,j], LL2[i,j]])
+            LH[i,j] = npy.max([LH1[i,j], LH2[i,j]])
+            HL[i,j] = npy.max([HL1[i,j], HL2[i,j]])
+            HH[i,j] = npy.max([HH1[i,j], HH2[i,j]])
+
     reconstructed = pywt.idwt2( (LL, (LH, HL, HH)), wavelet=wt)
     
     return cv.convertScaleAbs(reconstructed)
 
 if __name__ == "__main__":
     img1:cv.Mat = cv.imread("../exports/opencv/adaptive-histogram-eq/cl2_frame25.png", cv.IMREAD_GRAYSCALE)
-    img2:cv.Mat = cv.imread("../exports/opencv/adaptive-histogram-eq/cl10_frame25.png", cv.IMREAD_GRAYSCALE)
+    img2:cv.Mat = cv.imread("../exports/opencv/adaptive-histogram-eq/cl4_frame25.png", cv.IMREAD_GRAYSCALE)
     
-    fused_img = fuse_images(img1, img2, wt='db2')
+    fused_img = fuse_images(img1, img2, wt='db4')
     
     cv.imshow("Img - 1", img1)
     cv.imshow("Img - 2", img2)
