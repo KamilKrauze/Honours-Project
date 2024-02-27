@@ -1,4 +1,6 @@
 numpy
+scipy
+PyWavelets
 pydicom
 opencv-python
 opencv-contrib-python
