@@ -57,7 +57,7 @@ def fuse_coefficients(cf1:npy.ndarray, cf2:npy.ndarray) -> npy.ndarray:
     print(P)
 
     # Fuse coefficients based on weights
-    fused_cf = (P[0] * cf2) + (P[1] * cf2)
+    fused_cf = (P[0] * cf1) + (P[1] * cf2)
 
     # Convert back to original size
     fused_cf = fused_cf.reshape(cf1.shape)
@@ -80,7 +80,7 @@ def PCA_onDWT(img1: cv.Mat, img2: cv.Mat) -> cv.Mat:
 
 if "__main__" == __name__:
     img1 = cv.imread('./exports/opencv/adaptive-histogram-eq/cl2_frame25.png', cv.IMREAD_GRAYSCALE)
-    img2 = cv.imread('./exports/opencv/adaptive-histogram-eq/cl4_frame25.png', cv.IMREAD_GRAYSCALE)
+    img2 = cv.imread('./exports/opencv/adaptive-histogram-eq/cl3_frame25.png', cv.IMREAD_GRAYSCALE)
     
     fused = PCA_onDWT(img1, img2)
 
