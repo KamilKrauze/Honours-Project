@@ -16,7 +16,7 @@ class DWT_Coeffs:
         
         return
 
-def perform_dwt(img: cv.Mat, wt:str) -> DWT_Coeffs:
+def get_dwt_coefficients(img: cv.Mat, wt:str) -> DWT_Coeffs:
     
     # Extract coefficients of image
     # LL - Approximate coeffs   (low-pass)
@@ -66,8 +66,8 @@ def fuse_coefficients(cf1:npy.ndarray, cf2:npy.ndarray) -> npy.ndarray:
 
 def PCA_onDWT(img1: cv.Mat, img2: cv.Mat) -> cv.Mat:
     
-    coeff1 = perform_dwt(img1, wt='db4')
-    coeff2 = perform_dwt(img2, wt='db4')
+    coeff1 = get_dwt_coefficients(img1, wt='db4')
+    coeff2 = get_dwt_coefficients(img2, wt='db4')
 
     # Fuse coefficients
     LL = fuse_coefficients(coeff1.LL, coeff2.LL) # Approximation
