@@ -27,6 +27,8 @@ public:
 	// Retrieves the enhanced media container.
 	std::vector<cv::Mat>& enhanced_media() { return m_media_enh; }
 
+	size_t getTotal() const { return m_size; }
+
 	// Gets the currently attached texture index.
 	size_t get_current_index() const { return m_currently_attached; }
 
@@ -54,7 +56,8 @@ public:
 	void equalizeHistogram();
 
 private:
-	size_t m_currently_attached; // The index of the currently attached image.
+	size_t m_size = 0;
+	size_t m_currently_attached = 0; // The index of the currently attached image.
 	std::vector<cv::Mat> m_media_org; // Media container for the imported.
 	std::vector<cv::Mat> m_media_enh; // Media container for the enhanced versions.
 	std::vector<ImTextureID> m_textures; // Texture ID's loaded into memory using glBindTexture().
