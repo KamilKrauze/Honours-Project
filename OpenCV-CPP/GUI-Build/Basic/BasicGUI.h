@@ -11,6 +11,16 @@
 #include "Core/CAEHelper.h"
 #include "Core/MediaManager.h"
 
+// Centering buttons - https://github.com/ocornut/imgui/discussions/3862 - 28/02/2024
+void AlignForWidth(float width, float alignment = 0.5f)
+{
+	ImGuiStyle& style = ImGui::GetStyle();
+	float avail = ImGui::GetContentRegionAvail().x;
+	float off = (avail - width) * alignment;
+	if (off > 0.0f)
+		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + off);
+}
+
 namespace BGui {
 	inline void basic_gui()
 	{
@@ -107,15 +117,45 @@ namespace BGui {
 
 			{
 				ImGui::BeginChild("Frame Data");
+	
+				std::string text = "Frame Number: " + std::to_string(MediaManager::Get().get_current_index());
+				ImGui::Text(text.c_str());
 
-				ImGui::Text("Frame Number");
 				ImGui::EndChild();
 			}
 
 			ImVec2 size = ImGui::GetWindowSize();
 			CAE::Helper::DrawBackgroundImage(MediaManager::Get().texture(), size, { 512,512 });
+			
+			{
+				ImGui::Begin("Frame Selector", nullptr, ImGuiWindowFlags_NoMove);
+				{
+					// Centering buttons - https://github.com/ocornut/imgui/discussions/3862 - 28/02/2024
+					ImGuiStyle& style = ImGui::GetStyle();
+					float width = -150.0f;
+					width += ImGui::CalcTextSize("<--").x;
+					width += style.ItemSpacing.x;
+					width += 150.0f;
+					width += style.ItemSpacing.x;
+					width += ImGui::CalcTextSize("-->").x;
+					AlignForWidth(width);
 
+				
+					auto index = MediaManager::Get().get_current_index();
+					if (ImGui::ArrowButton("LeftArrow", ImGuiDir_Left))
+						MediaManager::Get().bind(index - 1);
+
+					ImGui::SameLine();
+
+					if (ImGui::ArrowButton("RightArrow", ImGuiDir_Right))
+						MediaManager::Get().bind(index + 1);
+				}
+
+				ImGui::End();
+			}
+			
 			ImGui::End();
+
 		}
 
 		ImGui::End();
