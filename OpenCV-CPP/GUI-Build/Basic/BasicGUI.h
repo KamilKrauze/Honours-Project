@@ -5,6 +5,8 @@
 #include <opencv2/highgui.hpp>
 
 #include <iostream>
+#include <sstream>
+#include <string>
 
 #include "Core/CAEHelper.h"
 #include "Core/MediaManager.h"
@@ -90,11 +92,11 @@ namespace BGui {
 		{
 			ImGui::Begin("Settings");
 			
-			//if (ImGui::Button("Equalize Histogram"))
-			//{
-			//	MediaManager::Get().equalizeHistogram();
-			//	MediaManager::Get().bind(0);
-			//}
+			if (ImGui::Button("Equalize Histogram"))
+			{
+				MediaManager::Get().equalizeHistogram();
+				MediaManager::Get().bind( MediaManager::Get().get_current_index() );
+			}
 
 			ImGui::End();
 		}
@@ -105,6 +107,7 @@ namespace BGui {
 
 			{
 				ImGui::BeginChild("Frame Data");
+
 				ImGui::Text("Frame Number");
 				ImGui::EndChild();
 			}
