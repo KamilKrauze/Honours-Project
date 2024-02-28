@@ -92,7 +92,7 @@ void MediaManager::bind(const size_t&& index)
 {
 	if (index >= m_textures.size())
 	{
-		assert((index > m_texture.size()) && "Index is too large!");
+		assert((index > m_textures.size()) && "Index is too large!");
 		return;
 	}
 
