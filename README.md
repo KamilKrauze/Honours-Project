@@ -1,4 +1,4 @@
-# Honours Project: Image Enhancement of Aniographic Images using Contrasting Techniques
+# Honours Project: Image Enhancement of Angiographic Images using Contrasting Techniques
 
 > The project currently uses Python for quick and easy iteration and implementation however, for faster execution of heavier algorithms this project will migrate to `C++`.
 
