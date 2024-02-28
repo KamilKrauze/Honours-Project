@@ -38,7 +38,7 @@ MediaManager::~MediaManager()
 	//this->s_Instance = nullptr;
 }
 
-ImTextureID MediaManager::texture()
+ImTextureID MediaManager::texture() const noexcept
 {
 	return m_textures[m_currently_attached];
 }
@@ -76,15 +76,15 @@ bool MediaManager::load_images(StringConstItr start, StringConstItr end)
 		m_media_org.push_back(img);
 	}
 
-	m_size = end - start;
+	size_t size = end - start;
 
 	// Resize enhanced texture pool
 	const size_t enh_texture_pool = m_media_enh.size();
-	m_media_enh.resize(m_size + enh_texture_pool);
+	m_media_enh.resize(size + enh_texture_pool);
 
 	// Resize texture ID pool
 	size_t current_size = m_textures.size();
-	m_textures.resize(m_size + current_size);
+	m_textures.resize(size + current_size);
 	return true;
 }
 
@@ -103,7 +103,6 @@ void MediaManager::bind(const size_t&& index)
 	ImTextureID texture_id = CAE::Helper::MatToImTextureID(this->m_media_org[index]);
 	this->m_textures[index] = texture_id;
 	this->m_currently_attached = index;
-	this->m_size++;
 
 	return;
 }
