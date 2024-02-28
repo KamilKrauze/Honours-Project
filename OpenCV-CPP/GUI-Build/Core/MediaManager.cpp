@@ -23,19 +23,13 @@ MediaManager::MediaManager()
 	if (!s_Instance)
 		this->s_Instance = this;
 
+	this->m_selected = 0;
 	this->m_currently_attached = -1;
 }
 
 MediaManager::~MediaManager()
 {
-	this->m_media_org.clear();
-	this->m_media_enh.clear();
-	if (m_currently_attached >= 0)
-		unbind();
-	this->m_textures.clear();
-	this->m_currently_attached = NULL;
-
-	//this->s_Instance = nullptr;
+	this->s_Instance = nullptr;
 }
 
 ImTextureID MediaManager::texture()
@@ -49,15 +43,11 @@ bool MediaManager::load_image(cv::String filepath, const cv::ImreadModes mode)
 	if (img.empty())
 		return false;
 
-	this->m_media_org.push_back(img);
+	this->m_media.push_back(img);
 
-	// Resize enhanced texture pool
-	const size_t enh_texture_pool = m_media_enh.size();
-	m_media_enh.resize(enh_texture_pool + 1);
-
-	// Resize texture ID pool
-	const size_t texture_id_pool = m_textures.size();
-	m_textures.resize(texture_id_pool + 1);
+	// Resize texture pool
+	size_t current_size = m_textures.size();
+	m_textures.resize(current_size + 1);
 
 	return true;
 }
@@ -70,71 +60,57 @@ bool MediaManager::load_images(StringConstItr start, StringConstItr end)
 	for (auto it = start; it != end; it++)
 	{
 		cv::Mat img = cv::imread(*it._Ptr, cv::IMREAD_ANYCOLOR);
-		if (img.empty())
-			return false;
-
-		m_media_org.push_back(img);
+		m_media.push_back(img);
 	}
 
-	m_size = end - start;
-
-	// Resize enhanced texture pool
-	const size_t enh_texture_pool = m_media_enh.size();
-	m_media_enh.resize(m_size + enh_texture_pool);
-
-	// Resize texture ID pool
+	// Resize texture pool
+	size_t size = end - start;
 	size_t current_size = m_textures.size();
-	m_textures.resize(m_size + current_size);
+	m_textures.resize(size + current_size);
 	return true;
 }
 
-void MediaManager::bind(const size_t&& index)
+void MediaManager::attach(const size_t&& index)
 {
-	if (index >= m_textures.size())
+	if (index > m_textures.size())
 	{
-		assert((index > m_textures.size()) && "Index is too large!");
+		assert((index > m_texture.size()) && "Index is too large!");
 		return;
 	}
 
-	if (m_currently_attached >= 0 || index >= 0)
-		unbind();
+	if (m_currently_attached >= 0)
+		dettach();
 
 
-	ImTextureID texture_id = CAE::Helper::MatToImTextureID(this->m_media_org[index]);
+	ImTextureID texture_id = CAE::Helper::MatToImTextureID(this->m_media[index]);
 	this->m_textures[index] = texture_id;
+	this->m_selected = index;
 	this->m_currently_attached = index;
-	this->m_size++;
+
 
 	return;
 }
 
-void MediaManager::unbind()
+void MediaManager::dettach()
 {
 	if (m_currently_attached < 0)
 		return;
 
 	auto texture_id = (GLuint)(intptr_t)(this->m_textures[m_currently_attached]);
-	//glBindTexture(GL_TEXTURE_2D, 0); // Unbind
-	//m_textures[m_currently_attached] = NULL;
-	//m_currently_attached = -1;
+	glBindTexture(GL_TEXTURE_2D, 0); // Unbind
+	m_textures[m_currently_attached] = NULL;
+	m_currently_attached = -1;
 
 	glDeleteTextures(1, &texture_id); // Delete it from memory.
+	//m_textures[m_currently_attached] = NULL;
 	return;
-}
-
-void MediaManager::show_next_image()
-{
-}
-
-void MediaManager::show_previours_image()
-{
 }
 
 void MediaManager::equalizeHistogram()
 {
 	if (m_currently_attached >= 0)
 	{
-		cv::Mat& img = m_media_org[m_currently_attached];
+		cv::Mat& img = m_media[m_currently_attached];
 		
 		// Convert to grayscale (assuming the image is in color)
 		if (img.channels() > 1)
