@@ -2,7 +2,6 @@
 #define MEDIA_MANAGER_H
 
 #include <vector>
-#include <string_view>
 
 #include <imgui.h>
 #include <opencv2/imgcodecs.hpp>
@@ -28,6 +27,9 @@ public:
 	// Retrieves the enhanced media container.
 	std::vector<cv::Mat>& enhanced_media() { return m_media_enh; }
 
+	// Gets the currently attached texture index.
+	size_t get_current_index() const { return m_currently_attached; }
+
 	// Retrieves the currently attached texture ID.
 	ImTextureID texture();
 
@@ -43,6 +45,10 @@ public:
 
 	// Unbind texture from memory.
 	void unbind();
+
+public:
+	void show_next_image();
+	void show_previours_image();
 
 public:
 	void equalizeHistogram();

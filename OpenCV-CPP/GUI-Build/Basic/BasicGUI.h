@@ -90,11 +90,11 @@ namespace BGui {
 		{
 			ImGui::Begin("Settings");
 			
-			if (ImGui::Button("Equalize Histogram"))
-			{
-				MediaManager::Get().equalizeHistogram();
-				MediaManager::Get().bind(0);
-			}
+			//if (ImGui::Button("Equalize Histogram"))
+			//{
+			//	MediaManager::Get().equalizeHistogram();
+			//	MediaManager::Get().bind(0);
+			//}
 
 			ImGui::End();
 		}
@@ -102,8 +102,16 @@ namespace BGui {
 
 		{
 			ImGui::Begin("Viewport");
+
+			{
+				ImGui::BeginChild("Frame Data");
+				ImGui::Text("Frame Number");
+				ImGui::EndChild();
+			}
+
 			ImVec2 size = ImGui::GetWindowSize();
 			CAE::Helper::DrawBackgroundImage(MediaManager::Get().texture(), size, { 512,512 });
+
 			ImGui::End();
 		}
 

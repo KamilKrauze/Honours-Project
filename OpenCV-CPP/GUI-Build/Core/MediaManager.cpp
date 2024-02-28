@@ -96,7 +96,7 @@ void MediaManager::bind(const size_t&& index)
 		return;
 	}
 
-	if (m_currently_attached >= 0)
+	if (m_currently_attached >= 0 || index >= 0)
 		unbind();
 
 
@@ -113,12 +113,20 @@ void MediaManager::unbind()
 		return;
 
 	auto texture_id = (GLuint)(intptr_t)(this->m_textures[m_currently_attached]);
-	glBindTexture(GL_TEXTURE_2D, 0); // Unbind
-	m_textures[m_currently_attached] = NULL;
-	m_currently_attached = -1;
+	//glBindTexture(GL_TEXTURE_2D, 0); // Unbind
+	//m_textures[m_currently_attached] = NULL;
+	//m_currently_attached = -1;
 
 	glDeleteTextures(1, &texture_id); // Delete it from memory.
 	return;
+}
+
+void MediaManager::show_next_image()
+{
+}
+
+void MediaManager::show_previours_image()
+{
 }
 
 void MediaManager::equalizeHistogram()
