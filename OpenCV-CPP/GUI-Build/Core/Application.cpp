@@ -4,7 +4,7 @@
 #include "Core/MediaManager.h"
 
 #include "Basic/BasicGUI.h"
-#include "Core/KeyCallback.h"
+#include "Basic/key_test.h"
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -38,7 +38,6 @@ Application::Application(int width, int height, std::string title)
 Application::~Application()
 {
 	//delete s_appInstance;
-	s_MediaManager = nullptr;
 	delete s_MediaManager;
 }
 
@@ -88,7 +87,7 @@ int Application::run()
 
 	glEnable(GL_TEXTURE_2D);
 
-	MediaManager::Get().bind(0);
+	MediaManager::Get().attach(0);
 
 	int display_w, display_h;
 	while (!glfwWindowShouldClose(window))
@@ -117,7 +116,7 @@ int Application::run()
 		glfwSwapBuffers(window);
 	}
 
-	MediaManager::Get().unbind();
+	MediaManager::Get().dettach();
 
 	// Cleanup
 	CLEANUP_GUI();
