@@ -126,36 +126,42 @@ namespace BGui {
 
 			ImVec2 size = ImGui::GetWindowSize();
 			CAE::Helper::DrawBackgroundImage(MediaManager::Get().texture(), size, { 512,512 });
-			
+			ImGui::End();
+
 			{
-				ImGui::Begin("Frame Selector", nullptr, ImGuiWindowFlags_NoMove);
+				ImGui::Begin("Frame Selector", nullptr, ImGuiWindowFlags_NoCollapse);
+				// Centering buttons - https://github.com/ocornut/imgui/discussions/3862 - 28/02/2024
+				ImGuiStyle& style = ImGui::GetStyle();
+				float width = 25.0f;
+				width += ImGui::CalcTextSize("<--").x;
+				width += style.ItemSpacing.x;
+				width += style.ItemSpacing.x;
+				width += ImGui::CalcTextSize("-->").x;
+				AlignForWidth(width);
+
+				ImGui::PushButtonRepeat(true);
+				size_t index = MediaManager::Get().get_current_index();
+				if (ImGui::ArrowButton("LeftArrow", ImGuiDir_Left))
+					MediaManager::Get().bind(index - 1);
+
+				ImGui::SameLine();
+
+				ImGui::PushItemWidth(25);
+				if (ImGui::InputScalar("frame #", ImGuiDataType_U64, &index, NULL, NULL, NULL, ImGuiInputTextFlags_AlwaysOverwrite) && index < MediaManager::Get().getTotal())
 				{
-					// Centering buttons - https://github.com/ocornut/imgui/discussions/3862 - 28/02/2024
-					ImGuiStyle& style = ImGui::GetStyle();
-					float width = -150.0f;
-					width += ImGui::CalcTextSize("<--").x;
-					width += style.ItemSpacing.x;
-					width += 150.0f;
-					width += style.ItemSpacing.x;
-					width += ImGui::CalcTextSize("-->").x;
-					AlignForWidth(width);
-
-					ImGui::PushButtonRepeat(true);
-					auto index = MediaManager::Get().get_current_index();
-					if (ImGui::ArrowButton("LeftArrow", ImGuiDir_Left))
-						MediaManager::Get().bind(index - 1);
-
-					ImGui::SameLine();
-
-					if (ImGui::ArrowButton("RightArrow", ImGuiDir_Right))
-						MediaManager::Get().bind(index + 1);
-					ImGui::PushButtonRepeat(false);
+					MediaManager::Get().bind(index + 0);
 				}
+				ImGui::PopItemWidth();
 
+				ImGui::SameLine();
+
+				if (ImGui::ArrowButton("RightArrow", ImGuiDir_Right))
+					MediaManager::Get().bind(index + 1);
+				ImGui::PushButtonRepeat(false);
+				
 				ImGui::End();
 			}
-			
-			ImGui::End();
+
 
 		}
 
