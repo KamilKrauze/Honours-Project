@@ -1,9 +1,7 @@
 #ifndef MEDIA_MANAGER_H
 #define MEDIA_MANAGER_H
 
-
 #include <vector>
-#include <string_view>
 
 #include <imgui.h>
 #include <opencv2/imgcodecs.hpp>
@@ -23,9 +21,18 @@ public:
 	// Get media-loader instance
 	static MediaManager& Get() { return *s_Instance; }
 		
-	// Retrieves media container
-	std::vector<cv::Mat>& media() { return m_media; }
+	// Retrieves the original media container.
+	std::vector<cv::Mat>& original_media() { return m_media_org; }
+	
+	// Retrieves the enhanced media container.
+	std::vector<cv::Mat>& enhanced_media() { return m_media_enh; }
 
+	size_t getTotal() const { return m_size; }
+
+	// Gets the currently attached texture index.
+	size_t get_current_index() const { return m_currently_attached; }
+
+	// Retrieves the currently attached texture ID.
 	ImTextureID texture();
 
 public:
@@ -36,19 +43,23 @@ public:
 	bool load_images(StringConstItr start, StringConstItr end);
 	
 	// Bind texture to memory.
-	void attach(const size_t&& index);
+	void bind(const size_t&& index);
 
 	// Unbind texture from memory.
-	void dettach();
+	void unbind();
+
+public:
+	void show_next_image();
+	void show_previours_image();
 
 public:
 	void equalizeHistogram();
 
 private:
-	size_t m_selected;
-	long int m_currently_attached;
-
-	std::vector<cv::Mat> m_media; // Media container.
+	size_t m_size = 0;
+	size_t m_currently_attached = 0; // The index of the currently attached image.
+	std::vector<cv::Mat> m_media_org; // Media container for the imported.
+	std::vector<cv::Mat> m_media_enh; // Media container for the enhanced versions.
 	std::vector<ImTextureID> m_textures; // Texture ID's loaded into memory using glBindTexture().
 	static MediaManager* s_Instance; // Static reference to self (this).
 };
