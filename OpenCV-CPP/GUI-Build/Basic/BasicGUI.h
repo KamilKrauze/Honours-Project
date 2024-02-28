@@ -140,7 +140,7 @@ namespace BGui {
 					width += ImGui::CalcTextSize("-->").x;
 					AlignForWidth(width);
 
-				
+					ImGui::PushButtonRepeat(true);
 					auto index = MediaManager::Get().get_current_index();
 					if (ImGui::ArrowButton("LeftArrow", ImGuiDir_Left))
 						MediaManager::Get().bind(index - 1);
@@ -149,6 +149,7 @@ namespace BGui {
 
 					if (ImGui::ArrowButton("RightArrow", ImGuiDir_Right))
 						MediaManager::Get().bind(index + 1);
+					ImGui::PushButtonRepeat(false);
 				}
 
 				ImGui::End();
