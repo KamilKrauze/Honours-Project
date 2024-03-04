@@ -13,8 +13,8 @@ class DWT_Coeffs:
         self.LH = _LH
         self.HL = _HL
         self.HH = _HH
-        
         return
+# ! class DWT_Coeffs
 
 def get_dwt_coefficients(img: cv.Mat, wt:str) -> DWT_Coeffs:
     
@@ -43,9 +43,6 @@ def fuse_coefficients(cf1:npy.ndarray, cf2:npy.ndarray) -> npy.ndarray:
     D, V = npy.linalg.eig(C) # D - Eigen Valeus, V - Eigen Vectors
     D = D.T.reshape(-1, 1)
 
-    print(D)
-    print(V)
-
     # # Use eigenvalues as weights
     if V[0, 0] >= V[1, 1]:
         P = D[0,:] / npy.sum(D)
@@ -53,8 +50,6 @@ def fuse_coefficients(cf1:npy.ndarray, cf2:npy.ndarray) -> npy.ndarray:
     else:
         P = D[1,:] / npy.sum(D)
         P = npy.array([P[0], 1-P[0]])
-
-    print(P)
 
     # Fuse coefficients based on weights
     fused_cf = (P[0] * cf1) + (P[1] * cf2)
