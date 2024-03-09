@@ -38,18 +38,21 @@ def fuse_coefficients(cf1:npy.ndarray, cf2:npy.ndarray) -> npy.ndarray:
     Me = npy.mean(Z, axis=0)
     X = Z - Me
 
-    # Calculate the covariance matrix
+    # # Calculate the covariance matrix
     C = npy.cov(X, rowvar=False)
-    D, V = npy.linalg.eig(C) # D - Eigen Valeus, V - Eigen Vectors
-    D = D.T.reshape(-1, 1)
+    # D, V = npy.linalg.eigh(C) # D - Eigen Valeus, V - Eigen Vectors
+    # D = D.T.reshape(-1, 1)
 
-    # # Use eigenvalues as weights
-    if V[0, 0] >= V[1, 1]:
-        P = D[0,:] / npy.sum(D)
-        P = npy.array([P[0], 1-P[0]])
+    vals, vecs = cv.eigenNonSymmetric(C)
+    # print("Vals -> {0}".format(vals))
+    # print("Vecs -> {0}".format(vecs))
+        
+    if vals[0] >= vals[1]:
+        P = vecs[0] / npy.sum(vecs[:,0])
     else:
-        P = D[1,:] / npy.sum(D)
-        P = npy.array([P[0], 1-P[0]])
+        P = vecs[1] / npy.sum(vecs[:,1])
+
+    print(P)
 
     # Fuse coefficients based on weights
     fused_cf = (P[0] * cf1) + (P[1] * cf2)
@@ -75,7 +78,7 @@ def PCA_onDWT(img1: cv.Mat, img2: cv.Mat) -> cv.Mat:
 
 if "__main__" == __name__:
     img1 = cv.imread('./exports/opencv/adaptive-histogram-eq/cl2_frame25.png', cv.IMREAD_GRAYSCALE)
-    img2 = cv.imread('./exports/opencv/adaptive-histogram-eq/cl3_frame25.png', cv.IMREAD_GRAYSCALE)
+    img2 = cv.imread('./exports/opencv/adaptive-histogram-eq/cl10_frame25.png', cv.IMREAD_GRAYSCALE)
     
     fused = PCA_onDWT(img1, img2)
 
