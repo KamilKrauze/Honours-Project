@@ -1,13 +1,99 @@
-#include "GUI/EditorGUI.h"
+#include "GUI/EditorGUI.hpp"
+
+#include <iostream>
+#include <string>
+#include <sstream>
+#include <string_view>
+
+#include <imgui.h>
+#include <opencv2/highgui.hpp>
+
+#include "Core/CAEHelper.h"
+#include "Core/MediaManager.h"
+
+using Keys = std::vector<std::string_view>;
+
+static size_t index = 0;
+static std::string_view currentKey = "";
 
 // Centering buttons - https://github.com/ocornut/imgui/discussions/3862 - 28/02/2024
-static void AlignForWidth(float width, float alignment = 0.5f)
+inline void AlignForWidth(float width, float alignment = 0.5f)
 {
 	ImGuiStyle& style = ImGui::GetStyle();
 	float avail = ImGui::GetContentRegionAvail().x;
 	float off = (avail - width) * alignment;
 	if (off > 0.0f)
 		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + off);
+}
+
+void showFrameSelectionPanel()
+
+{
+	ImGui::Begin("Frame Selector", nullptr, ImGuiWindowFlags_NoCollapse);
+
+	// Centering buttons - https://github.com/ocornut/imgui/discussions/3862 - 28/02/2024
+	ImGuiStyle& style = ImGui::GetStyle();
+	float width = 25.0f;
+	width += ImGui::CalcTextSize("<--").x;
+	width += style.ItemSpacing.x;
+	width += style.ItemSpacing.x;
+	width += ImGui::CalcTextSize("-->").x;
+	AlignForWidth(width);
+
+	ImGui::PushButtonRepeat(true);
+
+	index = MediaManager::Get().getCurrentIndex();
+	if (ImGui::ArrowButton("LeftArrow", ImGuiDir_Left))
+		MediaManager::Get().bind(currentKey, index - 1);
+
+	ImGui::SameLine();
+
+	ImGui::PushItemWidth(25);
+	if (ImGui::InputScalar("frame #", ImGuiDataType_U64, &index, NULL, NULL, NULL, ImGuiInputTextFlags_AlwaysOverwrite) && index < MediaManager::Get().getTotal("src1"))
+	{
+		MediaManager::Get().bind(currentKey, index + 0);
+	}
+	ImGui::PopItemWidth();
+
+	ImGui::SameLine();
+
+	if (ImGui::ArrowButton("RightArrow", ImGuiDir_Right))
+		MediaManager::Get().bind(currentKey, index + 1);
+	ImGui::PushButtonRepeat(false);
+
+	ImGui::End();
+}
+
+static size_t lastItem = 0;
+void showDetailsPanel()
+{
+	ImGui::Begin("Details");
+
+	std::string text = "Frame Number: " + std::to_string(MediaManager::Get().getCurrentIndex());
+	ImGui::Text(text.c_str());
+	ImGui::NewLine();
+
+	static size_t currentItem = 0;
+	Keys keys = MediaManager::Get().getKeys();
+	if (ImGui::BeginCombo("Frame Set Select", keys[currentItem].data(), ImGuiComboFlags_PopupAlignLeft))
+	{
+		for (size_t i = 0; i < keys.size(); i++)
+		{
+			const bool isSelected = (currentItem == i);
+			if (ImGui::Selectable(keys[i].data(), &isSelected))
+				currentItem = i;
+		}
+		ImGui::EndCombo();
+	}
+	
+	currentKey = keys[currentItem];
+	if (lastItem != currentItem)
+	{
+		lastItem = currentItem;
+		MediaManager::Get().bind(currentKey, index + 0);
+	}
+
+	ImGui::End();
 }
 
 void EditorGUI::RunEditorGUI()
@@ -116,66 +202,8 @@ void EditorGUI::RunEditorGUI()
 			CAE::Helper::DrawBackgroundImage(MediaManager::Get().getTextureID(), size, { 512,512 });
 			ImGui::End();
 
-			{
-				ImGui::Begin("Frame Selector", nullptr, ImGuiWindowFlags_NoCollapse);
-
-				// Centering buttons - https://github.com/ocornut/imgui/discussions/3862 - 28/02/2024
-				ImGuiStyle& style = ImGui::GetStyle();
-				float width = 25.0f;
-				width += ImGui::CalcTextSize("<--").x;
-				width += style.ItemSpacing.x;
-				width += style.ItemSpacing.x;
-				width += ImGui::CalcTextSize("-->").x;
-				AlignForWidth(width);
-
-				ImGui::PushButtonRepeat(true);
-
-				std::string_view& key = MediaManager::Get().getCurrentKey();
-
-				size_t index = MediaManager::Get().getCurrentIndex();
-				if (ImGui::ArrowButton("LeftArrow", ImGuiDir_Left))
-					MediaManager::Get().bind(key, index - 1);
-
-				ImGui::SameLine();
-
-				ImGui::PushItemWidth(25);
-				if (ImGui::InputScalar("frame #", ImGuiDataType_U64, &index, NULL, NULL, NULL, ImGuiInputTextFlags_AlwaysOverwrite) && index < MediaManager::Get().getTotal("src1"))
-				{
-					MediaManager::Get().bind(key, index + 0);
-				}
-				ImGui::PopItemWidth();
-
-				ImGui::SameLine();
-
-				if (ImGui::ArrowButton("RightArrow", ImGuiDir_Right))
-					MediaManager::Get().bind(key, index + 1);
-				ImGui::PushButtonRepeat(false);
-
-				ImGui::End();
-			}
-
-			{
-				ImGui::Begin("Details");
-
-				std::string text = "Frame Number: " + std::to_string(MediaManager::Get().getCurrentIndex());
-				ImGui::Text(text.c_str());
-				ImGui::NewLine();
-
-				auto keys = MediaManager::Get().getKeys();
-				static size_t currentItem = 0;
-				if (ImGui::BeginCombo("Frame Set Select", keys[currentItem].data(), ImGuiComboFlags_PopupAlignLeft))
-				{
-					for (size_t i = 0; i < keys.size(); i++)
-					{
-						const bool isSelected = (currentItem == i);
-						if (ImGui::Selectable(keys[i].data(), &isSelected))
-							currentItem = i;
-					}
-					ImGui::EndCombo();
-				}
-
-				ImGui::End();
-			}
+			showFrameSelectionPanel();
+			showDetailsPanel();
 
 		}
 

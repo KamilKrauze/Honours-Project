@@ -3,8 +3,8 @@
 #include "Core/CAEHelper.h"
 #include "Core/MediaManager.h"
 
-#include "Basic/BasicGUI.h"
 #include "Core/KeyCallback.h"
+#include "GUI/EditorGUI.hpp"
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -105,7 +105,7 @@ int Application::run()
 		{
 			// IMGUI CODE HERE....
 
-			BGui::basic_gui();
+			EditorGUI::RunEditorGUI();
 
 		}
 

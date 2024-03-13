@@ -34,13 +34,16 @@ public:
 	size_t getTotal(std::string_view key) const noexcept { return m_media.at(key).size(); }
 
 	// Gets the currently attached frame key.
-	std::string_view CurrentKey() const noexcept { return m_currently_attached.first; }
+	std::string_view getCurrentKey() const noexcept { return m_currently_attached.first; }
 	
 	// Gets the currently attached frame index.
-	size_t CurrentIndex() const noexcept { return m_currently_attached.second; }
+	size_t getCurrentIndex() const noexcept { return m_currently_attached.second; }
+
+	// Get list of keys
+	std::vector<std::string_view> getKeys() const noexcept;
 
 	// Retrieves the currently attached texture ID.
-	ImTextureID texture() const noexcept;
+	ImTextureID getTextureID() const noexcept;
 
 public:
 	// Load single image into buffer
@@ -54,10 +57,6 @@ public:
 
 	// Unbind texture from memory.
 	void unbind();
-
-public:
-	void show_next_image();
-	void show_previours_image();
 
 public:
 	void equalizeHistogram();

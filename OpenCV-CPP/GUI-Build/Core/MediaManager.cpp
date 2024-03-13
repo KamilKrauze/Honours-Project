@@ -38,7 +38,18 @@ MediaManager::~MediaManager()
 	//this->s_Instance = nullptr;
 }
 
-ImTextureID MediaManager::texture() const noexcept
+std::vector<std::string_view> MediaManager::getKeys() const noexcept
+{
+	std::vector<std::string_view> keys;
+	for (auto it = m_media.begin(); it != m_media.end(); it++)
+	{
+		keys.push_back((*it).first);
+	}
+
+	return keys;
+}
+
+ImTextureID MediaManager::getTextureID() const noexcept
 {
 	return m_textures[m_currently_attached.second];
 }
@@ -117,15 +128,21 @@ void MediaManager::equalizeHistogram()
 {
 	if (m_currently_attached.second >= 0)
 	{
-		Frame& img = m_media[m_currently_attached.first][m_currently_attached.second];
-		
-		// Convert to grayscale
-		if (img.channels() > 1)
-			cv::cvtColor(img, img, cv::COLOR_RGB2GRAY);
+		Frames& frames = m_media["src1"];
+		Frames new_frames(frames.size());
 
-		// Equalize histogram
-		cv::equalizeHist(img, img);
-		cv::cvtColor(img, img, cv::COLOR_GRAY2RGB); // Convert colours
+		// Convert to grayscale
+		for (size_t i=0; i<frames.size(); i++)
+		{
+			if (frames[i].channels() > 1)
+				cv::cvtColor(frames[i], new_frames[i], cv::COLOR_RGB2GRAY);
+
+			// Equalize histogram
+			cv::equalizeHist(new_frames[i], new_frames[i]);
+			cv::cvtColor(new_frames[i], new_frames[i], cv::COLOR_GRAY2RGB); // Convert colours
+		}
+
+		m_media["heq"] = new_frames;
 	}
 
 }
