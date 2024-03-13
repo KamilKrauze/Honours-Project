@@ -2,16 +2,22 @@
 #define MEDIA_MANAGER_H
 
 #include <vector>
+#include <unordered_map>
+#include <string_view>
 
 #include <imgui.h>
 #include <opencv2/imgcodecs.hpp>
 
 class cv::Mat;
 
+constexpr std::string_view ORIGINAL = { "original" };
+
 class MediaManager
 {
 public:
 	using StringConstItr = std::vector<cv::String>::const_iterator; // Shortened down variation
+	using Frame = cv::Mat;
+	using Frames = std::vector<Frame>;
 
 public:
 	MediaManager();
@@ -21,29 +27,30 @@ public:
 	// Get media-loader instance
 	static MediaManager& Get() { return *s_Instance; }
 		
-	// Retrieves the original media container.
-	std::vector<cv::Mat>& original_media() { return m_media_org; }
+	// Retrieves a frame container associated to the valid key.
+	Frames& getMedia(std::string_view key) { return m_media[key]; }
+
+	// Gets the size of the frame container by the valid key.
+	size_t getTotal(std::string_view key) const noexcept { return m_media.at(key).size(); }
+
+	// Gets the currently attached frame key.
+	std::string_view CurrentKey() const noexcept { return m_currently_attached.first; }
 	
-	// Retrieves the enhanced media container.
-	std::vector<cv::Mat>& enhanced_media() { return m_media_enh; }
-
-	size_t getTotal() const noexcept { return m_media_org.size(); }
-
-	// Gets the currently attached texture index.
-	size_t get_current_index() const noexcept { return m_currently_attached; }
+	// Gets the currently attached frame index.
+	size_t CurrentIndex() const noexcept { return m_currently_attached.second; }
 
 	// Retrieves the currently attached texture ID.
 	ImTextureID texture() const noexcept;
 
 public:
 	// Load single image into buffer
-	bool load_image(cv::String filepath, const cv::ImreadModes mode);
+	bool load_image(std::string_view key, cv::String filepath, const cv::ImreadModes mode);
 
 	// Load many images into buffer
-	bool load_images(StringConstItr start, StringConstItr end);
+	bool load_images(std::string_view key, StringConstItr start, StringConstItr end);
 	
 	// Bind texture to memory.
-	void bind(const size_t&& index);
+	void bind(std::string_view key, const size_t&& index);
 
 	// Unbind texture from memory.
 	void unbind();
@@ -56,9 +63,8 @@ public:
 	void equalizeHistogram();
 
 private:
-	size_t m_currently_attached = 0; // The index of the currently attached image.
-	std::vector<cv::Mat> m_media_org; // Media container for the imported.
-	std::vector<cv::Mat> m_media_enh; // Media container for the enhanced versions.
+	std::unordered_map<std::string_view, Frames> m_media;
+	std::pair<std::string_view, size_t> m_currently_attached; // The index of the currently attached image.
 	std::vector<ImTextureID> m_textures; // Texture ID's loaded into memory using glBindTexture().
 	static MediaManager* s_Instance; // Static reference to self (this).
 };

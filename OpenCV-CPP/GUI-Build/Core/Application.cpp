@@ -88,7 +88,7 @@ int Application::run()
 
 	glEnable(GL_TEXTURE_2D);
 
-	MediaManager::Get().bind(0);
+	MediaManager::Get().bind("src1", 0);
 
 	int display_w, display_h;
 	while (!glfwWindowShouldClose(window))

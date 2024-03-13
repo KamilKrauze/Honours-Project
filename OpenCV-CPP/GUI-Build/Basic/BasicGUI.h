@@ -105,7 +105,7 @@ namespace BGui {
 			if (ImGui::Button("Equalize Histogram"))
 			{
 				MediaManager::Get().equalizeHistogram();
-				MediaManager::Get().bind( MediaManager::Get().get_current_index() );
+				MediaManager::Get().bind("src1", MediaManager::Get().CurrentIndex());
 			}
 
 			ImGui::End();
@@ -118,7 +118,7 @@ namespace BGui {
 			{
 				ImGui::BeginChild("Frame Data");
 	
-				std::string text = "Frame Number: " + std::to_string(MediaManager::Get().get_current_index());
+				std::string text = "Frame Number: " + std::to_string(MediaManager::Get().CurrentIndex());
 				ImGui::Text(text.c_str());
 
 				ImGui::EndChild();
@@ -130,6 +130,7 @@ namespace BGui {
 
 			{
 				ImGui::Begin("Frame Selector", nullptr, ImGuiWindowFlags_NoCollapse);
+				
 				// Centering buttons - https://github.com/ocornut/imgui/discussions/3862 - 28/02/2024
 				ImGuiStyle& style = ImGui::GetStyle();
 				float width = 25.0f;
@@ -140,25 +141,28 @@ namespace BGui {
 				AlignForWidth(width);
 
 				ImGui::PushButtonRepeat(true);
-				size_t index = MediaManager::Get().get_current_index();
+
+				std::string_view& key = MediaManager::Get().CurrentKey();
+
+				size_t index = MediaManager::Get().CurrentIndex();
 				if (ImGui::ArrowButton("LeftArrow", ImGuiDir_Left))
-					MediaManager::Get().bind(index - 1);
+					MediaManager::Get().bind(key, index - 1);
 
 				ImGui::SameLine();
 
 				ImGui::PushItemWidth(25);
-				if (ImGui::InputScalar("frame #", ImGuiDataType_U64, &index, NULL, NULL, NULL, ImGuiInputTextFlags_AlwaysOverwrite) && index < MediaManager::Get().getTotal())
+				if (ImGui::InputScalar("frame #", ImGuiDataType_U64, &index, NULL, NULL, NULL, ImGuiInputTextFlags_AlwaysOverwrite) && index < MediaManager::Get().getTotal("src1"))
 				{
-					MediaManager::Get().bind(index + 0);
+					MediaManager::Get().bind(key, index + 0);
 				}
 				ImGui::PopItemWidth();
 
 				ImGui::SameLine();
 
 				if (ImGui::ArrowButton("RightArrow", ImGuiDir_Right))
-					MediaManager::Get().bind(index + 1);
+					MediaManager::Get().bind(key, index + 1);
 				ImGui::PushButtonRepeat(false);
-				
+
 				ImGui::End();
 			}
 
