@@ -1,6 +1,7 @@
 import cv2 as cv
 import pywt
 import numpy as npy
+import scipy as spy
 
 class DWT_Coeffs:
     LL: npy.ndarray # Approximate coeffs   (low-pass)
@@ -40,19 +41,18 @@ def fuse_coefficients(cf1:npy.ndarray, cf2:npy.ndarray) -> npy.ndarray:
 
     # # Calculate the covariance matrix
     C = npy.cov(X, rowvar=False)
-    # D, V = npy.linalg.eigh(C) # D - Eigen Valeus, V - Eigen Vectors
-    # D = D.T.reshape(-1, 1)
-
-    vals, vecs = cv.eigenNonSymmetric(C)
-    # print("Vals -> {0}".format(vals))
-    # print("Vecs -> {0}".format(vecs))
+    vals, vecs = spy.linalg.eigh(C) # Eigen Valeus, Eigen Vectors
+    vals = vals.T.reshape(-1, 1)
         
+    print(vals)
+    
     if vals[0] >= vals[1]:
         P = vecs[0] / npy.sum(vecs[:,0])
     else:
         P = vecs[1] / npy.sum(vecs[:,1])
 
     print(P)
+    print()
 
     # Fuse coefficients based on weights
     fused_cf = (P[0] * cf1) + (P[1] * cf2)
