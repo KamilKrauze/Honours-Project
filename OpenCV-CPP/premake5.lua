@@ -25,7 +25,8 @@ project "HonsProject-OpenCV-GUI"
         
         -- Thirdparty
         "./include/",
-        "./include/imgui/" --ImGUI has to be explicitly done this way
+        "./include/imgui/", --ImGUI has to be explicitly done this way
+        "./include/implot/" --implot has to be explicitly done this way
     }
 
 -- Windows system

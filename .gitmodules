@@ -2,6 +2,6 @@
 	path = OpenCV-CPP/thirdparty/glfw
 	url = https://github.com/glfw/glfw
 
-[submodule "OpenCV-CPP/include/implot"]
-	path = OpenCV-CPP/include/implot
-	url = https://github.com/epezent/implot
+[submodule "OpenCV-CPP/thirdparty/implot"]
+	path = OpenCV-CPP/thirdparty/implot
+	url = https://github.com/epezent/implot.git
