@@ -3,8 +3,8 @@
 #include "Core/CAEHelper.h"
 #include "Core/MediaManager.h"
 
-#include "Basic/BasicGUI.h"
 #include "Core/KeyCallback.h"
+#include "GUI/EditorGUI.hpp"
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -88,7 +88,7 @@ int Application::run()
 
 	glEnable(GL_TEXTURE_2D);
 
-	MediaManager::Get().bind(0);
+	MediaManager::Get().bind("src1", 0);
 
 	int display_w, display_h;
 	while (!glfwWindowShouldClose(window))
@@ -105,7 +105,7 @@ int Application::run()
 		{
 			// IMGUI CODE HERE....
 
-			BGui::basic_gui();
+			EditorGUI::RunEditorGUI();
 
 		}
 

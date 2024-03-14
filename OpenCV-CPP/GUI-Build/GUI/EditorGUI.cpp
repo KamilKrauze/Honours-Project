@@ -1,18 +1,27 @@
-#ifndef BASIC_GUI_H
-#define BASIC_GUI_H
+#include "GUI/EditorGUI.hpp"
+
+#include <iostream>
+#include <string>
+#include <sstream>
+#include <string_view>
 
 #include <imgui.h>
 #include <opencv2/highgui.hpp>
 
-#include <iostream>
-#include <sstream>
-#include <string>
-
 #include "Core/CAEHelper.h"
 #include "Core/MediaManager.h"
 
+using Keys = std::vector<std::string_view>;
+
+static size_t index = 0;
+static size_t currentItem = 0;
+static size_t lastItem = 0;
+
+static std::string_view currentKey = "";
+static std::string dstKey = "";
+
 // Centering buttons - https://github.com/ocornut/imgui/discussions/3862 - 28/02/2024
-void AlignForWidth(float width, float alignment = 0.5f)
+inline void AlignForWidth(float width, float alignment = 0.5f)
 {
 	ImGuiStyle& style = ImGui::GetStyle();
 	float avail = ImGui::GetContentRegionAvail().x;
@@ -21,9 +30,129 @@ void AlignForWidth(float width, float alignment = 0.5f)
 		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + off);
 }
 
-namespace BGui {
-	inline void basic_gui()
+void showSettingsPanel()
+{
+	ImGui::Begin("Modifiers");
+
+	if (ImGui::Button("Equalize Histogram"))
 	{
+		ImGui::OpenPopup("Select Dataset");
+	}
+
+	if (ImGui::BeginPopupModal("Select Dataset", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize))
+	{
+		ImGui::SetItemDefaultFocus();
+		ImGui::Text("Select the data source and name the new dataset (careful you may override something if the same name is given!)");
+
+		static size_t current_item = 0;
+		Keys keys = MediaManager::Get().getKeys();
+		if (ImGui::BeginCombo("Source", keys[current_item].data(), ImGuiComboFlags_PopupAlignLeft))
+		{
+			for (size_t i = 0; i < keys.size(); i++)
+			{
+				const bool isSelected = (current_item == i);
+				if (ImGui::Selectable(keys[i].data(), &isSelected))
+					current_item = i;
+			}
+			ImGui::EndCombo();
+		}
+
+		ImGui::SameLine();
+		ImGui::Text(" --> ");
+		ImGui::SameLine();
+		ImGui::InputText(": Destination", dstKey.data(), 20);
+
+		if (ImGui::Button("Ok"))
+		{
+			lastItem = currentItem;
+			currentItem = current_item;
+			currentKey = keys[current_item];
+
+			MediaManager::Get().equalizeHistogram(currentKey.data(), dstKey.c_str());
+			MediaManager::Get().bind(dstKey, MediaManager::Get().getCurrentIndex());
+
+			ImGui::CloseCurrentPopup();
+
+			dstKey = "";
+		}
+
+		ImGui::EndPopup();
+
+	}
+
+	ImGui::End();
+}
+
+void showFrameSelectionPanel()
+
+{
+	ImGui::Begin("Frame Selector", nullptr, ImGuiWindowFlags_NoCollapse);
+
+	// Centering buttons - https://github.com/ocornut/imgui/discussions/3862 - 28/02/2024
+	ImGuiStyle& style = ImGui::GetStyle();
+	float width = 25.0f;
+	width += ImGui::CalcTextSize("<--").x;
+	width += style.ItemSpacing.x;
+	width += style.ItemSpacing.x;
+	width += ImGui::CalcTextSize("-->").x;
+	AlignForWidth(width);
+
+	ImGui::PushButtonRepeat(true);
+
+	index = MediaManager::Get().getCurrentIndex();
+	if (ImGui::ArrowButton("LeftArrow", ImGuiDir_Left))
+		MediaManager::Get().bind(currentKey, index - 1);
+
+	ImGui::SameLine();
+
+	ImGui::PushItemWidth(25);
+	if (ImGui::InputScalar("frame #", ImGuiDataType_U64, &index, NULL, NULL, NULL, ImGuiInputTextFlags_AlwaysOverwrite) && index < MediaManager::Get().getTotal("src1"))
+	{
+		MediaManager::Get().bind(currentKey, index + 0);
+	}
+	ImGui::PopItemWidth();
+
+	ImGui::SameLine();
+
+	if (ImGui::ArrowButton("RightArrow", ImGuiDir_Right))
+		MediaManager::Get().bind(currentKey, index + 1);
+	ImGui::PushButtonRepeat(false);
+
+	ImGui::End();
+}
+
+void showDetailsPanel()
+{
+	ImGui::Begin("Details");
+
+	std::string text = "Frame Number: " + std::to_string(MediaManager::Get().getCurrentIndex());
+	ImGui::Text(text.c_str());
+	ImGui::NewLine();
+
+	Keys keys = MediaManager::Get().getKeys();
+	if (ImGui::BeginCombo("Frame Set Select", keys[currentItem].data(), ImGuiComboFlags_PopupAlignLeft))
+	{
+		for (size_t i = 0; i < keys.size(); i++)
+		{
+			const bool isSelected = (currentItem == i);
+			if (ImGui::Selectable(keys[i].data(), &isSelected))
+				currentItem = i;
+		}
+		ImGui::EndCombo();
+	}
+	
+	currentKey = keys[currentItem];
+	if (lastItem != currentItem)
+	{
+		lastItem = currentItem;
+		MediaManager::Get().bind(currentKey, index + 0);
+	}
+
+	ImGui::End();
+}
+
+void EditorGUI::RunEditorGUI()
+{
 		static bool opt_fullscreen = true;
 		static bool opt_padding = false;
 		static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
@@ -99,76 +228,28 @@ namespace BGui {
 			ImGui::EndMenuBar();
 		}
 
-		{
-			ImGui::Begin("Settings");
-			
-			if (ImGui::Button("Equalize Histogram"))
-			{
-				MediaManager::Get().equalizeHistogram();
-				MediaManager::Get().bind( MediaManager::Get().get_current_index() );
-			}
-
-			ImGui::End();
-		}
-
+		showSettingsPanel();
 
 		{
 			ImGui::Begin("Viewport");
 
 			{
 				ImGui::BeginChild("Frame Data");
-	
-				std::string text = "Frame Number: " + std::to_string(MediaManager::Get().get_current_index());
+
+				std::string text = "Frame Number: " + std::to_string(MediaManager::Get().getCurrentIndex());
 				ImGui::Text(text.c_str());
 
 				ImGui::EndChild();
 			}
 
 			ImVec2 size = ImGui::GetWindowSize();
-			CAE::Helper::DrawBackgroundImage(MediaManager::Get().texture(), size, { 512,512 });
+			CAE::Helper::DrawBackgroundImage(MediaManager::Get().getTextureID(), size, { 512,512 });
 			ImGui::End();
 
-			{
-				ImGui::Begin("Frame Selector", nullptr, ImGuiWindowFlags_NoCollapse);
-				// Centering buttons - https://github.com/ocornut/imgui/discussions/3862 - 28/02/2024
-				ImGuiStyle& style = ImGui::GetStyle();
-				float width = 25.0f;
-				width += ImGui::CalcTextSize("<--").x;
-				width += style.ItemSpacing.x;
-				width += style.ItemSpacing.x;
-				width += ImGui::CalcTextSize("-->").x;
-				AlignForWidth(width);
-
-				ImGui::PushButtonRepeat(true);
-				size_t index = MediaManager::Get().get_current_index();
-				if (ImGui::ArrowButton("LeftArrow", ImGuiDir_Left))
-					MediaManager::Get().bind(index - 1);
-
-				ImGui::SameLine();
-
-				ImGui::PushItemWidth(25);
-				if (ImGui::InputScalar("frame #", ImGuiDataType_U64, &index, NULL, NULL, NULL, ImGuiInputTextFlags_AlwaysOverwrite) && index < MediaManager::Get().getTotal())
-				{
-					MediaManager::Get().bind(index + 0);
-				}
-				ImGui::PopItemWidth();
-
-				ImGui::SameLine();
-
-				if (ImGui::ArrowButton("RightArrow", ImGuiDir_Right))
-					MediaManager::Get().bind(index + 1);
-				ImGui::PushButtonRepeat(false);
-				
-				ImGui::End();
-			}
-
+			showFrameSelectionPanel();
+			showDetailsPanel();
 
 		}
 
 		ImGui::End();
 	}
-    
-};
-
-#endif // !BASIC_GUI_H
-

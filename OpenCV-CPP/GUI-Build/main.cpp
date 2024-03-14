@@ -31,7 +31,7 @@ int main()
         list.push_back(directory + filename +file_format);
     }
 
-    MediaManager::Get().load_images(list.begin(), list.end());
+    MediaManager::Get().load_images("src1", list.begin(), list.end());
 
     return app.run();
 }
