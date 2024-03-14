@@ -60,7 +60,7 @@ bool MediaManager::load_image(std::string_view key, cv::String filepath, const c
 	if (img.empty())
 		return false;
 
-	this->m_media[key].push_back(img);
+	this->m_media[key.data()].push_back(img);
 
 	// Resize texture ID pool
 	const size_t texture_id_pool = m_textures.size();
@@ -80,7 +80,7 @@ bool MediaManager::load_images(std::string_view key, StringConstItr start, Strin
 		if (img.empty())
 			return false;
 
-		m_media[key].push_back(img);
+		m_media[key.data()].push_back(img);
 	}
 
 	size_t size = end - start;
@@ -102,7 +102,7 @@ void MediaManager::bind(std::string_view key, const size_t&& index)
 	if (m_currently_attached.second >= 0 || index >= 0)
 		unbind();
 
-	ImTextureID texture_id = CAE::Helper::MatToImTextureID(this->m_media[key][index]);
+	ImTextureID texture_id = CAE::Helper::MatToImTextureID(this->m_media[key.data()][index]);
 	this->m_textures[index] = texture_id;
 	this->m_currently_attached.first = {key};
 	this->m_currently_attached.second = index;
@@ -124,11 +124,11 @@ void MediaManager::unbind()
 	return;
 }
 
-void MediaManager::equalizeHistogram()
+void MediaManager::equalizeHistogram(std::string_view src, std::string_view dst)
 {
 	if (m_currently_attached.second >= 0)
 	{
-		Frames& frames = m_media["src1"];
+		Frames& frames = m_media[src.data()];
 		Frames new_frames(frames.size());
 
 		// Convert to grayscale
@@ -140,9 +140,9 @@ void MediaManager::equalizeHistogram()
 			// Equalize histogram
 			cv::equalizeHist(new_frames[i], new_frames[i]);
 			cv::cvtColor(new_frames[i], new_frames[i], cv::COLOR_GRAY2RGB); // Convert colours
-		}
+		}		
 
-		m_media["heq"] = new_frames;
+		m_media[dst.data()] = new_frames;
+		return;
 	}
-
 }

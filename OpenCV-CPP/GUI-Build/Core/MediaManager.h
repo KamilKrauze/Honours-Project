@@ -28,10 +28,10 @@ public:
 	static MediaManager& Get() { return *s_Instance; }
 		
 	// Retrieves a frame container associated to the valid key.
-	Frames& getMedia(std::string_view key) { return m_media[key]; }
+	Frames& getMedia(const std::string&& key) { return m_media[key]; }
 
 	// Gets the size of the frame container by the valid key.
-	size_t getTotal(std::string_view key) const noexcept { return m_media.at(key).size(); }
+	size_t getTotal(const std::string&& key) const noexcept { return m_media.at(key).size(); }
 
 	// Gets the currently attached frame key.
 	std::string_view getCurrentKey() const noexcept { return m_currently_attached.first; }
@@ -59,10 +59,10 @@ public:
 	void unbind();
 
 public:
-	void equalizeHistogram();
+	void equalizeHistogram(std::string_view src, std::string_view dst);
 
 private:
-	std::unordered_map<std::string_view, Frames> m_media;
+	std::unordered_map<std::string, Frames> m_media;
 	std::pair<std::string_view, size_t> m_currently_attached; // The index of the currently attached image.
 	std::vector<ImTextureID> m_textures; // Texture ID's loaded into memory using glBindTexture().
 	static MediaManager* s_Instance; // Static reference to self (this).

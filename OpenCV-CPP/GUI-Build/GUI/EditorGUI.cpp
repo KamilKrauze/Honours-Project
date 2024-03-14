@@ -14,7 +14,11 @@
 using Keys = std::vector<std::string_view>;
 
 static size_t index = 0;
+static size_t currentItem = 0;
+static size_t lastItem = 0;
+
 static std::string_view currentKey = "";
+static std::string dstKey = "";
 
 // Centering buttons - https://github.com/ocornut/imgui/discussions/3862 - 28/02/2024
 inline void AlignForWidth(float width, float alignment = 0.5f)
@@ -24,6 +28,59 @@ inline void AlignForWidth(float width, float alignment = 0.5f)
 	float off = (avail - width) * alignment;
 	if (off > 0.0f)
 		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + off);
+}
+
+void showSettingsPanel()
+{
+	ImGui::Begin("Modifiers");
+
+	if (ImGui::Button("Equalize Histogram"))
+	{
+		ImGui::OpenPopup("Select Dataset");
+	}
+
+	if (ImGui::BeginPopupModal("Select Dataset", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize))
+	{
+		ImGui::SetItemDefaultFocus();
+		ImGui::Text("Select the data source and name the new dataset (careful you may override something if the same name is given!)");
+
+		static size_t current_item = 0;
+		Keys keys = MediaManager::Get().getKeys();
+		if (ImGui::BeginCombo("Source", keys[current_item].data(), ImGuiComboFlags_PopupAlignLeft))
+		{
+			for (size_t i = 0; i < keys.size(); i++)
+			{
+				const bool isSelected = (current_item == i);
+				if (ImGui::Selectable(keys[i].data(), &isSelected))
+					current_item = i;
+			}
+			ImGui::EndCombo();
+		}
+
+		ImGui::SameLine();
+		ImGui::Text(" --> ");
+		ImGui::SameLine();
+		ImGui::InputText(": Destination", dstKey.data(), 20);
+
+		if (ImGui::Button("Ok"))
+		{
+			lastItem = currentItem;
+			currentItem = current_item;
+			currentKey = keys[current_item];
+
+			MediaManager::Get().equalizeHistogram(currentKey.data(), dstKey.c_str());
+			MediaManager::Get().bind(dstKey, MediaManager::Get().getCurrentIndex());
+
+			ImGui::CloseCurrentPopup();
+
+			dstKey = "";
+		}
+
+		ImGui::EndPopup();
+
+	}
+
+	ImGui::End();
 }
 
 void showFrameSelectionPanel()
@@ -64,7 +121,6 @@ void showFrameSelectionPanel()
 	ImGui::End();
 }
 
-static size_t lastItem = 0;
 void showDetailsPanel()
 {
 	ImGui::Begin("Details");
@@ -73,7 +129,6 @@ void showDetailsPanel()
 	ImGui::Text(text.c_str());
 	ImGui::NewLine();
 
-	static size_t currentItem = 0;
 	Keys keys = MediaManager::Get().getKeys();
 	if (ImGui::BeginCombo("Frame Set Select", keys[currentItem].data(), ImGuiComboFlags_PopupAlignLeft))
 	{
@@ -173,18 +228,7 @@ void EditorGUI::RunEditorGUI()
 			ImGui::EndMenuBar();
 		}
 
-		{
-			ImGui::Begin("Settings");
-
-			if (ImGui::Button("Equalize Histogram"))
-			{
-				MediaManager::Get().equalizeHistogram();
-				MediaManager::Get().bind("src1", MediaManager::Get().getCurrentIndex());
-			}
-
-			ImGui::End();
-		}
-
+		showSettingsPanel();
 
 		{
 			ImGui::Begin("Viewport");
