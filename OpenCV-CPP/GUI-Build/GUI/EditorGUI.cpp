@@ -6,6 +6,7 @@
 #include <string_view>
 
 #include <imgui.h>
+#include <implot/implot.h>
 #include <opencv2/highgui.hpp>
 
 #include "Core/CAEHelper.h"
@@ -30,7 +31,7 @@ inline void AlignForWidth(float width, float alignment = 0.5f)
 		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + off);
 }
 
-void showSettingsPanel()
+static void showSettingsPanel()
 {
 	ImGui::Begin("Modifiers");
 
@@ -75,6 +76,9 @@ void showSettingsPanel()
 
 			dstKey = "";
 		}
+		ImGui::SameLine();
+		if (ImGui::Button("Cancel"))
+			ImGui::CloseCurrentPopup();
 
 		ImGui::EndPopup();
 
@@ -83,7 +87,7 @@ void showSettingsPanel()
 	ImGui::End();
 }
 
-void showFrameSelectionPanel()
+static void showFrameSelectionPanel()
 
 {
 	ImGui::Begin("Frame Selector", nullptr, ImGuiWindowFlags_NoCollapse);
@@ -121,7 +125,7 @@ void showFrameSelectionPanel()
 	ImGui::End();
 }
 
-void showDetailsPanel()
+static void showDetailsPanel()
 {
 	ImGui::Begin("Details");
 
@@ -148,6 +152,34 @@ void showDetailsPanel()
 		MediaManager::Get().bind(currentKey, index + 0);
 	}
 
+	ImGui::End();
+}
+
+static bool showPlot = true;
+static std::vector<float> x_data(51), y_data(51);
+static void showImageMeasurePlots(std::string_view plot_name)
+{
+	ImPlot::CreateContext();
+	for (size_t i = 0; i < 51; i++)
+	{
+		x_data[i] = i;
+	}
+
+	for (int i = 0; i < 51; ++i) {
+		float result = 0.9 * sin(25 * x_data[i]) * cos(2 * x_data[i]);
+		y_data[i] = std::clamp(result, 0.0f, result);
+	}
+
+	ImGui::Begin("Contrast Measure Plot");
+	if (ImPlot::BeginPlot(plot_name.data(), {-0.1,-1}, ImPlotFlags_Crosshairs | ImPlotFlags_NoLegend))
+	{
+		ImPlot::SetNextMarkerStyle(ImPlotMarker_Circle);
+		ImPlot::PlotScatter("Scatter Plot", x_data.data(), y_data.data(), 51);
+
+
+		ImPlot::PlotLine("Line Plot", x_data.data(), y_data.data(), x_data.size());
+		ImPlot::EndPlot();
+	}
 	ImGui::End();
 }
 
@@ -250,6 +282,8 @@ void EditorGUI::RunEditorGUI()
 			showDetailsPanel();
 
 		}
+
+		showImageMeasurePlots("CII");
 
 		ImGui::End();
 	}

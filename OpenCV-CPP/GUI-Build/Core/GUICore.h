@@ -2,14 +2,22 @@
 #define GUI_H
 
 #define IMGUI_IMPL_OPENGL_LOADER_GLAD
+
+#ifndef IMPLOT_DISABLE_OBSOLETE_FUNCTIONS
+#define IMPLOT_DISABLE_OBSOLETE_FUNCTIONS
+#endif
+
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
 
+#include <implot/implot.h>
+
 
 #define SETUP_GUI_CONTEXT() \
 	IMGUI_CHECKVERSION(); \
-	ImGui::CreateContext()
+	ImGui::CreateContext(); \
+	ImPlot::CreateContext()
 
 #define GUI_DARK() ImGui::StyleColorsDark()
 #define GUI_LIGHT() ImGui::StyleColorsLight()
@@ -41,12 +49,13 @@
 			glfwMakeContextCurrent(backup_current_context); \
 		}
 #elif __linux__
-	UPDATE_AND_RENDER()
+UPDATE_AND_RENDER()
 #endif
 
 #define CLEANUP_GUI() \
 	ImGui_ImplOpenGL3_Shutdown(); \
 	ImGui_ImplGlfw_Shutdown(); \
-	ImGui::DestroyContext()
+	ImGui::DestroyContext(); \
+	ImPlot::DestroyContext()
 
 #endif
