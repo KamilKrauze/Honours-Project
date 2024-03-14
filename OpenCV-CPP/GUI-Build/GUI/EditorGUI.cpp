@@ -156,7 +156,7 @@ static void showDetailsPanel()
 }
 
 static bool showPlot = true;
-static std::vector<float> x_data(51), y_data(51);
+static std::vector<double> x_data(51), y_data(51);
 static void showImageMeasurePlots(std::string_view plot_name)
 {
 	ImPlot::CreateContext();
@@ -174,8 +174,7 @@ static void showImageMeasurePlots(std::string_view plot_name)
 	if (ImPlot::BeginPlot(plot_name.data(), {-0.1,-1}, ImPlotFlags_Crosshairs | ImPlotFlags_NoLegend))
 	{
 		ImPlot::SetNextMarkerStyle(ImPlotMarker_Circle);
-		ImPlot::PlotScatter("Scatter Plot", x_data.data(), y_data.data(), 51);
-
+		ImPlot::PlotScatter("Scatter Plot", x_data.data(), y_data.data(), x_data.size());
 
 		ImPlot::PlotLine("Line Plot", x_data.data(), y_data.data(), x_data.size());
 		ImPlot::EndPlot();
