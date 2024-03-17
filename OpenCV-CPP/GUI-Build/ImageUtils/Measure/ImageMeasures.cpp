@@ -62,17 +62,17 @@ double ImgMeasure::SSIM(const cv::Mat& org, const cv::Mat& enh)
 
 double ImgMeasure::CII(const cv::Mat& org, const cv::Mat& enh)
 {
-    // Local contrasts
+
     std::vector<double> Cloc_org(0), Cloc_enh(0);
     double entropy_org = 0.0f, entropy_enh = 0.0f;
 
     std::thread t1([&org, &Cloc_org, &entropy_org] {
-        Cloc_org = ImgMath::coefficientsOfLocation(org);
+        Cloc_org = ImgMath::coefficientsOfLocation(org); // Local contrast of original image
         entropy_org = ImgMath::entropy(Cloc_org);
         });
 
     std::thread t2([&enh, &Cloc_enh, &entropy_enh] {
-        Cloc_enh = ImgMath::coefficientsOfLocation(enh);
+        Cloc_enh = ImgMath::coefficientsOfLocation(enh); // Local contrast of 'enhanced' image
         entropy_enh = ImgMath::entropy(Cloc_enh);
         });
 
