@@ -60,15 +60,6 @@ double ImgMeasure::SSIM(const cv::Mat& org, const cv::Mat& enh)
     return numerator / denominator;
 }
 
-inline static void printLocalContrasts(const std::vector<double>& vec)
-{
-    for (auto& item : vec)
-    {
-        printf("%Lf \n", item);
-    }
-    return;
-}
-
 double ImgMeasure::CII(const cv::Mat& org, const cv::Mat& enh)
 {
     // Local contrasts
