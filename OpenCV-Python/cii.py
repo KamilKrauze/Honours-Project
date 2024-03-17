@@ -20,20 +20,17 @@ def coefficientsOfLocation(image: cv.Mat):
     min_vals = list()
     coefficients = []
     
-    sub_region: npy.ndarray[any][any]    
     for y in range(510):
         for x in range(510):
-            sub_region = image[y:y+3, x:x+3]
+            sub_region: cv.Mat = image[x:x+3, y:y+3]
 
             max_vals.append(npy.amax(sub_region))
             min_vals.append(npy.amin(sub_region))
 
-    
     if len(max_vals) == len(min_vals):
         for i in range(0, len(max_vals)):
             if ( max_vals[i] + min_vals[i] ) == 0: # Skip if denominator is 0
-                i +=1
-                i += 1
+                i += 2
             else:
                 a = ( max_vals[i] - min_vals[i] ) / ( max_vals[i] + min_vals[i] ) # (max - min) / (max + min)
                 coefficients.append(a)
