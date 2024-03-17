@@ -1,5 +1,5 @@
-#include "ImageUtils/Measure/ImageMeasures.hpp"
-#include "ImageUtils/Math/ImageMath.hpp"
+#include "ImgCompute/Measure/ImageMeasures.hpp"
+#include "ImgCompute/Math/ImageMath.hpp"
 
 #include <iostream>
 #include <cassert>
