@@ -4,6 +4,7 @@
 #include <cassert>
 #include <vector>
 #include <thread>
+#include <opencv2/highgui.hpp>
 
 static uint8_t maxOfMatrix(const cv::Mat& mat)
 {
@@ -91,34 +92,24 @@ static uint8_t minOfMatrix(const cv::Mat& mat)
 
 std::vector<double> coefficientsOfLocation(const cv::Mat& mat)
 {
-    std::vector<uint8_t> min_vals, max_vals;
+    std::vector<uint8_t> min_vals(0), max_vals(0);
 
-    cv::Mat sub_region = cv::Mat::zeros(3, 3, CV_8U);
 #pragma omp parallel for
     for (size_t i = 0; i < 510; i++)
     {
         for (size_t j = 0; j < 510; j++)
         {
-            sub_region = mat(cv::Rect(i, j, 3, 3));
+            cv::Mat sub_region = mat(cv::Rect(j, i, 3, 3));
 
-            min_vals.push_back(minOfMatrix(mat));
-            max_vals.push_back(maxOfMatrix(mat));
+            double min = 0, max = 0;
+            cv::minMaxLoc(sub_region, &min, &max);
+
+            min_vals.push_back(static_cast<uint8_t>(min));
+            max_vals.push_back(static_cast<uint8_t>(max));
         }
     }
 
-    for (auto& val : min_vals)
-    {
-        printf("Min val: %d", val);
-    }
-
-    for (auto& val : max_vals)
-    {
-        printf("Max val: %d", val);
-    }
-
     std::vector<double> coefficients(max_vals.size());
-    if (min_vals.size() == max_vals.size())
-    {
 #pragma omp parallel for
         for (size_t i = 0; i < max_vals.size(); i++)
         {
@@ -128,11 +119,10 @@ std::vector<double> coefficientsOfLocation(const cv::Mat& mat)
             }
             else
             {
-                double a = (max_vals[i] - min_vals[i]) / (max_vals[i] + min_vals[i]);
+                double a = static_cast<double>(max_vals[i] - min_vals[i]) / static_cast<double>(max_vals[i] + min_vals[i]);
                 coefficients[i] = (a);
             }
         }
-    }
 
     return coefficients;
 }
@@ -142,9 +132,8 @@ double entropy(const std::vector<double>& probabilities)
     double entropy = 0.0f;
     for (auto& p : probabilities)
     {
-        if (p > 0.0f) {
+        if (p > 0.0f)
             entropy -= (p * std::log2(p));
-        }
     }
     return entropy;
 }
@@ -201,6 +190,15 @@ double ImgMeasure::SSIM(const cv::Mat& org, const cv::Mat& enh)
         + (ORG_VARIANCE + ENH_VARIANCE + c2);
 
     return numerator / denominator;
+}
+
+inline static void printLocalContrasts(const std::vector<double>& vec)
+{
+    for (auto& item : vec)
+    {
+        printf("%Lf \n", item);
+    }
+    return;
 }
 
 double ImgMeasure::CII(const cv::Mat& org, const cv::Mat& enh)
