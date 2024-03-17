@@ -4,11 +4,8 @@
 
 #include "Core/Application.h"
 #include "Core/MediaManager.h"
-#include "Core/CAEHelper.h"
-#include "Core/ImageMeasures.h"
 
 #include <opencv2/core.hpp>
-#include <opencv2/highgui.hpp>
 
 int main()
 {
