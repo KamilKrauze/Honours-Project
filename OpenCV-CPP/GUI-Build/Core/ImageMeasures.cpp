@@ -4,6 +4,7 @@
 #include <cassert>
 #include <vector>
 #include <thread>
+#include <opencv2/highgui.hpp>
 
 static uint8_t maxOfMatrix(const cv::Mat& mat)
 {
@@ -73,6 +74,70 @@ static double covarianceOfMatrix(const cv::Mat& org, const cv::Mat& enh)
     return summation / totalPixels;
 }
 
+static uint8_t minOfMatrix(const cv::Mat& mat)
+{
+    uint8_t min = 0;
+    for (size_t i = 0; i < mat.rows; i++)
+    {
+        for (size_t j = 0; j < mat.cols; j++)
+        {
+            (mat.data[i * (mat.cols + j)] < min) ? (min = mat.data[i * (mat.cols + j)]) : (min = min);
+        }
+    }
+
+    return min;
+}
+
+
+
+std::vector<double> coefficientsOfLocation(const cv::Mat& mat)
+{
+    std::vector<uint8_t> min_vals(0), max_vals(0);
+
+#pragma omp parallel for
+    for (size_t i = 0; i < 510; i++)
+    {
+        for (size_t j = 0; j < 510; j++)
+        {
+            cv::Mat sub_region = mat(cv::Rect(j, i, 3, 3));
+
+            double min = 0, max = 0;
+            cv::minMaxLoc(sub_region, &min, &max);
+
+            min_vals.push_back(static_cast<uint8_t>(min));
+            max_vals.push_back(static_cast<uint8_t>(max));
+        }
+    }
+
+    std::vector<double> coefficients(max_vals.size());
+#pragma omp parallel for
+        for (size_t i = 0; i < max_vals.size(); i++)
+        {
+            if ((max_vals[i] + min_vals[i]) == 0)
+            {
+                i += 2;
+            }
+            else
+            {
+                double a = static_cast<double>(max_vals[i] - min_vals[i]) / static_cast<double>(max_vals[i] + min_vals[i]);
+                coefficients[i] = (a);
+            }
+        }
+
+    return coefficients;
+}
+
+double entropy(const std::vector<double>& probabilities)
+{
+    double entropy = 0.0f;
+    for (auto& p : probabilities)
+    {
+        if (p > 0.0f)
+            entropy -= (p * std::log2(p));
+    }
+    return entropy;
+}
+
 double ImgMeasure::PSNR(const cv::Mat& org, const cv::Mat& enh)
 {
     const std::pair<size_t, size_t> ORG_SIZE = { org.rows, org.cols  };
@@ -125,4 +190,35 @@ double ImgMeasure::SSIM(const cv::Mat& org, const cv::Mat& enh)
         + (ORG_VARIANCE + ENH_VARIANCE + c2);
 
     return numerator / denominator;
+}
+
+inline static void printLocalContrasts(const std::vector<double>& vec)
+{
+    for (auto& item : vec)
+    {
+        printf("%Lf \n", item);
+    }
+    return;
+}
+
+double ImgMeasure::CII(const cv::Mat& org, const cv::Mat& enh)
+{
+    // Local contrasts
+    std::vector<double> Cloc_org(0), Cloc_enh(0);
+    double entropy_org = 0.0f, entropy_enh = 0.0f;
+
+    std::thread t1([&org, &Cloc_org, &entropy_org] {
+        Cloc_org = coefficientsOfLocation(org);
+        entropy_org = entropy(Cloc_org);
+        });
+
+    std::thread t2([&enh, &Cloc_enh, &entropy_enh] {
+        Cloc_enh = coefficientsOfLocation(enh);
+        entropy_enh = entropy(Cloc_enh);
+        });
+
+    t1.join();
+    t2.join();
+
+    return entropy_enh / entropy_org;
 }
