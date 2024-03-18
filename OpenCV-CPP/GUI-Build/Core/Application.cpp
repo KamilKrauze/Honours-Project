@@ -2,7 +2,7 @@
 #include "Core/GUICore.h"
 #include "Core/CAEHelper.h"
 #include "Core/MediaManager.h"
-
+#include "Core/DataPlotter.hpp"
 #include "Core/KeyCallback.h"
 #include "GUI/EditorGUI.hpp"
 
@@ -15,11 +15,11 @@
 #include <iostream>
 
 static void error_callback(int error, const char* description);
-
 inline static void init();
 
 Application* Application::s_appInstance = nullptr;
 MediaManager* Application::s_MediaManager = nullptr;
+DataPlotter* Application::s_DataPlotter = nullptr;
 
 Application::Application(int width, int height, std::string title)
 {
@@ -29,6 +29,7 @@ Application::Application(int width, int height, std::string title)
 
 	m_window = new Window({width, height, title});
 	s_MediaManager = new MediaManager();
+	s_DataPlotter = new DataPlotter();
 	
 
 	if (!glfwInit())

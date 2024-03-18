@@ -4,6 +4,7 @@
 #include "Core/Window.h"
 
 class MediaManager;
+class DataPlotter;
 
 class Application
 {
@@ -24,6 +25,7 @@ public:
 private:
 	Window* m_window;
 	static MediaManager* s_MediaManager;
+	static DataPlotter* s_DataPlotter;
 
 	static Application* s_appInstance;
 };
