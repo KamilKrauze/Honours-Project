@@ -1,8 +1,8 @@
 #include "GUI/EditorGUI.hpp"
+#include "GUI/PlotGUI.hpp"
 
 #include <iostream>
 #include <string>
-#include <sstream>
 #include <string_view>
 
 #include <imgui.h>
@@ -40,7 +40,7 @@ static void showSettingsPanel()
 		ImGui::OpenPopup("Select Dataset");
 	}
 
-	if (ImGui::BeginPopupModal("Select Dataset", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize))
+	if (ImGui::BeginPopupModal("Select Dataset", nullptr, ImGuiWindowFlags_NoResize))
 	{
 		ImGui::SetItemDefaultFocus();
 		ImGui::Text("Select the data source and name the new dataset (careful you may override something if the same name is given!)");
@@ -83,7 +83,6 @@ static void showSettingsPanel()
 		ImGui::EndPopup();
 
 	}
-
 	ImGui::End();
 }
 
@@ -152,33 +151,6 @@ static void showDetailsPanel()
 		MediaManager::Get().bind(currentKey, index + 0);
 	}
 
-	ImGui::End();
-}
-
-static bool showPlot = true;
-static std::vector<double> x_data(51), y_data(51);
-static void showImageMeasurePlots(std::string_view plot_name)
-{
-	ImPlot::CreateContext();
-	for (size_t i = 0; i < 51; i++)
-	{
-		x_data[i] = i;
-	}
-
-	for (int i = 0; i < 51; ++i) {
-		float result = 0.9 * sin(25 * x_data[i]) * cos(2 * x_data[i]);
-		y_data[i] = std::clamp(result, 0.0f, result);
-	}
-
-	ImGui::Begin("Contrast Measure Plot");
-	if (ImPlot::BeginPlot(plot_name.data(), {-0.1,-1}, ImPlotFlags_Crosshairs | ImPlotFlags_NoLegend))
-	{
-		ImPlot::SetNextMarkerStyle(ImPlotMarker_Circle);
-		ImPlot::PlotScatter("Scatter Plot", x_data.data(), y_data.data(), x_data.size());
-
-		ImPlot::PlotLine("Line Plot", x_data.data(), y_data.data(), x_data.size());
-		ImPlot::EndPlot();
-	}
 	ImGui::End();
 }
 
@@ -294,7 +266,7 @@ void EditorGUI::RunEditorGUI()
 
 	}
 
-	showImageMeasurePlots("CII");
+	showImageMeasurePlots("CII", {4,1,2,3,4,2,6,9,8,9});
 
 	ImGui::End();
 }
