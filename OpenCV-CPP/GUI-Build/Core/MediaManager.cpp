@@ -23,8 +23,7 @@ MediaManager::MediaManager()
 	if (!s_Instance)
 		this->s_Instance = this;
 
-	this->m_currently_attached.first = "";
-	this->m_currently_attached.second = -1;
+	this->m_currently_attached = { "" ,-1 };
 }
 
 MediaManager::~MediaManager()
@@ -32,8 +31,7 @@ MediaManager::~MediaManager()
 	if (m_currently_attached.second >= 0)
 		unbind();
 	this->m_textures.clear();
-	this->m_currently_attached.first = "";
-	this->m_currently_attached.second = -1;
+	this->m_currently_attached = { "" ,-1 };
 
 	//this->s_Instance = nullptr;
 }
