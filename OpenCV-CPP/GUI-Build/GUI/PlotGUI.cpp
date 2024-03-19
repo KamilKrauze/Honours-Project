@@ -10,6 +10,21 @@
 
 using Keys = std::vector<std::string_view>;
 
+// REMOVE LATER
+
+static double x_data[60], y_data[60];
+
+static inline void createTempPlot()
+{
+	for (size_t i = 0; i < 60; i++)
+	{
+		x_data[i] = i;
+		(std::sin(i * 0.25f) >= 0.0f) ? (y_data[i] = std::sin(i * 0.25f)) : (y_data[i] = (1.0f + std::sin(i * 0.25f)));
+	}
+}
+
+// !REMOVE LATER
+
 static void CreatePlotMenuButton()
 {
 	if (ImGui::Button("Create Plot"))
@@ -100,15 +115,19 @@ void showImageMeasurePlots(std::string_view plot_name, const std::vector<double>
 	std::string name = plot_name.data() + std::string(" time series");
 	const size_t size = points.size();
 
-	auto data = DataPlotter::Get().getPlotData("heq", "CII");
+	//auto data = DataPlotter::Get().getPlotData("heq", "CII");
+
+	createTempPlot();
 
 	ImGui::Begin("Contrast Measure Plot");
 	if (ImPlot::BeginPlot(name.data(), "Frame No.", plot_name.data(), {-0.1,-1}, ImPlotFlags_Crosshairs | ImPlotFlags_NoLegend))
 	{
 		ImPlot::SetNextMarkerStyle(ImPlotMarker_Circle);
-		ImPlot::PlotScatter("Scatter Plot", data.first.data(), points.data(), size);
+		//ImPlot::PlotScatter("Scatter Plot", data.first.data(), points.data(), size);
+		ImPlot::PlotScatter("Scatter Plot", x_data, y_data, 60);
 
-		ImPlot::PlotLine("Line Plot", data.first.data(), points.data(), size);
+		//ImPlot::PlotLine("Line Plot", data.first.data(), points.data(), size);
+		ImPlot::PlotLine("Line Plot", x_data, y_data, 60);
 		ImPlot::EndPlot();
 	}
 	ImGui::End();
