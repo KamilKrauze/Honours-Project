@@ -7,6 +7,9 @@
 #include "Core/MediaManager.h"
 #include "Core/DataPlotter.hpp"
 
+#include "ImgCompute/Measure/ImageMeasures.hpp"
+
+#include <iostream>
 
 using Keys = std::vector<std::string_view>;
 
@@ -25,6 +28,10 @@ static inline void createTempPlot()
 
 // !REMOVE LATER
 
+static size_t current_item_org = 0;
+static size_t current_item_enh = 0;
+static size_t current_item_img_measure = 0;
+
 static void CreatePlotMenuButton()
 {
 	if (ImGui::Button("Create Plot"))
@@ -38,13 +45,9 @@ static void CreatePlotMenuButton()
 
 		ImGui::Text("Select the datasets to be computed with which measuring algorithm: ");
 
-		static size_t current_item_org = 0;
-		static size_t current_item_enh = 0;
-		static size_t current_item_img_measure = 0;
-
 		Keys keys = MediaManager::Get().getKeys();
 
-		if (ImGui::BeginCombo("Original Dataset", "---", ImGuiComboFlags_PopupAlignLeft))
+		if (ImGui::BeginCombo("Original Dataset", keys[current_item_org].data(), ImGuiComboFlags_PopupAlignLeft))
 		{
 			for (size_t i = 0; i < keys.size(); i++)
 			{
@@ -55,7 +58,7 @@ static void CreatePlotMenuButton()
 			ImGui::EndCombo();
 		}
 
-		if (ImGui::BeginCombo("Enhanced Dataset", "---", ImGuiComboFlags_PopupAlignLeft))
+		if (ImGui::BeginCombo("Enhanced Dataset", keys[current_item_enh].data(), ImGuiComboFlags_HeightLargest))
 		{
 			for (size_t i = 0; i < keys.size(); i++)
 			{
@@ -69,7 +72,7 @@ static void CreatePlotMenuButton()
 		ImGui::NewLine();
 
 		ImGui::Text("Select the image measure to be computed");
-		if (ImGui::BeginCombo("Image Measure", "---", ImGuiComboFlags_PopupAlignLeft))
+		if (ImGui::BeginCombo("Image Measure", img_measure_selection->c_str(), ImGuiComboFlags_HeightLargest))
 		{
 			for (size_t i = 0; i < 3; i++)
 			{
@@ -83,15 +86,20 @@ static void CreatePlotMenuButton()
 		ImGui::NewLine();
 
 		if (ImGui::Button("Apply"))
-		{
+		{		
+			if (current_item_org == current_item_enh)
+				ImGui::CloseCurrentPopup(); goto APPLY_SKIP;
+
+			// Run calculations here!
+			
+
 			ImGui::CloseCurrentPopup();
 		}
 
+	APPLY_SKIP:
 		ImGui::SameLine();
 		if (ImGui::Button("Cancel"))
-		{
 			ImGui::CloseCurrentPopup();
-		}
 
 
 		ImGui::EndPopup();
@@ -124,10 +132,10 @@ void showImageMeasurePlots(std::string_view plot_name, const std::vector<double>
 	{
 		ImPlot::SetNextMarkerStyle(ImPlotMarker_Circle);
 		//ImPlot::PlotScatter("Scatter Plot", data.first.data(), points.data(), size);
-		ImPlot::PlotScatter("Scatter Plot", x_data, y_data, 60);
+		ImPlot::PlotScatter("Scatter Plot", x_data, y_data, 25);
 
 		//ImPlot::PlotLine("Line Plot", data.first.data(), points.data(), size);
-		ImPlot::PlotLine("Line Plot", x_data, y_data, 60);
+		ImPlot::PlotLine("Line Plot", x_data, y_data, 25);
 		ImPlot::EndPlot();
 	}
 	ImGui::End();
