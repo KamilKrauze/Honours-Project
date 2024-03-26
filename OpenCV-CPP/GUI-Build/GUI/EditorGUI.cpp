@@ -87,7 +87,6 @@ static void showSettingsPanel()
 }
 
 static void showFrameSelectionPanel()
-
 {
 	ImGui::Begin("Frame Selector", nullptr, ImGuiWindowFlags_NoCollapse);
 
