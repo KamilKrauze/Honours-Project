@@ -18,6 +18,7 @@ def PSNR(enhancedImage: cv.Mat, originalImage: cv.Mat)->npy.float64:
     sizeY = enhancedImage.shape[1] # Image height.
     
     l_1 = npy.amax(enhancedImage[0]) # (L-1) - The max intensity of the image
+
     n = sizeX * sizeY # Total number of pixels
     
     # Summation of pixels |(original pixel - enhanced pixel)|^2
