@@ -4,15 +4,24 @@
 #include <vector>
 #include <string_view>
 
+
+enum class ImgMeasuringAlgorithm
+{
+	CII = 0,
+	PSNR = 1,
+	SSIM = 2,
+	// Add more here following this convention --> [ NAME = n ]
+};
+
 static const std::string img_measure_selection[3] =
 {
-	"Contrast Improvement Index (CII)",
-	"Peak Signal to Noise Ratio (PSNR)",
-	"Structural Similarity Index Measure (SSIM)"
+	"CII",
+	"PSNR",
+	"SSIM"
 };
 
 void showPlotGraphSettings();
 
-void showImageMeasurePlots(std::string_view plot_name, const std::vector<double>& points);
+void showImageMeasurePlots();
 
 #endif // !PLOT_GUI_HPP
