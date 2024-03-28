@@ -33,7 +33,7 @@ inline void AlignForWidth(float width, float alignment = 0.5f)
 
 static void showSettingsPanel()
 {
-	ImGui::Begin("Modifiers");
+	ImGui::Begin("Modifiers", (bool*)0, ImGuiWindowFlags_NoNavInputs);
 
 	if (ImGui::Button("Equalize Histogram"))
 	{
@@ -70,7 +70,7 @@ static void showSettingsPanel()
 			currentKey = keys[current_item];
 
 			MediaManager::Get().equalizeHistogram(currentKey.data(), dstKey.c_str());
-			MediaManager::Get().bind(dstKey, MediaManager::Get().getCurrentIndex());
+			//MediaManager::Get().bind(dstKey, MediaManager::Get().getCurrentIndex());
 
 			ImGui::CloseCurrentPopup();
 
@@ -229,16 +229,6 @@ void EditorGUI::RunEditorGUI()
 			ImGui::EndMenu();
 		}
 
-		if (ImGui::BeginMenu("Tools"))
-		{
-			if (ImGui::BeginMenu("Compute Measure"))
-			{
-				ImGui::MenuItem("Export data");
-				ImGui::EndMenu();
-			}
-			ImGui::EndMenu();
-		}
-
 		ImGui::EndMenuBar();
 	}
 
@@ -265,7 +255,7 @@ void EditorGUI::RunEditorGUI()
 
 	}
 
-	showImageMeasurePlots("CII", {4,1,2,3,4,2,6,9,8,9});
+	showImageMeasurePlots();
 
 	ImGui::End();
 }
