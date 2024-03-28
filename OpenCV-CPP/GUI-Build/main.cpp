@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <omp.h>
 
 #include "Core/Application.h"
 #include "Core/MediaManager.h"
@@ -9,6 +10,8 @@
 
 int main()
 {
+    omp_set_num_threads(4);
+
     Application app(1200, 800, "Honours Project");
 
     std::vector<cv::String> list;
