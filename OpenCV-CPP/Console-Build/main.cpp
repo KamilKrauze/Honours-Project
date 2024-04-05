@@ -43,30 +43,69 @@ int main()
 
     Mat src1, src2, bw1, bw2;
 
-    src1 = imread("../../exports/opencv/adaptive-histogram-eq/cl2_frame25.png", cv::IMREAD_GRAYSCALE);
+    src1 = imread("../../exports/opencv/adaptive-histogram-eq/cl2_frame08.png", cv::IMREAD_GRAYSCALE);
     imshow("Source 1", src1);
 
-    src2 = imread("../../exports/opencv/adaptive-histogram-eq/cl10_frame25.png", cv::IMREAD_GRAYSCALE);
+    src2 = imread("../../exports/opencv/adaptive-histogram-eq/cl10_frame08.png", cv::IMREAD_GRAYSCALE);
     imshow("Source 2", src2);
     
     // Binary image
     threshold(src1, bw1, 95, 255, THRESH_BINARY | THRESH_OTSU);
-    imshow("Binary 1", bw1);
+    //imshow("Binary 1", bw1);
 
     threshold(src2, bw2, 105, 255, THRESH_BINARY | THRESH_OTSU);
-    imshow("Binary 2", bw2);
+    //imshow("Binary 2", bw2);
 
     // Find all the contours in the thresholded image
     auto pca1 = executePCA(src1, bw1, img_data1.contours, img_data1.eigen_vectors, img_data1.eigen_values);
     auto pca2 = executePCA(src2, bw2, img_data2.contours, img_data2.eigen_vectors, img_data2.eigen_values);
 
-    Mat fused = fusePCAs(src2, src1, img_data2, img_data1);
+    Mat fused = fusePCAs(src1, src2, img_data1, img_data2);
 
     imshow("Fused Image", fused);
 
     waitKey(0);
     destroyAllWindows();
+    imwrite("../../exports/weighted_pca_fusion/cl2_cl10/cl2_cl10_frame08.png", fused);
 
+    //const std::string file_ext = ".png";
+    //const std::string_view fp1 = "../../exports/opencv/adaptive-histogram-eq/cl2_frame";
+    //const std::string_view fp2 = "../../exports/opencv/adaptive-histogram-eq/cl10_frame";
+
+    //const std::string export_name = "cl2_cl10_frame";
+    //const std::string export_path = "../../exports/weighted_pca_fusion/cl2_cl10/";
+
+    //for (size_t i = 0; i < 61; i++)
+    //{
+    //    std::string number = std::to_string(i);
+    //    if (i < 10)
+    //        number = "0" + std::to_string(i);
+
+    //    // Import image
+    //    src1 = imread(fp1.data() + number + file_ext.data(), cv::IMREAD_GRAYSCALE);
+    //    src2 = imread(fp2.data() + number + file_ext.data(), cv::IMREAD_GRAYSCALE);
+
+    //    // Binary image
+    //    threshold(src1, bw1, 95, 255, THRESH_BINARY | THRESH_OTSU);
+    //    threshold(src2, bw2, 105, 255, THRESH_BINARY | THRESH_OTSU);
+    //    
+    //    // Find all the contours in the thresholded image
+    //    auto pca1 = executePCA(src1, bw1, img_data1.contours, img_data1.eigen_vectors, img_data1.eigen_values);
+    //    auto pca2 = executePCA(src2, bw2, img_data2.contours, img_data2.eigen_vectors, img_data2.eigen_values);
+
+    //    // Do fusion and add to list
+    //    cv::Mat fused_image = fusePCAs(src1, src2, img_data1, img_data2);
+
+    //    cv::imwrite(export_path.c_str() + export_name + number + file_ext, fused_image);
+
+    //    img_data1.contours.clear();
+    //    img_data2.contours.clear();
+
+    //    img_data1.eigen_values[0] = 0; img_data1.eigen_vectors[0] = { 0,0 };
+    //    img_data1.eigen_values[1] = 0; img_data1.eigen_vectors[1] = { 0,0 };
+    //    img_data2.eigen_values[0] = 0; img_data2.eigen_vectors[0] = { 0,0 };
+    //    img_data2.eigen_values[1] = 0; img_data2.eigen_vectors[1] = { 0,0 };
+    //}
 
     return 0;
 }
@@ -152,16 +191,15 @@ cv::Mat fusePCAs(const cv::Mat& src1, const cv::Mat& src2, ImgData& img_data1, I
 
     double weight1 = 0.0f, weight2 = 0.0f;
 
-    // Equation 4.1 - https://tigerprints.clemson.edu/cgi/viewcontent.cgi?article=1615&context=all_dissertations - 16/02/2024s
+    // Equation 4.1 - https://tigerprints.clemson.edu/cgi/viewcontent.cgi?article=1615&context=all_dissertations - 16/02/2024
     for (uint8_t i = 0; i < 2; i++)
     {
         // Get weights
-        weight1 += img_data1.eigen_vectors[i].x / img_data1.eigen_vectors[i].x + img_data1.eigen_vectors[i].y;
-        weight2 += img_data2.eigen_vectors[i].y / img_data2.eigen_vectors[i].x + img_data2.eigen_vectors[i].y;
+        weight1 += img_data1.eigen_vectors[i].x / (img_data1.eigen_vectors[i].x + img_data1.eigen_vectors[i].y);
+        weight2 += img_data2.eigen_vectors[i].y / (img_data2.eigen_vectors[i].x + img_data2.eigen_vectors[i].y);
     }
 
-    weight1 /= 2;
-    weight2 /= 2;
+    //weight2 = 1 - weight1;
 
     // Low pass coefficients
     // Equation 4.2 - https://tigerprints.clemson.edu/cgi/viewcontent.cgi?article=1615&context=all_dissertations - 16/02/2024
@@ -191,13 +229,13 @@ cv::Mat fusePCAs(const cv::Mat& src1, const cv::Mat& src2, ImgData& img_data1, I
 
 
     // Combine low pass and high pass
-    for (size_t i = 0; i < fused_low.rows; i++)
-    {
-        for (size_t j = 0; j < fused_low.cols; j++)
-        {
-            fused.at<uint8_t>(i, j) = fused_low.at<uint8_t>(i, j) ;
-        }
-    }
+    //for (size_t i = 0; i < fused_low.rows; i++)
+    //{
+    //    for (size_t j = 0; j < fused_low.cols; j++)
+    //    {
+    //        fused.at<uint8_t>(i, j) = fused_low.at<uint8_t>(i, j);
+    //    }
+    //}
 
-    return fused;
+    return fused_low;
 }
