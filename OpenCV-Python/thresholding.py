@@ -67,8 +67,10 @@ if __name__ == "__main__":
         exit(0)
 
     img = cv.imread(FILEPATH) 
-    dst = threshold(img, 0.475, False, True)
+    dst = threshold(img, 0.475, True, True)
 
     cv.imshow("HE - Frame 0" , img)
     cv.imshow("HE - Frame 0 - Thresholded", dst)
+    
+    cv.imwrite("./exports/opencv/binarisation/cl3/frame45.png", dst)
     cv.waitKey()

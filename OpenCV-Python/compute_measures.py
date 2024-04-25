@@ -11,14 +11,14 @@ import psnr
 import cii
 
 # Import directories
-SOURCE_IMG_DIR:str = "./exports/dicom-data/"
-ENHANCED_IMG_DIR:str = "./exports/opencv/adaptive-histogram-eq/"
-SUFFIX:str = "cl10_"
+SOURCE_IMG_DIR:str = "../exports/dicom-data/"
+ENHANCED_IMG_DIR:str = "../exports/weighted_dwt/cl2_cl10_fusion_db4/"
+SUFFIX:str = "cl2_cl10_"
 
 # Export directories
-CIIS_DIR: str = "./exports/contrast-measures/adap-heq/cl10/ciis.txt"
-PSNR_DIR: str = "./exports/contrast-measures/adap-heq/cl10/psnr.txt"
-SSIM_DIR: str = "./exports/contrast-measures/adap-heq/cl10/ssim.txt"
+CIIS_DIR: str = "../exports/contrast-measures/dwt/cl2_cl10_fusion_db4/ciis.txt"
+PSNR_DIR: str = "../exports/contrast-measures/dwt/cl2_cl10_fusion_db4/psnr.txt"
+SSIM_DIR: str = "../exports/contrast-measures/dwt/cl2_cl10_fusion_db4/ssim.txt"
 
 # If either directory does not exist, exit.
 if(not (IO.checkIfDirectoryExists(SOURCE_IMG_DIR)) or not (IO.checkIfDirectoryExists(ENHANCED_IMG_DIR)) ):
@@ -59,10 +59,10 @@ def computeSSIMs():
         
         ssims.append( ssim.SSIM(enh, src) )
 
-# computeCIIs()
-# computePSNRs()
+computeCIIs()
+computePSNRs()
 computeSSIMs()
   
-# IO.writeListToFile(ciis, CIIS_DIR)
-# IO.writeListToFile(psnrs, PSNR_DIR)
+IO.writeListToFile(ciis, CIIS_DIR)
+IO.writeListToFile(psnrs, PSNR_DIR)
 IO.writeListToFile(ssims, SSIM_DIR)

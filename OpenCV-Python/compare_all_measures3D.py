@@ -32,7 +32,14 @@ if __name__ == "__main__":
         "CLAHE: CL=5",
         "CLAHE: CL=7",
         "CLAHE: CL=8.5",
-        "CLAHE: CL=10"
+        "CLAHE: CL=10",
+        "PCA: CL2,4",
+        "PCA: CL2,10",
+        "DWT Image Fusion: CL2,3",
+        "DWT Image Fusion: CL2,4",
+        "DWT Image Fusion: CL2,10",
+        "Weighted PCA-Based DWT Image Fusion: CL2,4",
+        "Weighted PCA-Based DWT Image Fusion: CL2,10"
     ]
     
     # File path prefixes
@@ -48,10 +55,6 @@ if __name__ == "__main__":
     AHE_CLS = [
         "cl2",
         "cl3",
-        "cl4",
-        "cl5",
-        "cl7",
-        "cl8_5",
         "cl10"
     ]
 
@@ -59,19 +62,55 @@ if __name__ == "__main__":
     # HEQ at the start as theres only one dataset
     ciis = [
         HEQ+CII,
+        AHE+"cl2/"+CII,
+        AHE+"cl3/"+CII,
+        AHE+"cl4/"+CII,
+        AHE+"cl5/"+CII,
+        AHE+"cl7/"+CII,
+        AHE+"cl8_5/"+CII,
+        AHE+"cl10/"+CII,
+        "./exports/contrast-measures/pca/cl2_cl4/"+CII,
+        "./exports/contrast-measures/pca/cl2_cl10/"+CII,
+        "./exports/contrast-measures/dwt/cl2_cl3_fusion_db4/"+CII,
+        "./exports/contrast-measures/dwt/cl2_cl4_fusion_db4/"+CII,
+        "./exports/contrast-measures/dwt/cl2_cl10_fusion_db4/"+CII,
+        "./exports/contrast-measures/weighted_pca_dwt/cl2_cl4/"+CII,
+        "./exports/contrast-measures/weighted_pca_dwt/cl2_cl10/"+CII,
     ]
     psnr = [
-        HEQ+PSNR
+        HEQ+PSNR,
+        AHE+"cl2/"+PSNR,
+        AHE+"cl3/"+PSNR,
+        AHE+"cl4/"+PSNR,
+        AHE+"cl5/"+PSNR,
+        AHE+"cl7/"+PSNR,
+        AHE+"cl8_5/"+PSNR,
+        AHE+"cl10/"+PSNR,
+        "./exports/contrast-measures/pca/cl2_cl4/"+PSNR,
+        "./exports/contrast-measures/pca/cl2_cl10/"+PSNR,
+        "./exports/contrast-measures/dwt/cl2_cl3_fusion_db4/"+PSNR,
+        "./exports/contrast-measures/dwt/cl2_cl4_fusion_db4/"+PSNR,
+        "./exports/contrast-measures/dwt/cl2_cl10_fusion_db4/"+PSNR,
+        "./exports/contrast-measures/weighted_pca_dwt/cl2_cl4/"+PSNR,
+        "./exports/contrast-measures/weighted_pca_dwt/cl2_cl10/"+PSNR,
     ]
     ssim = [
-        HEQ+SSIM
+        HEQ+SSIM,
+        AHE+"cl2/"+SSIM,
+        AHE+"cl3/"+SSIM,
+        AHE+"cl4/"+SSIM,
+        AHE+"cl5/"+SSIM,
+        AHE+"cl7/"+SSIM,
+        AHE+"cl8_5/"+SSIM,
+        AHE+"cl10/"+SSIM,
+        "./exports/contrast-measures/pca/cl2_cl4/"+SSIM,
+        "./exports/contrast-measures/pca/cl2_cl10/"+SSIM,
+        "./exports/contrast-measures/dwt/cl2_cl3_fusion_db4/"+SSIM,
+        "./exports/contrast-measures/dwt/cl2_cl4_fusion_db4/"+SSIM,
+        "./exports/contrast-measures/dwt/cl2_cl10_fusion_db4/"+SSIM,
+        "./exports/contrast-measures/weighted_pca_dwt/cl2_cl4/"+SSIM,
+        "./exports/contrast-measures/weighted_pca_dwt/cl2_cl10/"+SSIM,
     ]
-
-    # Obtain the rest of filepaths
-    for CLS in AHE_CLS:
-        ciis.append(AHE + CLS + "/" + CII)
-        psnr.append(AHE + CLS + "/" + PSNR)
-        ssim.append(AHE + CLS + "/" + SSIM)
 
     # List of values
     measures = [ (npy.float64(0), npy.float64(0), npy.float64(0)) ]
@@ -87,22 +126,16 @@ if __name__ == "__main__":
         
         measures.append((x,y,z))
         
-        ax.plot(x, y, z, marker="o", label=NAMES[i])
+        ax.scatter(x,y,z, marker="o", label=NAMES[i])
+        ax.plot([x,x], [y,y], [z,0], color='gray')
+        ax.plot([x,x], [y,0], [z,z], color='gray')
+        ax.plot([x,0], [y,y], [z,z], color='gray')
         # ax.text(x,y,z, NAMES[i])
 
     ax.set_xlabel("CII")
-    ax.set_ylabel("PSNR")
-    ax.set_zlabel("SSIM")
+    ax.set_ylabel("SSIM")
+    ax.set_zlabel("PSNR")
 
-    print("Greatest Value: ")
     
-    max = getMaxOfList(measures)
-    
-    name = NAMES[max[0]]
-    val = max[1]
-    print(name)
-    print(val)
-    
-    plt.legend()
-
+    # plt.legend()
     plt.show()
