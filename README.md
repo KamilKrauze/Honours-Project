@@ -9,7 +9,6 @@ https://github.com/user-attachments/assets/311b764e-be67-4119-9ef2-fdfa424119d0
 ## Instructions
 > [!IMPORTANT]
 > - The application and the underlying binaries are currently compiled for Windows operating systems! This also requires for Visual Studio 2022 to be installed.
-> - The angiogram image seen in the video will not be distributed as it is derived from a real medical record!
 
 The provided code repository already has the application compiled so no further compiling is required.
 
