@@ -1,7 +1,5 @@
 # Honours Project: Image Enhancement of Angiographic Images using Contrasting Techniques
 
-Repository: https://github.com/KamilKrauze/Honours-Project
-
 ## Instructions
 > NOTE: The application and the underlying binaries are currently compiled for Windows operating systems! This also requires for Visual Studio 2022 to be installed.
 
